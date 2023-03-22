@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smoren\Validator\Rules;
 
 use Smoren\Validator\Interfaces\BaseRuleInterface;
 use Smoren\Validator\Interfaces\CompositeRuleInterface;
 
-abstract class CompositeRule implements CompositeRuleInterface
+abstract class CompositeRule extends Rule implements CompositeRuleInterface
 {
     /**
      * @var array<BaseRuleInterface>
@@ -18,7 +20,7 @@ abstract class CompositeRule implements CompositeRuleInterface
     public function __construct(array $rules)
     {
         foreach ($rules as $rule) {
-            $this->add($rule);
+            $this->addRule($rule);
         }
     }
 
@@ -27,7 +29,7 @@ abstract class CompositeRule implements CompositeRuleInterface
      *
      * @return static
      */
-    public function add(BaseRuleInterface $rule): self
+    public function addRule(BaseRuleInterface $rule): self
     {
         $this->rules[] = $rule;
         return $this;

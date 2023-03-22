@@ -1,8 +1,8 @@
 <?php
 
-namespace Smoren\Validator\Interfaces;
+declare(strict_types=1);
 
-use Smoren\Validator\Exceptions\ValidationError;
+namespace Smoren\Validator\Interfaces;
 
 interface CompositeRuleInterface extends BaseRuleInterface
 {
@@ -11,5 +11,5 @@ interface CompositeRuleInterface extends BaseRuleInterface
      *
      * @return static
      */
-    public function add(BaseRuleInterface $rule): self;
+    public function addRule(BaseRuleInterface $rule): self;
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smoren\Validator\Exceptions;
 
 class ValidationError extends \DomainException
@@ -24,6 +26,24 @@ class ValidationError extends \DomainException
             fn (CheckError $error) => [$error->getName(), $error->getParams()],
             $checkErrors
         ));
+    }
+
+    /**
+     * @param mixed $value
+     * @param array<ValidationError> $validationErrors
+     * @return self
+     */
+    public static function fromValidationErrors($value, array $validationErrors): self
+    {
+        $summary = [];
+
+        foreach ($validationErrors as $error) {
+            foreach ($error->getSummary() as $item) {
+                $summary[] = $item;
+            }
+        }
+
+        return new self($value, $summary);
     }
 
     /**

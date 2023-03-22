@@ -8,6 +8,8 @@ use Codeception\Test\Unit;
 use Smoren\Validator\Exceptions\ValidationError;
 use Smoren\Validator\Interfaces\IntegerRuleInterface;
 use Smoren\Validator\Rules\IntegerRule;
+use Smoren\Validator\Rules\NumberRule;
+use Smoren\Validator\Rules\Rule;
 
 class IntegerTest extends Unit
 {
@@ -33,6 +35,11 @@ class IntegerTest extends Unit
                 new IntegerRule(),
             ],
             [
+                [null, 1, 2, 3, -1, -2, -3],
+                (new IntegerRule())
+                    ->nullable(),
+            ],
+            [
                 [1, 2, 3, 10, 150],
                 (new IntegerRule())
                     ->positive(),
@@ -53,6 +60,26 @@ class IntegerTest extends Unit
                     ->nonNegative(),
             ],
             [
+                [6, 7, 8, 10, 150],
+                (new IntegerRule())
+                    ->greaterTran(5),
+            ],
+            [
+                [5, 6, 7, 8, 10, 150],
+                (new IntegerRule())
+                    ->greaterOrEqual(5),
+            ],
+            [
+                [4, 3, 2, 1, 0, -100],
+                (new IntegerRule())
+                    ->lessTran(5),
+            ],
+            [
+                [5, 4, 3, 2, 1, 0, -100],
+                (new IntegerRule())
+                    ->lessOrEqual(5),
+            ],
+            [
                 [6, 8],
                 (new IntegerRule())
                     ->positive()
@@ -67,18 +94,34 @@ class IntegerTest extends Unit
                     ->inInterval(5, 10),
             ],
             [
+                [null, 7, 9],
+                (new IntegerRule())
+                    ->nullable()
+                    ->positive()
+                    ->odd()
+                    ->inInterval(5, 10),
+            ],
+            [
                 [6, 8, 10],
                 (new IntegerRule())
                     ->positive()
                     ->even()
-                    ->inSegment(5, 10),
+                    ->between(5, 10),
             ],
             [
                 [5, 7, 9],
                 (new IntegerRule())
                     ->positive()
                     ->odd()
-                    ->inSegment(5, 10),
+                    ->between(5, 10),
+            ],
+            [
+                [5, 7, 9, null],
+                (new IntegerRule())
+                    ->positive()
+                    ->nullable()
+                    ->odd()
+                    ->between(5, 10),
             ],
         ];
     }
@@ -108,8 +151,32 @@ class IntegerTest extends Unit
     {
         return [
             [
-                ['1', 'a', true, false, null, []],
+                [null],
                 new IntegerRule(),
+                [
+                    [Rule::ERROR_NULL, []],
+                ],
+            ],
+            [
+                ['1', 'a', true, false, []],
+                new IntegerRule(),
+                [
+                    [IntegerRule::ERROR_NOT_INTEGER, []],
+                ],
+            ],
+            [
+                ['1', 'a', true, false, []],
+                (new IntegerRule())
+                    ->nullable(),
+                [
+                    [IntegerRule::ERROR_NOT_INTEGER, []],
+                ],
+            ],
+            [
+                ['1', 'a', true, false, []],
+                (new IntegerRule())
+                    ->nullable()
+                    ->positive(),
                 [
                     [IntegerRule::ERROR_NOT_INTEGER, []],
                 ],
@@ -119,7 +186,7 @@ class IntegerTest extends Unit
                 (new IntegerRule())
                     ->positive(),
                 [
-                    [IntegerRule::ERROR_NOT_POSITIVE, []],
+                    [NumberRule::ERROR_NOT_POSITIVE, []],
                 ],
             ],
             [
@@ -127,7 +194,7 @@ class IntegerTest extends Unit
                 (new IntegerRule())
                     ->negative(),
                 [
-                    [IntegerRule::ERROR_NOT_NEGATIVE, []],
+                    [NumberRule::ERROR_NOT_NEGATIVE, []],
                 ],
             ],
             [
@@ -135,7 +202,7 @@ class IntegerTest extends Unit
                 (new IntegerRule())
                     ->nonPositive(),
                 [
-                    [IntegerRule::ERROR_NOT_NON_POSITIVE, []],
+                    [NumberRule::ERROR_NOT_NON_POSITIVE, []],
                 ],
             ],
             [
@@ -143,7 +210,39 @@ class IntegerTest extends Unit
                 (new IntegerRule())
                     ->nonNegative(),
                 [
-                    [IntegerRule::ERROR_NOT_NON_NEGATIVE, []],
+                    [NumberRule::ERROR_NOT_NON_NEGATIVE, []],
+                ],
+            ],
+            [
+                [5, 4, 3, 2, 1, 0, -100],
+                (new IntegerRule())
+                    ->greaterTran(5),
+                [
+                    [NumberRule::ERROR_NOT_GREATER, ['number' => 5]],
+                ],
+            ],
+            [
+                [4, 3, 2, 1, 0, -100],
+                (new IntegerRule())
+                    ->greaterOrEqual(5),
+                [
+                    [NumberRule::ERROR_NOT_GREATER_OR_EQUEAL, ['number' => 5]],
+                ],
+            ],
+            [
+                [5, 6, 7, 8, 10, 150],
+                (new IntegerRule())
+                    ->lessTran(5),
+                [
+                    [NumberRule::ERROR_NOT_LESS, ['number' => 5]],
+                ],
+            ],
+            [
+                [6, 7, 8, 10, 150],
+                (new IntegerRule())
+                    ->lessOrEqual(5),
+                [
+                    [NumberRule::ERROR_NOT_LESS_OR_EQUEAL, ['number' => 5]],
                 ],
             ],
             [
@@ -154,7 +253,7 @@ class IntegerTest extends Unit
                     ->inInterval(5, 10),
                 [
                     [IntegerRule::ERROR_NOT_EVEN, []],
-                    [IntegerRule::ERROR_NOT_IN_INTERVAL, ['start' => 5, 'end' => 10]],
+                    [NumberRule::ERROR_NOT_IN_INTERVAL, ['start' => 5, 'end' => 10]],
                 ],
             ],
             [
@@ -164,9 +263,58 @@ class IntegerTest extends Unit
                     ->even()
                     ->inInterval(5, 10),
                 [
-                    [IntegerRule::ERROR_NOT_POSITIVE, []],
+                    [NumberRule::ERROR_NOT_POSITIVE, []],
                     [IntegerRule::ERROR_NOT_EVEN, []],
-                    [IntegerRule::ERROR_NOT_IN_INTERVAL, ['start' => 5, 'end' => 10]],
+                    [NumberRule::ERROR_NOT_IN_INTERVAL, ['start' => 5, 'end' => 10]],
+                ],
+            ],
+            [
+                [-1, -3, -11, -13],
+                (new IntegerRule())
+                    ->positive()
+                    ->even()
+                    ->stopOnViolation()
+                    ->inInterval(5, 10),
+                [
+                    [NumberRule::ERROR_NOT_POSITIVE, []],
+                    [IntegerRule::ERROR_NOT_EVEN, []],
+                ],
+            ],
+            [
+                [-1, -3, -11, -13],
+                (new IntegerRule())
+                    ->positive()
+                    ->stopOnViolation()
+                    ->nonNegative()
+                    ->even()
+                    ->stopOnViolation()
+                    ->inInterval(5, 10),
+                [
+                    [NumberRule::ERROR_NOT_POSITIVE, []],
+                ],
+            ],
+            [
+                [1, 3, 5, 7, 9],
+                (new IntegerRule())
+                    ->positive()
+                    ->stopOnViolation()
+                    ->nonNegative()
+                    ->even()
+                    ->stopOnViolation()
+                    ->inInterval(5, 10),
+                [
+                    [IntegerRule::ERROR_NOT_EVEN, []],
+                ],
+            ],
+            [
+                [-1, -3, -11, -13],
+                (new IntegerRule())
+                    ->positive()
+                    ->even()
+                    ->inInterval(5, 10)
+                    ->stopOnAnyPriorViolation(),
+                [
+                    [NumberRule::ERROR_NOT_POSITIVE, []],
                 ],
             ],
             [
@@ -194,7 +342,7 @@ class IntegerTest extends Unit
                 (new IntegerRule())
                     ->positive()
                     ->odd()
-                    ->inSegment(5, 10),
+                    ->between(5, 10),
                 [
                     [IntegerRule::ERROR_NOT_ODD, []],
                 ],
@@ -204,9 +352,9 @@ class IntegerTest extends Unit
                 (new IntegerRule())
                     ->positive()
                     ->odd()
-                    ->inSegment(5, 10),
+                    ->between(5, 10),
                 [
-                    [IntegerRule::ERROR_NOT_IN_SEGMENT, ['start' => 5, 'end' => 10]],
+                    [NumberRule::ERROR_NOT_IN_SEGMENT, ['start' => 5, 'end' => 10]],
                 ],
             ],
             [
@@ -214,10 +362,22 @@ class IntegerTest extends Unit
                 (new IntegerRule())
                     ->positive()
                     ->odd()
-                    ->inSegment(5, 10),
+                    ->between(5, 10),
                 [
                     [IntegerRule::ERROR_NOT_ODD, []],
-                    [IntegerRule::ERROR_NOT_IN_SEGMENT, ['start' => 5, 'end' => 10]],
+                    [NumberRule::ERROR_NOT_IN_SEGMENT, ['start' => 5, 'end' => 10]],
+                ],
+            ],
+            [
+                [2, 4, 12, 14],
+                (new IntegerRule())
+                    ->positive()
+                    ->stopOnAnyPriorViolation()
+                    ->odd()
+                    ->between(5, 10),
+                [
+                    [IntegerRule::ERROR_NOT_ODD, []],
+                    [NumberRule::ERROR_NOT_IN_SEGMENT, ['start' => 5, 'end' => 10]],
                 ],
             ],
             [
@@ -225,7 +385,7 @@ class IntegerTest extends Unit
                 (new IntegerRule())
                     ->positive()
                     ->odd()
-                    ->inSegment(5, 10),
+                    ->between(5, 10),
                 [
                     [IntegerRule::ERROR_NOT_ODD, []],
                 ],

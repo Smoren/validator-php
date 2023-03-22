@@ -1,7 +1,8 @@
 {
   "name": "smoren/validator",
-  "description": "Formula tools",
-  "keywords": ["formula", "logic", "operator", "operand"],
+  "description": "Responsible validation tools with fluent interface",
+  "keywords": ["validation", "validator", "fluent validation", "validation library"],
+  "type": "library",
   "license": "MIT",
   "authors": [
     {
