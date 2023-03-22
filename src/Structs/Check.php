@@ -22,20 +22,20 @@ class Check implements CheckInterface
     /**
      * @var bool
      */
-    protected bool $blocking;
+    protected bool $isInterrupting;
 
     /**
      * @param string $name
      * @param callable $predicate
      * @param array<string, mixed> $params
-     * @param bool $isBlocking
+     * @param bool $isInterrupting
      */
-    public function __construct(string $name, callable $predicate, array $params = [], bool $isBlocking = false)
+    public function __construct(string $name, callable $predicate, array $params = [], bool $isInterrupting = false)
     {
         $this->name = $name;
         $this->predicate = $predicate;
         $this->params = $params;
-        $this->blocking = $isBlocking;
+        $this->isInterrupting = $isInterrupting;
     }
 
     /**
@@ -51,8 +51,19 @@ class Check implements CheckInterface
     /**
      * @return bool
      */
-    public function isBlocking(): bool
+    public function isInterrupting(): bool
     {
-        return $this->blocking;
+        return $this->isInterrupting;
+    }
+
+    /**
+     * @param bool $value
+     *
+     * @return static
+     */
+    public function setInterrupting(bool $value = true): CheckInterface
+    {
+        $this->isInterrupting = $value;
+        return $this;
     }
 }

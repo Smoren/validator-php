@@ -28,6 +28,24 @@ class ValidationError extends \DomainException
 
     /**
      * @param mixed $value
+     * @param array<ValidationError> $validationErrors
+     * @return self
+     */
+    public static function fromValidationErrors($value, array $validationErrors): self
+    {
+        $summary = [];
+
+        foreach ($validationErrors as $error) {
+            foreach ($error->getSummary() as $item) {
+                $summary[] = $item;
+            }
+        }
+
+        return new self($value, $summary);
+    }
+
+    /**
+     * @param mixed $value
      * @param array<array{string, array<string, mixed>}> $summary
      */
     public function __construct($value, array $summary)
