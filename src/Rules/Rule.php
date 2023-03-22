@@ -55,9 +55,9 @@ class Rule implements UniformRuleInterface
     public function add(CheckInterface $check): self
     {
         if ($check->isBlocking()) {
-            $this->checks[] = $check;
-        } else {
             $this->blockingChecks[] = $check;
+        } else {
+            $this->checks[] = $check;
         }
         return $this;
     }
