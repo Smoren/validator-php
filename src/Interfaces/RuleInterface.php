@@ -2,7 +2,7 @@
 
 namespace Smoren\Validator\Interfaces;
 
-interface UniformRuleInterface extends BaseRuleInterface
+interface RuleInterface extends BaseRuleInterface
 {
     /**
      * @param CheckInterface $check
@@ -20,4 +20,14 @@ interface UniformRuleInterface extends BaseRuleInterface
      * @return static
      */
     public function check(string $name, callable $predicate, array $params = [], bool $isBlocking = false): self;
+
+    /**
+     * @return static
+     */
+    public function stopOnFail(): self;
+
+    /**
+     * @return static
+     */
+    public function stopIfAnyPreviousFails(): self;
 }

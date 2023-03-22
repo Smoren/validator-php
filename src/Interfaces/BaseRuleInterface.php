@@ -14,4 +14,9 @@ interface BaseRuleInterface
      * @throws ValidationError
      */
     public function validate($value): void;
+
+    /**
+     * @return static
+     */
+    public function nullable(): self;
 }

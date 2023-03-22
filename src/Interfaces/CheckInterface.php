@@ -18,5 +18,12 @@ interface CheckInterface
     /**
      * @return bool
      */
-    public function isBlocking(): bool;
+    public function isInterrupting(): bool;
+
+    /**
+     * @param bool $value
+     *
+     * @return static
+     */
+    public function setInterrupting(bool $value = true): self;
 }

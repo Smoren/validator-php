@@ -3,33 +3,28 @@
 namespace Smoren\Validator\Rules;
 
 use Smoren\Validator\Exceptions\CheckError;
+use Smoren\Validator\Exceptions\StopValidationException;
 use Smoren\Validator\Exceptions\ValidationError;
 use Smoren\Validator\Interfaces\CheckInterface;
-use Smoren\Validator\Interfaces\UniformRuleInterface;
+use Smoren\Validator\Interfaces\RuleInterface;
 use Smoren\Validator\Structs\Check;
 
-class Rule implements UniformRuleInterface
+class Rule extends NullableRule implements RuleInterface
 {
     /**
      * @var array<CheckInterface>
      */
     protected array $checks = [];
-    /**
-     * @var array<CheckInterface>
-     */
-    protected array $blockingChecks = [];
 
     /**
      * {@inheritDoc}
      */
     public function validate($value): void
     {
-        foreach ($this->blockingChecks as $check) {
-            try {
-                $check->execute($value);
-            } catch (CheckError $e) {
-                throw ValidationError::fromCheckErrors($value, [$e]);
-            }
+        try {
+            parent::validate($value);
+        } catch (StopValidationException $e) {
+            return;
         }
 
         $errors = [];
@@ -39,6 +34,9 @@ class Rule implements UniformRuleInterface
                 $check->execute($value);
             } catch (CheckError $e) {
                 $errors[] = $e;
+                if ($check->isInterrupting()) {
+                    throw ValidationError::fromCheckErrors($value, $errors);
+                }
             }
         }
 
@@ -54,11 +52,7 @@ class Rule implements UniformRuleInterface
      */
     public function add(CheckInterface $check): self
     {
-        if ($check->isBlocking()) {
-            $this->blockingChecks[] = $check;
-        } else {
-            $this->checks[] = $check;
-        }
+        $this->checks[] = $check;
         return $this;
     }
 
@@ -70,5 +64,31 @@ class Rule implements UniformRuleInterface
     public function check(string $name, callable $predicate, array $params = [], bool $isBlocking = false): self
     {
         return $this->add(new Check($name, $predicate, $params, $isBlocking));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return static
+     */
+    public function stopOnFail(): self
+    {
+        if (\count($this->checks) > 0) {
+            $this->checks[\count($this->checks) - 1]->setInterrupting();
+        }
+        return $this;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return static
+     */
+    public function stopIfAnyPreviousFails(): self
+    {
+        foreach ($this->checks as $check) {
+            $check->setInterrupting();
+        }
+        return $this;
     }
 }
