@@ -140,8 +140,8 @@ class IntegerTest extends Unit
                 $rule->validate($value);
                 $this->fail();
             } catch (ValidationError $e) {
-                $this->assertEquals($value, $e->getValue());
-                $this->assertEquals($errors, $e->getSummary());
+                $this->assertSame($value, $e->getValue());
+                $this->assertSame($errors, $e->getSummary());
             }
         }
         $this->assertTrue(true);
