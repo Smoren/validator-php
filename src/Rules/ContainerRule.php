@@ -31,7 +31,7 @@ class ContainerRule extends Rule implements ContainerRuleInterface
      */
     public function __construct()
     {
-        return $this->addCheck(new Check(
+        $this->addCheck(new Check(
             self::ERROR_NOT_CONTAINER,
             fn ($value) => is_array($value) || is_object($value)
         ));
@@ -187,7 +187,7 @@ class ContainerRule extends Rule implements ContainerRuleInterface
             self::ERROR_LENGTH_IS_NOT,
             static function ($value) use ($rule, &$violations) {
                 try {
-                    (new static())->countable()->validate($value);
+                    (new self())->countable()->validate($value);
                     /** @var \Countable $value */
                     $rule->validate(count($value));
                     return true;
