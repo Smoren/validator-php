@@ -68,4 +68,12 @@ class Check implements CheckInterface
         $this->isInterrupting = $value;
         return $this;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
 }

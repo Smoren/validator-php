@@ -25,6 +25,11 @@ class Rule extends BaseRule implements RuleInterface
     protected array $checks = [];
 
     /**
+     * @var array<string, int>
+     */
+    protected array $usedCheckNames = [];
+
+    /**
      * @var bool
      */
     protected bool $isNullable = false;
@@ -74,6 +79,14 @@ class Rule extends BaseRule implements RuleInterface
     public function addCheck(CheckInterface $check): self
     {
         $this->checks[] = $check;
+
+        $name = $check->getName();
+        if ($this->isCheckNameUsed($name)) {
+            $this->usedCheckNames[$name]++;
+        } else {
+            $this->usedCheckNames[$name] = 1;
+        }
+
         return $this;
     }
 
@@ -108,6 +121,16 @@ class Rule extends BaseRule implements RuleInterface
             $check->setInterrupting();
         }
         return $this;
+    }
+
+    /**
+     * @param string $checkName
+     *
+     * @return bool
+     */
+    protected function isCheckNameUsed(string $checkName): bool
+    {
+        return array_key_exists($checkName, $this->usedCheckNames);
     }
 
     /**

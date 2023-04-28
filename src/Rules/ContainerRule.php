@@ -6,6 +6,7 @@ namespace Smoren\Validator\Rules;
 
 use ArrayAccess;
 use Smoren\Validator\Exceptions\ValidationError;
+use Smoren\Validator\Interfaces\BaseRuleInterface;
 use Smoren\Validator\Interfaces\ContainerRuleInterface;
 use Smoren\Validator\Interfaces\IntegerRuleInterface;
 use Smoren\Validator\Structs\Check;
@@ -122,9 +123,13 @@ class ContainerRule extends Rule implements ContainerRuleInterface
      */
     public function empty(): self
     {
+        if (!$this->isCheckNameUsed(self::ERROR_NOT_COUNTABLE)) {
+            $this->countable();
+        }
+
         return $this->addCheck(new Check(
             self::ERROR_NOT_EMPTY,
-            fn ($value) => is_countable($value) && count($value) === 0
+            fn ($value) => count($value) === 0
         ));
     }
 
@@ -135,9 +140,13 @@ class ContainerRule extends Rule implements ContainerRuleInterface
      */
     public function notEmpty(): self
     {
+        if (!$this->isCheckNameUsed(self::ERROR_NOT_COUNTABLE)) {
+            $this->countable();
+        }
+
         return $this->addCheck(new Check(
             self::ERROR_EMPTY,
-            fn ($value) => is_countable($value) && count($value) > 0
+            fn ($value) => count($value) > 0
         ));
     }
 
@@ -180,14 +189,17 @@ class ContainerRule extends Rule implements ContainerRuleInterface
         ));
     }
 
-    public function lengthIs(IntegerRuleInterface $rule): ContainerRuleInterface
+    public function lengthIs(IntegerRuleInterface $rule): self
     {
+        if (!$this->isCheckNameUsed(self::ERROR_NOT_COUNTABLE)) {
+            $this->countable();
+        }
+
         $violations = [];
         return $this->addCheck(new Check(
             self::ERROR_LENGTH_IS_NOT,
             static function ($value) use ($rule, &$violations) {
                 try {
-                    (new self())->countable()->validate($value);
                     /** @var \Countable $value */
                     $rule->validate(count($value));
                     return true;
@@ -198,5 +210,23 @@ class ContainerRule extends Rule implements ContainerRuleInterface
             },
             ['violations' => &$violations]
         ));
+    }
+
+    public function hasAttribute(string $attribute, ?BaseRuleInterface $rule = null): self
+    {
+        // TODO: Implement hasAttribute() method.
+        return $this;
+    }
+
+    public function everyKeyIs(BaseRuleInterface $rule): self
+    {
+        // TODO: Implement everyKeyIs() method.
+        return $this;
+    }
+
+    public function everyValueIs(BaseRuleInterface $rule): self
+    {
+        // TODO: Implement everyValueIs() method.
+        return $this;
     }
 }
