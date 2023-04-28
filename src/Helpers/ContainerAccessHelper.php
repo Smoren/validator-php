@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Smoren\Validator\Helpers;
 
+/**
+ * @internal
+ */
 class ContainerAccessHelper
 {
     /**
