@@ -23,24 +23,4 @@ class RetrospectiveCheck implements CheckInterface
             throw ValidationError::fromCheckErrors($value, $previousErrors);
         }
     }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @return true
-     */
-    public function isInterrupting(): bool
-    {
-        return true;
-    }
-
-    /**
-     * @param bool $value
-     *
-     * @return static
-     */
-    public function setInterrupting(bool $value = true): self
-    {
-        return $this;
-    }
 }

@@ -31,9 +31,8 @@ class NumericRule extends Rule implements NumericRuleInterface
         $this->addCheck(new Check(
             self::ERROR_NOT_NUMERIC,
             fn ($value) => is_numeric($value),
-            [],
-            true
-        ));
+            []
+        ), true);
     }
 
     /**

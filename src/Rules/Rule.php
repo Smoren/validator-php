@@ -7,9 +7,11 @@ namespace Smoren\Validator\Rules;
 use Smoren\Validator\Exceptions\CheckError;
 use Smoren\Validator\Exceptions\ValidationError;
 use Smoren\Validator\Interfaces\CheckInterface;
-use Smoren\Validator\Interfaces\RuleInterface;
+use Smoren\Validator\Interfaces\CheckWrapperInterface;
 use Smoren\Validator\Interfaces\ExecutionResultInterface;
+use Smoren\Validator\Interfaces\RuleInterface;
 use Smoren\Validator\Structs\Check;
+use Smoren\Validator\Structs\CheckWrapper;
 use Smoren\Validator\Structs\ExecutionResult;
 use Smoren\Validator\Structs\RetrospectiveCheck;
 
@@ -20,7 +22,7 @@ class Rule extends BaseRule implements RuleInterface
     public const ERROR_NOT_FALSY = 'not_falsy';
 
     /**
-     * @var array<CheckInterface>
+     * @var array<CheckWrapperInterface>
      */
     protected array $checks = [];
     /**
@@ -70,20 +72,10 @@ class Rule extends BaseRule implements RuleInterface
      *
      * @return static
      */
-    public function addCheck(CheckInterface $check): self
+    public function addCheck(CheckInterface $check, bool $isInterrupting = false): self
     {
-        $this->checks[] = $check;
+        $this->checks[] = new CheckWrapper($check, $isInterrupting);
         return $this;
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @return static
-     */
-    public function check(string $name, callable $predicate, array $params = [], bool $isInterrupting = false): self
-    {
-        return $this->addCheck(new Check($name, $predicate, $params, $isInterrupting));
     }
 
     /**
@@ -131,7 +123,7 @@ class Rule extends BaseRule implements RuleInterface
 
         foreach ($this->checks as $check) {
             try {
-                $check->execute($value, $errors);
+                $check->getCheck()->execute($value, $errors);
             } catch (CheckError $e) {
                 $errors[] = $e;
                 if ($check->isInterrupting()) {

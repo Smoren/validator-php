@@ -18,9 +18,8 @@ class IntegerRule extends NumericRule implements IntegerRuleInterface
         $this->addCheck(new Check(
             self::ERROR_NOT_INTEGER,
             fn ($value) => is_int($value),
-            [],
-            true
-        ));
+            []
+        ), true);
     }
 
     /**

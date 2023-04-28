@@ -70,6 +70,11 @@ class ContainerTest extends Unit
                 (new ContainerRule())
                     ->hasAttribute('a', new NumericRule()),
             ],
+            [
+                [[2, 4, 6, 8], [4], [1000, 2000, 8000], []],
+                (new ContainerRule())
+                    ->everyValueIs((new IntegerRule())->even()),
+            ],
         ];
     }
 
@@ -109,7 +114,7 @@ class ContainerTest extends Unit
                 (new ContainerRule())
                     ->lengthIs((new IntegerRule())->odd()),
                 [
-                    [ContainerRule::ERROR_LENGTH_IS_NOT, ['violations' => [['not_odd', []]]]],
+                    [ContainerRule::ERROR_BAD_LENGTH, ['violations' => [['not_odd', []]]]],
                 ],
             ],
             [
@@ -159,6 +164,14 @@ class ContainerTest extends Unit
                     ->isAttribute('a', new NumericRule()),
                 [
                     [ContainerRule::ERROR_ATTRIBUTE_NOT_EXIST, ['name' => 'a']],
+                ],
+            ],
+            [
+                [[2, 4, 7, 8], [1], [1001, 2000, 8000]],
+                (new ContainerRule())
+                    ->everyValueIs((new IntegerRule())->even()),
+                [
+                    [ContainerRule::ERROR_SOME_VALUES_BAD, ['violations' => [['not_even', []]]]],
                 ],
             ],
         ];

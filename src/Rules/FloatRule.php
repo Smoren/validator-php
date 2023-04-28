@@ -20,9 +20,8 @@ class FloatRule extends NumericRule implements FloatRuleInterface
         $this->addCheck(new Check(
             self::ERROR_NOT_FLOAT,
             fn ($value) => is_float($value),
-            [],
-            true
-        ));
+            []
+        ), true);
     }
 
     /**
@@ -61,7 +60,6 @@ class FloatRule extends NumericRule implements FloatRuleInterface
         return $this->addCheck(new Check(
             self::ERROR_NOT_FINITE,
             fn ($value) => $value > -INF && $value < INF,
-            [],
         ));
     }
 
@@ -75,7 +73,6 @@ class FloatRule extends NumericRule implements FloatRuleInterface
         return$this->addCheck(new Check(
             self::ERROR_NOT_INFINITE,
             fn ($value) => $value === -INF || $value === INF,
-            [],
         ));
     }
 }
