@@ -6,8 +6,8 @@ namespace Smoren\Validator\Rules;
 
 use Smoren\Validator\Exceptions\ValidationError;
 use Smoren\Validator\Interfaces\BaseRuleInterface;
-use Smoren\Validator\Interfaces\ExecutionResultInterface;
-use Smoren\Validator\Structs\ExecutionResult;
+use Smoren\Validator\Interfaces\ValidationResultInterface;
+use Smoren\Validator\Structs\ValidationResult;
 
 abstract class BaseRule implements BaseRuleInterface
 {
@@ -35,10 +35,10 @@ abstract class BaseRule implements BaseRuleInterface
     /**
      * @param mixed $value
      *
-     * @return ExecutionResultInterface
+     * @return ValidationResultInterface
      */
-    protected function execute($value): ExecutionResultInterface
+    protected function execute($value): ValidationResultInterface
     {
-        return new ExecutionResult(false);
+        return new ValidationResult(false);
     }
 }

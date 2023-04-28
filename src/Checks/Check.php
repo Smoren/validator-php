@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Smoren\Validator\Structs;
+namespace Smoren\Validator\Checks;
 
 use Smoren\Validator\Exceptions\CheckError;
 use Smoren\Validator\Interfaces\CheckInterface;

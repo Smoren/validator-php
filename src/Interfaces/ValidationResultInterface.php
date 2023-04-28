@@ -2,10 +2,10 @@
 
 namespace Smoren\Validator\Interfaces;
 
-interface ExecutionResultInterface
+interface ValidationResultInterface
 {
     /**
      * @return bool
      */
-    public function areChecksSufficient(): bool;
+    public function preventNextChecks(): bool;
 }

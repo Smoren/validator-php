@@ -5,22 +5,22 @@ declare(strict_types=1);
 namespace Smoren\Validator\Rules;
 
 use Smoren\Validator\Exceptions\ValidationError;
-use Smoren\Validator\Interfaces\ExecutionResultInterface;
-use Smoren\Validator\Structs\ExecutionResult;
+use Smoren\Validator\Interfaces\ValidationResultInterface;
+use Smoren\Validator\Structs\ValidationResult;
 
 class OrRule extends CompositeRule
 {
     /**
      * {@inheritDoc}
      */
-    protected function execute($value): ExecutionResultInterface
+    protected function execute($value): ValidationResultInterface
     {
         $result = parent::execute($value);
-        if ($result->areChecksSufficient()) {
+        if ($result->preventNextChecks()) {
             return $result;
         }
 
-        $result = new ExecutionResult(false);
+        $result = new ValidationResult(false);
 
         $errors = [];
         foreach ($this->rules as $rule) {

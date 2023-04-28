@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Smoren\Validator\Rules;
 
+use Smoren\Validator\Checks\Check;
 use Smoren\Validator\Exceptions\ValidationError;
 use Smoren\Validator\Helpers\ContainerAccessHelper;
 use Smoren\Validator\Interfaces\BaseRuleInterface;
 use Smoren\Validator\Interfaces\CheckInterface;
 use Smoren\Validator\Interfaces\ContainerRuleInterface;
 use Smoren\Validator\Interfaces\IntegerRuleInterface;
-use Smoren\Validator\Structs\Check;
 
 class ContainerRule extends Rule implements ContainerRuleInterface
 {

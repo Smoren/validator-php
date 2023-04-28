@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Smoren\Validator\Rules;
 
+use Smoren\Validator\Checks\Check;
 use Smoren\Validator\Interfaces\FloatRuleInterface;
-use Smoren\Validator\Structs\Check;
 
 class FloatRule extends NumericRule implements FloatRuleInterface
 {

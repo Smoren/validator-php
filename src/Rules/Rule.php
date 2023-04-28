@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Smoren\Validator\Rules;
 
+use Smoren\Validator\Checks\Check;
+use Smoren\Validator\Checks\RetrospectiveCheck;
 use Smoren\Validator\Exceptions\CheckError;
 use Smoren\Validator\Exceptions\ValidationError;
 use Smoren\Validator\Interfaces\CheckInterface;
 use Smoren\Validator\Interfaces\CheckWrapperInterface;
-use Smoren\Validator\Interfaces\ExecutionResultInterface;
 use Smoren\Validator\Interfaces\RuleInterface;
-use Smoren\Validator\Structs\Check;
+use Smoren\Validator\Interfaces\ValidationResultInterface;
 use Smoren\Validator\Structs\CheckWrapper;
-use Smoren\Validator\Structs\ExecutionResult;
-use Smoren\Validator\Structs\RetrospectiveCheck;
+use Smoren\Validator\Structs\ValidationResult;
 
 class Rule extends BaseRule implements RuleInterface
 {
@@ -104,16 +104,16 @@ class Rule extends BaseRule implements RuleInterface
     /**
      * {@inheritDoc}
      */
-    protected function execute($value): ExecutionResultInterface
+    protected function execute($value): ValidationResultInterface
     {
         $result = parent::execute($value);
-        if ($result->areChecksSufficient()) {
+        if ($result->preventNextChecks()) {
             return $result;
         }
 
         if ($value === null) {
             if ($this->isNullable) {
-                return new ExecutionResult(true);
+                return new ValidationResult(true);
             }
 
             throw new ValidationError($value, [[self::ERROR_NULL, []]]);
@@ -136,6 +136,6 @@ class Rule extends BaseRule implements RuleInterface
             throw ValidationError::fromCheckErrors($value, $errors);
         }
 
-        return new ExecutionResult(false);
+        return new ValidationResult(false);
     }
 }
