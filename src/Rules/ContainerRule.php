@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Smoren\Validator\Rules;
 
-use ArrayAccess;
 use Smoren\Validator\Exceptions\ValidationError;
 use Smoren\Validator\Helpers\ContainerAccessHelper;
 use Smoren\Validator\Interfaces\BaseRuleInterface;
@@ -79,7 +78,7 @@ class ContainerRule extends Rule implements ContainerRuleInterface
     {
         return $this->addCheck(new Check(
             self::ERROR_NOT_ASSOCIATIVE_ARRAY,
-            fn ($value) => array_values($value) !== $value,
+            fn ($value) => \array_values($value) !== $value,
             [],
             [$this->getArrayCheck()]
         ));
@@ -94,7 +93,7 @@ class ContainerRule extends Rule implements ContainerRuleInterface
     {
         return $this->addCheck(new Check(
             self::ERROR_NOT_ARRAY_ACCESSIBLE,
-            fn ($value) => is_array($value) || $value instanceof ArrayAccess
+            fn ($value) => \is_array($value) || $value instanceof \ArrayAccess
         ));
     }
 
@@ -127,7 +126,7 @@ class ContainerRule extends Rule implements ContainerRuleInterface
     {
         return $this->addCheck(new Check(
             self::ERROR_NOT_EMPTY,
-            fn ($value) => count($value) === 0,
+            fn ($value) => \count($value) === 0,
             [],
             [$this->getCountableCheck()]
         ));
@@ -142,7 +141,7 @@ class ContainerRule extends Rule implements ContainerRuleInterface
     {
         return $this->addCheck(new Check(
             self::ERROR_EMPTY,
-            fn ($value) => count($value) > 0,
+            fn ($value) => \count($value) > 0,
             [],
             [$this->getCountableCheck()]
         ));
@@ -157,7 +156,7 @@ class ContainerRule extends Rule implements ContainerRuleInterface
     {
         return $this->addCheck(new Check(
             self::ERROR_NOT_OBJECT,
-            fn ($value) => is_object($value)
+            fn ($value) => \is_object($value)
         ));
     }
 
@@ -201,7 +200,7 @@ class ContainerRule extends Rule implements ContainerRuleInterface
             static function ($value) use ($rule, &$violations) {
                 try {
                     /** @var \Countable $value */
-                    $rule->validate(count($value));
+                    $rule->validate(\count($value));
                     return true;
                 } catch (ValidationError $e) {
                     $violations = $e->getSummary();
@@ -262,12 +261,12 @@ class ContainerRule extends Rule implements ContainerRuleInterface
                     foreach ($value as $k => $v) {
                         try {
                             $rule->validate($k);
-                            return true;
                         } catch (ValidationError $e) {
                             $violations = $e->getSummary();
+                            return false;
                         }
                     }
-                    return false;
+                    return true;
                 },
                 ['violations' => &$violations],
                 [$this->getIterableCheck()]
@@ -307,7 +306,7 @@ class ContainerRule extends Rule implements ContainerRuleInterface
     {
         return new Check(
             self::ERROR_NOT_ARRAY,
-            fn ($value) => is_array($value)
+            fn ($value) => \is_array($value)
         );
     }
 
@@ -315,7 +314,7 @@ class ContainerRule extends Rule implements ContainerRuleInterface
     {
         return new Check(
             self::ERROR_NOT_COUNTABLE,
-            fn ($value) => is_countable($value)
+            fn ($value) => \is_countable($value)
         );
     }
 
@@ -323,7 +322,7 @@ class ContainerRule extends Rule implements ContainerRuleInterface
     {
         return new Check(
             self::ERROR_NOT_ITERABLE,
-            fn ($value) => is_iterable($value)
+            fn ($value) => \is_iterable($value)
         );
     }
 

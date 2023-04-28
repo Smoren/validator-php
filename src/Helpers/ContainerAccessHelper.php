@@ -16,13 +16,13 @@ class ContainerAccessHelper
     {
         $result = false;
         switch (true) {
-            case is_array($container):
-                $result = array_key_exists($attrName, $container);
+            case \is_array($container):
+                $result = \array_key_exists($attrName, $container);
                 break;
             case $container instanceof \ArrayAccess:
                 $result = $container->offsetExists($attrName);
                 break;
-            case property_exists($container, $attrName):
+            case \property_exists($container, $attrName):
                 $result = (new \ReflectionClass($container))->getProperty($attrName)->isPublic();
                 break;
         }
@@ -39,13 +39,13 @@ class ContainerAccessHelper
     {
         $result = null;
         switch (true) {
-            case is_array($container):
+            case \is_array($container):
                 $result = $container[$attrName];
                 break;
             case $container instanceof \ArrayAccess:
                 $result = $container->offsetGet($attrName);
                 break;
-            case property_exists($container, $attrName):
+            case \property_exists($container, $attrName):
                 $result = $container->{$container};
                 break;
         }
