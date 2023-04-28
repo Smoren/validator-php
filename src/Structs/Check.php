@@ -43,8 +43,7 @@ class Check implements CheckInterface
         array $params = [],
         bool $isInterrupting = false,
         array $dependsOn = []
-    )
-    {
+    ) {
         $this->name = $name;
         $this->predicate = $predicate;
         $this->params = $params;

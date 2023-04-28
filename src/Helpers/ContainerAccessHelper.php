@@ -7,7 +7,7 @@ namespace Smoren\Validator\Helpers;
 class ContainerAccessHelper
 {
     /**
-     * @param array<mixed>|\ArrayAccess<mixed> $container
+     * @param array<mixed>|\ArrayAccess<int|string, mixed> $container
      * @param string $attrName
      *
      * @return bool
@@ -30,7 +30,7 @@ class ContainerAccessHelper
     }
 
     /**
-     * @param array<mixed>|\ArrayAccess<mixed> $container
+     * @param array<mixed>|\ArrayAccess<int|string, mixed> $container
      * @param string $attrName
      *
      * @return mixed|null
@@ -43,7 +43,7 @@ class ContainerAccessHelper
                 $result = $container[$attrName];
                 break;
             case $container instanceof \ArrayAccess:
-                $result = $container->offsetGet($container);
+                $result = $container->offsetGet($attrName);
                 break;
             case property_exists($container, $attrName):
                 $result = $container->{$container};
