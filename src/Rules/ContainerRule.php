@@ -6,6 +6,7 @@ namespace Smoren\Validator\Rules;
 
 use ArrayAccess;
 use Smoren\Validator\Exceptions\ValidationError;
+use Smoren\Validator\Helpers\ContainerAccessHelper;
 use Smoren\Validator\Interfaces\BaseRuleInterface;
 use Smoren\Validator\Interfaces\ContainerRuleInterface;
 use Smoren\Validator\Interfaces\IntegerRuleInterface;
@@ -26,6 +27,8 @@ class ContainerRule extends Rule implements ContainerRuleInterface
     public const ERROR_NOT_STD_OBJECT = 'not_std_object';
     public const ERROR_NOT_INSTANCE_OF = 'not_instance_of';
     public const ERROR_LENGTH_IS_NOT = 'length_is_not';
+    public const ERROR_ATTRIBUTE_NOT_EXIST = 'attribute_not_exist';
+    public const ERROR_BAD_ATTRIBUTE = 'bad_attribute';
 
     /**
      * ContainerRule constructor.
@@ -34,7 +37,9 @@ class ContainerRule extends Rule implements ContainerRuleInterface
     {
         $this->addCheck(new Check(
             self::ERROR_NOT_CONTAINER,
-            fn ($value) => is_array($value) || is_object($value)
+            fn ($value) => is_array($value) || is_object($value),
+            [],
+            true
         ));
     }
 
@@ -123,6 +128,7 @@ class ContainerRule extends Rule implements ContainerRuleInterface
      */
     public function empty(): self
     {
+        // TODO use AND RULE!!!
         if (!$this->isCheckNameUsed(self::ERROR_NOT_COUNTABLE)) {
             $this->countable();
         }
@@ -189,6 +195,12 @@ class ContainerRule extends Rule implements ContainerRuleInterface
         ));
     }
 
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return static
+     */
     public function lengthIs(IntegerRuleInterface $rule): self
     {
         if (!$this->isCheckNameUsed(self::ERROR_NOT_COUNTABLE)) {
@@ -212,18 +224,63 @@ class ContainerRule extends Rule implements ContainerRuleInterface
         ));
     }
 
-    public function hasAttribute(string $attribute, ?BaseRuleInterface $rule = null): self
+    /**
+     * {@inheritDoc}
+     *
+     * @return static
+     */
+    public function hasAttribute(string $name): self
     {
-        // TODO: Implement hasAttribute() method.
-        return $this;
+        return $this->addCheck(new Check(
+            self::ERROR_ATTRIBUTE_NOT_EXIST,
+            fn ($value) => ContainerAccessHelper::hasAccessibleAttribute($value, $name),
+            ['name' => $name]
+        ));
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @return static
+     */
+    public function isAttribute(string $name, BaseRuleInterface $rule): self
+    {
+        if (!$this->isCheckNameUsed(self::ERROR_ATTRIBUTE_NOT_EXIST)) {
+            $this->hasAttribute($name);
+        }
+
+        $violations = [];
+        return $this->addCheck(new Check(
+            self::ERROR_BAD_ATTRIBUTE,
+            function ($value) use ($name, $rule, &$violations) {
+                try {
+                    $rule->validate(ContainerAccessHelper::getAttributeValue($value, $name));
+                    return true;
+                } catch (ValidationError $e) {
+                    $violations = $e->getSummary();
+                    return false;
+                }
+            },
+            ['name' => $name, 'violations' => &$violations]
+        ));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return static
+     */
     public function everyKeyIs(BaseRuleInterface $rule): self
     {
         // TODO: Implement everyKeyIs() method.
         return $this;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @return static
+     */
     public function everyValueIs(BaseRuleInterface $rule): self
     {
         // TODO: Implement everyValueIs() method.

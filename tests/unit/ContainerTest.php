@@ -9,6 +9,7 @@ use Smoren\Validator\Exceptions\ValidationError;
 use Smoren\Validator\Interfaces\ContainerRuleInterface;
 use Smoren\Validator\Rules\ContainerRule;
 use Smoren\Validator\Rules\IntegerRule;
+use Smoren\Validator\Rules\NumericRule;
 
 class ContainerTest extends Unit
 {
@@ -56,7 +57,18 @@ class ContainerTest extends Unit
             [
                 [[1, 2, 3], [1, 2, 3, 4, 5], [1]],
                 (new ContainerRule())
-                    ->lengthIs((new IntegerRule())->odd())
+                    ->lengthIs((new IntegerRule())->odd()),
+            ],
+            [
+                [['a' => 1, 'b' => 2], ['a' => [], 'd', 'b' => null]],
+                (new ContainerRule())
+                    ->hasAttribute('a')
+                    ->hasAttribute('b'),
+            ],
+            [
+                [['a' => 1, 'b' => 2], ['a' => '1.23', 'd', 'b' => null]],
+                (new ContainerRule())
+                    ->hasAttribute('a', new NumericRule()),
             ],
         ];
     }
@@ -122,6 +134,23 @@ class ContainerTest extends Unit
                     ->object(),
                 [
                     [ContainerRule::ERROR_NOT_OBJECT, []],
+                ],
+            ],
+            [
+                [['a' => 1], ['a' => [], 'd']],
+                (new ContainerRule())
+                    ->hasAttribute('a')
+                    ->hasAttribute('b'),
+                [
+                    [ContainerRule::ERROR_ATTRIBUTE_NOT_EXIST, ['name' => 'b']],
+                ],
+            ],
+            [
+                [['a' => '1a', 'b' => 2], ['a' => false, 'd', 'b' => null]],
+                (new ContainerRule())
+                    ->isAttribute('a', new NumericRule()),
+                [
+                    [ContainerRule::ERROR_BAD_ATTRIBUTE, ['name' => 'a', 'violations' => [['not_numeric', []]]]],
                 ],
             ],
         ];

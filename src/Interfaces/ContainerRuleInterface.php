@@ -68,9 +68,32 @@ interface ContainerRuleInterface
      */
     public function lengthIs(IntegerRuleInterface $rule): self;
 
-    public function hasAttribute(string $attribute, ?BaseRuleInterface $rule = null): self;
+    /**
+     * @param string $name
+     *
+     * @return self
+     */
+    public function hasAttribute(string $name): self;
 
+    /**
+     * @param string $name
+     * @param BaseRuleInterface $rule
+     *
+     * @return self
+     */
+    public function isAttribute(string $name, BaseRuleInterface $rule): self;
+
+    /**
+     * @param BaseRuleInterface $rule
+     *
+     * @return self
+     */
     public function everyKeyIs(BaseRuleInterface $rule): self;
 
+    /**
+     * @param BaseRuleInterface $rule
+     *
+     * @return self
+     */
     public function everyValueIs(BaseRuleInterface $rule): self;
 }
