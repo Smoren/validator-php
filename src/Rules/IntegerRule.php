@@ -7,7 +7,7 @@ namespace Smoren\Validator\Rules;
 use Smoren\Validator\Interfaces\IntegerRuleInterface;
 use Smoren\Validator\Structs\Check;
 
-class IntegerRule extends NumberRule implements IntegerRuleInterface
+class IntegerRule extends NumericRule implements IntegerRuleInterface
 {
     public const ERROR_NOT_INTEGER = 'not_integer';
     public const ERROR_NOT_EVEN = 'not_even';

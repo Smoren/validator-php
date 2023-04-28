@@ -8,7 +8,7 @@ use Codeception\Test\Unit;
 use Smoren\Validator\Exceptions\ValidationError;
 use Smoren\Validator\Rules\FloatRule;
 use Smoren\Validator\Rules\IntegerRule;
-use Smoren\Validator\Rules\NumberRule;
+use Smoren\Validator\Rules\NumericRule;
 use Smoren\Validator\Rules\OrRule;
 use Smoren\Validator\Rules\Rule;
 
@@ -130,7 +130,7 @@ class OrRuleTest extends Unit
                 ]))->nullable(),
                 [
                     [IntegerRule::ERROR_NOT_INTEGER, []],
-                    [NumberRule::ERROR_NOT_POSITIVE, []],
+                    [NumericRule::ERROR_NOT_POSITIVE, []],
                     [FloatRule::ERROR_FRACTIONAL, []],
                 ],
             ],

@@ -4,8 +4,18 @@ declare(strict_types=1);
 
 namespace Smoren\Validator\Interfaces;
 
-interface NumberRuleInterface extends RuleInterface
+interface NumericRuleInterface extends RuleInterface
 {
+    /**
+     * @return static
+     */
+    public function number(): self;
+
+    /**
+     * @return static
+     */
+    public function string(): self;
+
     /**
      * @return static
      */

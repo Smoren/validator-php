@@ -18,6 +18,13 @@ interface BaseRuleInterface
     public function validate($value): void;
 
     /**
+     * @param mixed $value
+     *
+     * @return bool
+     */
+    public function isValid($value): bool;
+
+    /**
      * @return static
      */
     public function nullable(): self;

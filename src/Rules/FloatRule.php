@@ -7,7 +7,7 @@ namespace Smoren\Validator\Rules;
 use Smoren\Validator\Interfaces\FloatRuleInterface;
 use Smoren\Validator\Structs\Check;
 
-class FloatRule extends NumberRule implements FloatRuleInterface
+class FloatRule extends NumericRule implements FloatRuleInterface
 {
     public const ERROR_NOT_FLOAT = 'not_float';
     public const ERROR_FRACTIONAL = 'fractional';

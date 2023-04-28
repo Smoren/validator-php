@@ -8,7 +8,7 @@ use Codeception\Test\Unit;
 use Smoren\Validator\Exceptions\ValidationError;
 use Smoren\Validator\Interfaces\IntegerRuleInterface;
 use Smoren\Validator\Rules\IntegerRule;
-use Smoren\Validator\Rules\NumberRule;
+use Smoren\Validator\Rules\NumericRule;
 use Smoren\Validator\Rules\Rule;
 
 class IntegerTest extends Unit
@@ -186,7 +186,7 @@ class IntegerTest extends Unit
                 (new IntegerRule())
                     ->positive(),
                 [
-                    [NumberRule::ERROR_NOT_POSITIVE, []],
+                    [NumericRule::ERROR_NOT_POSITIVE, []],
                 ],
             ],
             [
@@ -194,7 +194,7 @@ class IntegerTest extends Unit
                 (new IntegerRule())
                     ->negative(),
                 [
-                    [NumberRule::ERROR_NOT_NEGATIVE, []],
+                    [NumericRule::ERROR_NOT_NEGATIVE, []],
                 ],
             ],
             [
@@ -202,7 +202,7 @@ class IntegerTest extends Unit
                 (new IntegerRule())
                     ->nonPositive(),
                 [
-                    [NumberRule::ERROR_NOT_NON_POSITIVE, []],
+                    [NumericRule::ERROR_NOT_NON_POSITIVE, []],
                 ],
             ],
             [
@@ -210,7 +210,7 @@ class IntegerTest extends Unit
                 (new IntegerRule())
                     ->nonNegative(),
                 [
-                    [NumberRule::ERROR_NOT_NON_NEGATIVE, []],
+                    [NumericRule::ERROR_NOT_NON_NEGATIVE, []],
                 ],
             ],
             [
@@ -218,7 +218,7 @@ class IntegerTest extends Unit
                 (new IntegerRule())
                     ->greaterTran(5),
                 [
-                    [NumberRule::ERROR_NOT_GREATER, ['number' => 5]],
+                    [NumericRule::ERROR_NOT_GREATER, ['number' => 5]],
                 ],
             ],
             [
@@ -226,7 +226,7 @@ class IntegerTest extends Unit
                 (new IntegerRule())
                     ->greaterOrEqual(5),
                 [
-                    [NumberRule::ERROR_NOT_GREATER_OR_EQUEAL, ['number' => 5]],
+                    [NumericRule::ERROR_NOT_GREATER_OR_EQUEAL, ['number' => 5]],
                 ],
             ],
             [
@@ -234,7 +234,7 @@ class IntegerTest extends Unit
                 (new IntegerRule())
                     ->lessTran(5),
                 [
-                    [NumberRule::ERROR_NOT_LESS, ['number' => 5]],
+                    [NumericRule::ERROR_NOT_LESS, ['number' => 5]],
                 ],
             ],
             [
@@ -242,7 +242,7 @@ class IntegerTest extends Unit
                 (new IntegerRule())
                     ->lessOrEqual(5),
                 [
-                    [NumberRule::ERROR_NOT_LESS_OR_EQUEAL, ['number' => 5]],
+                    [NumericRule::ERROR_NOT_LESS_OR_EQUEAL, ['number' => 5]],
                 ],
             ],
             [
@@ -253,7 +253,7 @@ class IntegerTest extends Unit
                     ->inInterval(5, 10),
                 [
                     [IntegerRule::ERROR_NOT_EVEN, []],
-                    [NumberRule::ERROR_NOT_IN_INTERVAL, ['start' => 5, 'end' => 10]],
+                    [NumericRule::ERROR_NOT_IN_INTERVAL, ['start' => 5, 'end' => 10]],
                 ],
             ],
             [
@@ -263,9 +263,9 @@ class IntegerTest extends Unit
                     ->even()
                     ->inInterval(5, 10),
                 [
-                    [NumberRule::ERROR_NOT_POSITIVE, []],
+                    [NumericRule::ERROR_NOT_POSITIVE, []],
                     [IntegerRule::ERROR_NOT_EVEN, []],
-                    [NumberRule::ERROR_NOT_IN_INTERVAL, ['start' => 5, 'end' => 10]],
+                    [NumericRule::ERROR_NOT_IN_INTERVAL, ['start' => 5, 'end' => 10]],
                 ],
             ],
             [
@@ -276,7 +276,7 @@ class IntegerTest extends Unit
                     ->stopOnViolation()
                     ->inInterval(5, 10),
                 [
-                    [NumberRule::ERROR_NOT_POSITIVE, []],
+                    [NumericRule::ERROR_NOT_POSITIVE, []],
                     [IntegerRule::ERROR_NOT_EVEN, []],
                 ],
             ],
@@ -290,7 +290,7 @@ class IntegerTest extends Unit
                     ->stopOnViolation()
                     ->inInterval(5, 10),
                 [
-                    [NumberRule::ERROR_NOT_POSITIVE, []],
+                    [NumericRule::ERROR_NOT_POSITIVE, []],
                 ],
             ],
             [
@@ -314,7 +314,7 @@ class IntegerTest extends Unit
                     ->inInterval(5, 10)
                     ->stopOnAnyPriorViolation(),
                 [
-                    [NumberRule::ERROR_NOT_POSITIVE, []],
+                    [NumericRule::ERROR_NOT_POSITIVE, []],
                 ],
             ],
             [
@@ -354,7 +354,7 @@ class IntegerTest extends Unit
                     ->odd()
                     ->between(5, 10),
                 [
-                    [NumberRule::ERROR_NOT_IN_SEGMENT, ['start' => 5, 'end' => 10]],
+                    [NumericRule::ERROR_NOT_IN_SEGMENT, ['start' => 5, 'end' => 10]],
                 ],
             ],
             [
@@ -365,7 +365,7 @@ class IntegerTest extends Unit
                     ->between(5, 10),
                 [
                     [IntegerRule::ERROR_NOT_ODD, []],
-                    [NumberRule::ERROR_NOT_IN_SEGMENT, ['start' => 5, 'end' => 10]],
+                    [NumericRule::ERROR_NOT_IN_SEGMENT, ['start' => 5, 'end' => 10]],
                 ],
             ],
             [
@@ -377,7 +377,7 @@ class IntegerTest extends Unit
                     ->between(5, 10),
                 [
                     [IntegerRule::ERROR_NOT_ODD, []],
-                    [NumberRule::ERROR_NOT_IN_SEGMENT, ['start' => 5, 'end' => 10]],
+                    [NumericRule::ERROR_NOT_IN_SEGMENT, ['start' => 5, 'end' => 10]],
                 ],
             ],
             [
