@@ -12,8 +12,6 @@ use Smoren\Validator\Interfaces\CheckInterface;
  */
 class RetrospectiveCheck implements CheckInterface
 {
-    protected const NAME = 'retrospective';
-
     /**
      * {@inheritDoc}
      *
@@ -44,13 +42,5 @@ class RetrospectiveCheck implements CheckInterface
     public function setInterrupting(bool $value = true): self
     {
         return $this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getName(): string
-    {
-        return static::NAME;
     }
 }

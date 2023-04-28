@@ -29,9 +29,4 @@ interface CheckInterface
      * @return static
      */
     public function setInterrupting(bool $value = true): self;
-
-    /**
-     * @return string
-     */
-    public function getName(): string;
 }

@@ -8,6 +8,7 @@ use ArrayAccess;
 use Smoren\Validator\Exceptions\ValidationError;
 use Smoren\Validator\Helpers\ContainerAccessHelper;
 use Smoren\Validator\Interfaces\BaseRuleInterface;
+use Smoren\Validator\Interfaces\CheckInterface;
 use Smoren\Validator\Interfaces\ContainerRuleInterface;
 use Smoren\Validator\Interfaces\IntegerRuleInterface;
 use Smoren\Validator\Structs\Check;
@@ -115,10 +116,7 @@ class ContainerRule extends Rule implements ContainerRuleInterface
      */
     public function countable(): self
     {
-        return $this->addCheck(new Check(
-            self::ERROR_NOT_COUNTABLE,
-            fn ($value) => is_countable($value)
-        ));
+        return $this->addCheck($this->getCountableCheck());
     }
 
     /**
@@ -128,14 +126,12 @@ class ContainerRule extends Rule implements ContainerRuleInterface
      */
     public function empty(): self
     {
-        // TODO use AND RULE!!!
-        if (!$this->isCheckNameUsed(self::ERROR_NOT_COUNTABLE)) {
-            $this->countable();
-        }
-
         return $this->addCheck(new Check(
             self::ERROR_NOT_EMPTY,
-            fn ($value) => count($value) === 0
+            fn ($value) => count($value) === 0,
+            [],
+            false,
+            [$this->getCountableCheck()]
         ));
     }
 
@@ -146,13 +142,12 @@ class ContainerRule extends Rule implements ContainerRuleInterface
      */
     public function notEmpty(): self
     {
-        if (!$this->isCheckNameUsed(self::ERROR_NOT_COUNTABLE)) {
-            $this->countable();
-        }
-
         return $this->addCheck(new Check(
             self::ERROR_EMPTY,
-            fn ($value) => count($value) > 0
+            fn ($value) => count($value) > 0,
+            [],
+            false,
+            [$this->getCountableCheck()]
         ));
     }
 
@@ -203,10 +198,6 @@ class ContainerRule extends Rule implements ContainerRuleInterface
      */
     public function lengthIs(IntegerRuleInterface $rule): self
     {
-        if (!$this->isCheckNameUsed(self::ERROR_NOT_COUNTABLE)) {
-            $this->countable();
-        }
-
         $violations = [];
         return $this->addCheck(new Check(
             self::ERROR_LENGTH_IS_NOT,
@@ -220,7 +211,9 @@ class ContainerRule extends Rule implements ContainerRuleInterface
                     return false;
                 }
             },
-            ['violations' => &$violations]
+            ['violations' => &$violations],
+            false,
+            [$this->getCountableCheck()]
         ));
     }
 
@@ -231,11 +224,7 @@ class ContainerRule extends Rule implements ContainerRuleInterface
      */
     public function hasAttribute(string $name): self
     {
-        return $this->addCheck(new Check(
-            self::ERROR_ATTRIBUTE_NOT_EXIST,
-            fn ($value) => ContainerAccessHelper::hasAccessibleAttribute($value, $name),
-            ['name' => $name]
-        ));
+        return $this->addCheck($this->getHasAttributeCheck($name));
     }
 
     /**
@@ -245,10 +234,6 @@ class ContainerRule extends Rule implements ContainerRuleInterface
      */
     public function isAttribute(string $name, BaseRuleInterface $rule): self
     {
-        if (!$this->isCheckNameUsed(self::ERROR_ATTRIBUTE_NOT_EXIST)) {
-            $this->hasAttribute($name);
-        }
-
         $violations = [];
         return $this->addCheck(new Check(
             self::ERROR_BAD_ATTRIBUTE,
@@ -261,7 +246,9 @@ class ContainerRule extends Rule implements ContainerRuleInterface
                     return false;
                 }
             },
-            ['name' => $name, 'violations' => &$violations]
+            ['name' => $name, 'violations' => &$violations],
+            false,
+            [$this->getHasAttributeCheck($name)]
         ));
     }
 
@@ -285,5 +272,22 @@ class ContainerRule extends Rule implements ContainerRuleInterface
     {
         // TODO: Implement everyValueIs() method.
         return $this;
+    }
+
+    protected function getCountableCheck(): CheckInterface
+    {
+        return new Check(
+            self::ERROR_NOT_COUNTABLE,
+            fn ($value) => is_countable($value)
+        );
+    }
+
+    protected function getHasAttributeCheck(string $name): CheckInterface
+    {
+        return new Check(
+            self::ERROR_ATTRIBUTE_NOT_EXIST,
+            fn ($value) => ContainerAccessHelper::hasAccessibleAttribute($value, $name),
+            ['name' => $name]
+        );
     }
 }
