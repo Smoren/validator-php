@@ -193,6 +193,25 @@ class ContainerTest extends Unit
                     [CheckErrorName::SOME_VALUES_BAD, [Param::RULE => 'integer', Param::VIOLATIONS => [['not_even', []]]]],
                 ],
             ],
+//            [
+//                [
+//                    [
+//                        'id' => '13',
+//                        'probability' => 1.92,
+//                        'vectors' => [[1, 2.1], [3, 4], [5, 6]],
+//                    ],
+//                ],
+//                Value::container()
+//                    ->hasAttribute('id', Value::integer()->positive())
+//                    ->hasAttribute('probability', Value::float()->between(0, 1)->equal(0.5))
+//                    ->hasAttribute('vectors', Value::container()->array()->allValuesAre(
+//                        Value::container()
+//                            ->array()
+//                            ->lengthIs(Value::integer()->equal(2))
+//                            ->allValuesAre(Value::integer())
+//                    )),
+//                []
+//            ],
         ];
     }
 }

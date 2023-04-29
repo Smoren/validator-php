@@ -21,7 +21,7 @@ class CheckErrorName
     public const NOT_GREATER_OR_EQUEAL = 'not_greater_or_equal';
     public const NOT_LESS = 'not_less';
     public const NOT_LESS_OR_EQUEAL = 'not_less_or_equal';
-    public const NOT_BETWEEN = 'not_in_segment';
+    public const NOT_BETWEEN = 'not_between';
     public const NOT_IN_INTERVAL = 'not_in_interval';
 
     public const NOT_INTEGER = 'not_integer';
