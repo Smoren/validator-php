@@ -6,6 +6,7 @@ namespace Smoren\Validator\Tests\Unit;
 
 use Codeception\Test\Unit;
 use Smoren\Validator\Exceptions\ValidationError;
+use Smoren\Validator\Factories\Validate;
 use Smoren\Validator\Rules\FloatRule;
 use Smoren\Validator\Rules\IntegerRule;
 use Smoren\Validator\Rules\NumericRule;
@@ -33,28 +34,28 @@ class OrRuleTest extends Unit
         return [
             [
                 [1, 2, 3, -1, -2, -3, 1.0, 1.1, 2.71, 3.14],
-                new OrRule([]),
+                Validate::or([]),
             ],
             [
                 [1, 2, 3, -1, -2, -3, 1.0, 1.1, 2.71, 3.14],
-                (new OrRule([
-                    new IntegerRule(),
-                    new FloatRule(),
-                ])),
+                Validate::or([
+                    Validate::integer(),
+                    Validate::float(),
+                ]),
             ],
             [
                 [null, 1, 2, 3, -1, -2, -3, 1.0, 1.1, 2.71, 3.14],
-                (new OrRule([
-                    new IntegerRule(),
-                    new FloatRule(),
-                ]))->nullable(),
+                Validate::or([
+                    Validate::integer(),
+                    Validate::float(),
+                ])->nullable(),
             ],
             [
                 [null, 1, 2, 3, -1, -2, -3, 1.0, 2.0, 3.0],
-                (new OrRule([
-                    new IntegerRule(),
-                    (new FloatRule())->nonFractional(),
-                ]))->nullable(),
+                Validate::or([
+                    Validate::integer(),
+                    Validate::float()->nonFractional(),
+                ])->nullable(),
             ],
         ];
     }
@@ -85,17 +86,17 @@ class OrRuleTest extends Unit
         return [
             [
                 [null],
-                new OrRule([]),
+                Validate::or([]),
                 [
                     [Rule::ERROR_NULL, []],
                 ],
             ],
             [
                 ['1', '2.2', 'a', true, false, [], (object)[1, 2, 3]],
-                (new OrRule([
-                    new IntegerRule(),
-                    new FloatRule(),
-                ])),
+                Validate::or([
+                    Validate::integer(),
+                    Validate::float(),
+                ]),
                 [
                     [IntegerRule::ERROR_NOT_INTEGER, []],
                     [FloatRule::ERROR_NOT_FLOAT, []],
@@ -103,20 +104,20 @@ class OrRuleTest extends Unit
             ],
             [
                 [null],
-                (new OrRule([
-                    new IntegerRule(),
-                    new FloatRule(),
-                ])),
+                Validate::or([
+                    Validate::integer(),
+                    Validate::float(),
+                ]),
                 [
                     [Rule::ERROR_NULL, []],
                 ],
             ],
             [
                 [1.1, 2.1, 3.1],
-                (new OrRule([
-                    (new IntegerRule())->positive(),
-                    (new FloatRule())->positive()->nonFractional(),
-                ]))->nullable(),
+                Validate::or([
+                    Validate::integer()->positive(),
+                    Validate::float()->positive()->nonFractional(),
+                ])->nullable(),
                 [
                     [IntegerRule::ERROR_NOT_INTEGER, []],
                     [FloatRule::ERROR_FRACTIONAL, []],
@@ -124,10 +125,10 @@ class OrRuleTest extends Unit
             ],
             [
                 [-1.1, -2.1, -3.1],
-                (new OrRule([
-                    (new IntegerRule())->positive(),
-                    (new FloatRule())->positive()->nonFractional(),
-                ]))->nullable(),
+                Validate::or([
+                    Validate::integer()->positive(),
+                    Validate::float()->positive()->nonFractional(),
+                ])->nullable(),
                 [
                     [IntegerRule::ERROR_NOT_INTEGER, []],
                     [NumericRule::ERROR_NOT_POSITIVE, []],
