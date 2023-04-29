@@ -17,7 +17,7 @@ class FloatRule extends NumericRule implements FloatRuleInterface
 
     public function __construct()
     {
-        $this->addCheck(new Check(
+        $this->check(new Check(
             self::ERROR_NOT_FLOAT,
             fn ($value) => is_float($value),
             []
@@ -31,7 +31,7 @@ class FloatRule extends NumericRule implements FloatRuleInterface
      */
     public function fractional(): self
     {
-        return $this->addCheck(new Check(
+        return $this->check(new Check(
             self::ERROR_NOT_FRACTIONAL,
             fn ($value) => \abs($value - \round($value)) >= PHP_FLOAT_EPSILON
         ));
@@ -44,7 +44,7 @@ class FloatRule extends NumericRule implements FloatRuleInterface
      */
     public function nonFractional(): self
     {
-        return $this->addCheck(new Check(
+        return $this->check(new Check(
             self::ERROR_FRACTIONAL,
             fn ($value) => \abs($value - \round($value)) < PHP_FLOAT_EPSILON
         ));
@@ -57,7 +57,7 @@ class FloatRule extends NumericRule implements FloatRuleInterface
      */
     public function finite(): self
     {
-        return $this->addCheck(new Check(
+        return $this->check(new Check(
             self::ERROR_NOT_FINITE,
             fn ($value) => $value > -INF && $value < INF,
         ));
@@ -70,7 +70,7 @@ class FloatRule extends NumericRule implements FloatRuleInterface
      */
     public function infinite(): self
     {
-        return$this->addCheck(new Check(
+        return$this->check(new Check(
             self::ERROR_NOT_INFINITE,
             fn ($value) => $value === -INF || $value === INF,
         ));

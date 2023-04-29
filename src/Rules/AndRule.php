@@ -8,7 +8,7 @@ use Smoren\Validator\Exceptions\ValidationError;
 use Smoren\Validator\Interfaces\ValidationResultInterface;
 use Smoren\Validator\Structs\ValidationSuccessResult;
 
-class OrRule extends CompositeRule
+class AndRule extends CompositeRule
 {
     /**
      * {@inheritDoc}
@@ -26,9 +26,9 @@ class OrRule extends CompositeRule
         foreach ($this->rules as $rule) {
             try {
                 $rule->validate($value);
-                return $result;
             } catch (ValidationError $e) {
                 $errors[] = $e;
+                break;
             }
         }
 

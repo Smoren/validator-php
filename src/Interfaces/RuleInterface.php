@@ -12,7 +12,7 @@ interface RuleInterface extends BaseRuleInterface
      *
      * @return static
      */
-    public function addCheck(CheckInterface $check, bool $isInterrupting = false): self;
+    public function check(CheckInterface $check, bool $isInterrupting = false): self;
 
     /**
      * @return static

@@ -37,7 +37,7 @@ class ContainerRule extends Rule implements ContainerRuleInterface
      */
     public function __construct()
     {
-        $this->addCheck(new Check(
+        $this->check(new Check(
             self::ERROR_NOT_CONTAINER,
             fn ($value) => \is_array($value) || \is_object($value),
             []
@@ -51,7 +51,7 @@ class ContainerRule extends Rule implements ContainerRuleInterface
      */
     public function array(): self
     {
-        return $this->addCheck($this->getArrayCheck());
+        return $this->check($this->getArrayCheck());
     }
 
     /**
@@ -61,7 +61,7 @@ class ContainerRule extends Rule implements ContainerRuleInterface
      */
     public function indexedArray(): self
     {
-        return $this->addCheck(new Check(
+        return $this->check(new Check(
             self::ERROR_NOT_INDEXED_ARRAY,
             fn ($value) => (\array_values($value) === $value),
             [],
@@ -76,7 +76,7 @@ class ContainerRule extends Rule implements ContainerRuleInterface
      */
     public function associativeArray(): self
     {
-        return $this->addCheck(new Check(
+        return $this->check(new Check(
             self::ERROR_NOT_ASSOCIATIVE_ARRAY,
             fn ($value) => \array_values($value) !== $value,
             [],
@@ -91,7 +91,7 @@ class ContainerRule extends Rule implements ContainerRuleInterface
      */
     public function arrayAccessible(): self
     {
-        return $this->addCheck(new Check(
+        return $this->check(new Check(
             self::ERROR_NOT_ARRAY_ACCESSIBLE,
             fn ($value) => \is_array($value) || $value instanceof \ArrayAccess
         ));
@@ -104,7 +104,7 @@ class ContainerRule extends Rule implements ContainerRuleInterface
      */
     public function iterable(): self
     {
-        return $this->addCheck($this->getIterableCheck());
+        return $this->check($this->getIterableCheck());
     }
 
     /**
@@ -114,7 +114,7 @@ class ContainerRule extends Rule implements ContainerRuleInterface
      */
     public function countable(): self
     {
-        return $this->addCheck($this->getCountableCheck());
+        return $this->check($this->getCountableCheck());
     }
 
     /**
@@ -124,7 +124,7 @@ class ContainerRule extends Rule implements ContainerRuleInterface
      */
     public function empty(): self
     {
-        return $this->addCheck(new Check(
+        return $this->check(new Check(
             self::ERROR_NOT_EMPTY,
             fn ($value) => \count($value) === 0,
             [],
@@ -139,7 +139,7 @@ class ContainerRule extends Rule implements ContainerRuleInterface
      */
     public function notEmpty(): self
     {
-        return $this->addCheck(new Check(
+        return $this->check(new Check(
             self::ERROR_EMPTY,
             fn ($value) => \count($value) > 0,
             [],
@@ -154,7 +154,7 @@ class ContainerRule extends Rule implements ContainerRuleInterface
      */
     public function object(): self
     {
-        return $this->addCheck(new Check(
+        return $this->check(new Check(
             self::ERROR_NOT_OBJECT,
             fn ($value) => \is_object($value)
         ));
@@ -167,7 +167,7 @@ class ContainerRule extends Rule implements ContainerRuleInterface
      */
     public function stdObject(): self
     {
-        return $this->addCheck(new Check(
+        return $this->check(new Check(
             self::ERROR_NOT_STD_OBJECT,
             fn ($value) => $value instanceof \stdClass
         ));
@@ -180,12 +180,11 @@ class ContainerRule extends Rule implements ContainerRuleInterface
      */
     public function instanceOf(string $class): self
     {
-        return $this->addCheck(new Check(
+        return $this->check(new Check(
             self::ERROR_NOT_INSTANCE_OF,
             fn ($value) => $value instanceof $class
         ));
     }
-
 
     /**
      * {@inheritDoc}
@@ -195,7 +194,7 @@ class ContainerRule extends Rule implements ContainerRuleInterface
     public function lengthIs(IntegerRuleInterface $rule): self
     {
         $violations = [];
-        return $this->addCheck(new Check(
+        return $this->check(new Check(
             self::ERROR_BAD_LENGTH,
             static function ($value) use ($rule, &$violations) {
                 try {
@@ -220,11 +219,11 @@ class ContainerRule extends Rule implements ContainerRuleInterface
     public function hasAttribute(string $name, ?BaseRuleInterface $rule = null): self
     {
         if ($rule === null) {
-            return $this->addCheck($this->getHasAttributeCheck($name));
+            return $this->check($this->getHasAttributeCheck($name));
         }
 
         $violations = [];
-        return $this->addCheck(new Check(
+        return $this->check(new Check(
             self::ERROR_BAD_ATTRIBUTE,
             function ($value) use ($name, $rule, &$violations) {
                 try {
@@ -248,7 +247,7 @@ class ContainerRule extends Rule implements ContainerRuleInterface
     public function everyKeyIs(BaseRuleInterface $rule): self
     {
         $violations = [];
-        return $this->addCheck(
+        return $this->check(
             new Check(
                 self::ERROR_SOME_KEYS_BAD,
                 static function ($value) use ($rule, &$violations) {
@@ -276,7 +275,7 @@ class ContainerRule extends Rule implements ContainerRuleInterface
     public function everyValueIs(BaseRuleInterface $rule): self
     {
         $violations = [];
-        return $this->addCheck(
+        return $this->check(
             new Check(
                 self::ERROR_SOME_VALUES_BAD,
                 static function ($value) use ($rule, &$violations) {

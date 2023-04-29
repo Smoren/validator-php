@@ -24,12 +24,31 @@ interface NumericRuleInterface extends RuleInterface
     /**
      * @return static
      */
+    public function nonPositive(): self;
+
+    /**
+     * @return static
+     */
     public function nonNegative(): self;
 
     /**
      * @return static
      */
     public function negative(): self;
+
+    /**
+     * @param numeric $number
+     *
+     * @return static
+     */
+    public function equal($number): self;
+
+    /**
+     * @param numeric $number
+     *
+     * @return NumericRuleInterface
+     */
+    public function same($number): NumericRuleInterface;
 
     /**
      * @param numeric $number

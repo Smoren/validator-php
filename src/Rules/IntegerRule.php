@@ -15,7 +15,7 @@ class IntegerRule extends NumericRule implements IntegerRuleInterface
 
     public function __construct()
     {
-        $this->addCheck(new Check(
+        $this->check(new Check(
             self::ERROR_NOT_INTEGER,
             fn ($value) => is_int($value),
             []
@@ -29,7 +29,7 @@ class IntegerRule extends NumericRule implements IntegerRuleInterface
      */
     public function even(): self
     {
-        return $this->addCheck(new Check(
+        return $this->check(new Check(
             self::ERROR_NOT_EVEN,
             fn ($value) => $value % 2 === 0,
         ));
@@ -42,7 +42,7 @@ class IntegerRule extends NumericRule implements IntegerRuleInterface
      */
     public function odd(): self
     {
-        return $this->addCheck(new Check(
+        return $this->check(new Check(
             self::ERROR_NOT_ODD,
             fn ($value) => $value % 2 !== 0
         ));

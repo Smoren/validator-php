@@ -13,7 +13,7 @@ use Smoren\Validator\Interfaces\CheckWrapperInterface;
 use Smoren\Validator\Interfaces\RuleInterface;
 use Smoren\Validator\Interfaces\ValidationResultInterface;
 use Smoren\Validator\Structs\CheckWrapper;
-use Smoren\Validator\Structs\ValidationResult;
+use Smoren\Validator\Structs\ValidationSuccessResult;
 
 class Rule extends BaseRule implements RuleInterface
 {
@@ -48,7 +48,7 @@ class Rule extends BaseRule implements RuleInterface
      */
     public function truthy(): self
     {
-        return $this->addCheck(new Check(
+        return $this->check(new Check(
             self::ERROR_NOT_TRUTHY,
             fn ($value) => boolval($value),
         ));
@@ -61,7 +61,7 @@ class Rule extends BaseRule implements RuleInterface
      */
     public function falsy(): self
     {
-        return $this->addCheck(new Check(
+        return $this->check(new Check(
             self::ERROR_NOT_FALSY,
             fn ($value) => !boolval($value),
         ));
@@ -72,7 +72,7 @@ class Rule extends BaseRule implements RuleInterface
      *
      * @return static
      */
-    public function addCheck(CheckInterface $check, bool $isInterrupting = false): self
+    public function check(CheckInterface $check, bool $isInterrupting = false): self
     {
         $this->checks[] = new CheckWrapper($check, $isInterrupting);
         return $this;
@@ -85,7 +85,7 @@ class Rule extends BaseRule implements RuleInterface
      */
     public function stopOnViolation(): self
     {
-        return $this->addCheck(new RetrospectiveCheck());
+        return $this->check(new RetrospectiveCheck());
     }
 
     /**
@@ -113,7 +113,7 @@ class Rule extends BaseRule implements RuleInterface
 
         if ($value === null) {
             if ($this->isNullable) {
-                return new ValidationResult(true);
+                return new ValidationSuccessResult(true);
             }
 
             throw new ValidationError($value, [[self::ERROR_NULL, []]]);
@@ -136,6 +136,6 @@ class Rule extends BaseRule implements RuleInterface
             throw ValidationError::fromCheckErrors($value, $errors);
         }
 
-        return new ValidationResult(false);
+        return new ValidationSuccessResult(false);
     }
 }
