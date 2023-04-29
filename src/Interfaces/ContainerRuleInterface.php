@@ -70,23 +70,23 @@ interface ContainerRuleInterface
 
     /**
      * @param string $name
-     * @param BaseRuleInterface|null $rule
+     * @param RuleInterface|null $rule
      *
      * @return static
      */
-    public function hasAttribute(string $name, ?BaseRuleInterface $rule = null): self;
+    public function hasAttribute(string $name, ?RuleInterface $rule = null): self;
 
     /**
-     * @param BaseRuleInterface $rule
+     * @param RuleInterface $rule
      *
      * @return static
      */
-    public function everyKeyIs(BaseRuleInterface $rule): self;
+    public function everyKeyIs(RuleInterface $rule): self;
 
     /**
-     * @param BaseRuleInterface $rule
+     * @param RuleInterface $rule
      *
      * @return static
      */
-    public function everyValueIs(BaseRuleInterface $rule): self;
+    public function everyValueIs(RuleInterface $rule): self;
 }

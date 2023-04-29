@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Smoren\Validator\Interfaces;
 
-interface CompositeRuleInterface extends BaseRuleInterface
+interface CompositeRuleInterface extends RuleInterface
 {
     /**
-     * @param BaseRuleInterface $rule
+     * @param RuleInterface $rule
      *
      * @return static
      */
-    public function addRule(BaseRuleInterface $rule): self;
+    public function addRule(RuleInterface $rule): self;
 }

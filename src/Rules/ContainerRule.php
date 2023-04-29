@@ -7,7 +7,7 @@ namespace Smoren\Validator\Rules;
 use Smoren\Validator\Checks\Check;
 use Smoren\Validator\Exceptions\ValidationError;
 use Smoren\Validator\Helpers\ContainerAccessHelper;
-use Smoren\Validator\Interfaces\BaseRuleInterface;
+use Smoren\Validator\Interfaces\RuleInterface;
 use Smoren\Validator\Interfaces\CheckInterface;
 use Smoren\Validator\Interfaces\ContainerRuleInterface;
 use Smoren\Validator\Interfaces\IntegerRuleInterface;
@@ -216,7 +216,7 @@ class ContainerRule extends Rule implements ContainerRuleInterface
      *
      * @return static
      */
-    public function hasAttribute(string $name, ?BaseRuleInterface $rule = null): self
+    public function hasAttribute(string $name, ?RuleInterface $rule = null): self
     {
         if ($rule === null) {
             return $this->check($this->getHasAttributeCheck($name));
@@ -244,7 +244,7 @@ class ContainerRule extends Rule implements ContainerRuleInterface
      *
      * @return static
      */
-    public function everyKeyIs(BaseRuleInterface $rule): self
+    public function everyKeyIs(RuleInterface $rule): self
     {
         $violations = [];
         return $this->check(
@@ -272,7 +272,7 @@ class ContainerRule extends Rule implements ContainerRuleInterface
      *
      * @return static
      */
-    public function everyValueIs(BaseRuleInterface $rule): self
+    public function everyValueIs(RuleInterface $rule): self
     {
         $violations = [];
         return $this->check(

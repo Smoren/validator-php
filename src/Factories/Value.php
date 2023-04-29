@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Smoren\Validator\Factories;
 
-use Smoren\Validator\Interfaces\BaseRuleInterface;
+use Smoren\Validator\Interfaces\RuleInterface;
 use Smoren\Validator\Interfaces\CompositeRuleInterface;
 use Smoren\Validator\Interfaces\ContainerRuleInterface;
 use Smoren\Validator\Interfaces\FloatRuleInterface;
@@ -51,7 +51,7 @@ class Value
     }
 
     /**
-     * @param array<BaseRuleInterface> $rules
+     * @param array<RuleInterface> $rules
      *
      * @return CompositeRuleInterface
      */
@@ -61,7 +61,7 @@ class Value
     }
 
     /**
-     * @param array<BaseRuleInterface> $rules
+     * @param array<RuleInterface> $rules
      *
      * @return CompositeRuleInterface
      */

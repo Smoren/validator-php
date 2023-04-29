@@ -134,6 +134,27 @@ class Rule extends BaseRule implements RuleInterface
     /**
      * {@inheritDoc}
      */
+    public function validate($value): void
+    {
+        $this->execute($value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isValid($value): bool
+    {
+        try {
+            $this->validate($value);
+            return true;
+        } catch (ValidationError $e) {
+            return false;
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     protected function execute($value): ValidationResultInterface
     {
         $result = parent::execute($value);

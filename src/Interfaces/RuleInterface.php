@@ -4,8 +4,55 @@ declare(strict_types=1);
 
 namespace Smoren\Validator\Interfaces;
 
-interface RuleInterface extends BaseRuleInterface
+use Smoren\Validator\Exceptions\ValidationError;
+
+interface RuleInterface
 {
+    /**
+     * @param mixed $value
+     *
+     * @return void
+     *
+     * @throws ValidationError
+     */
+    public function validate($value): void;
+
+    /**
+     * @param mixed $value
+     *
+     * @return bool
+     */
+    public function isValid($value): bool;
+
+    /**
+     * @return static
+     */
+    public function nullable(): self;
+
+    /**
+     * @return static
+     */
+    public function truthy(): self;
+
+    /**
+     * @return static
+     */
+    public function falsy(): self;
+
+    /**
+     * @param mixed $values
+     *
+     * @return static
+     */
+    public function equal($values): self;
+
+    /**
+     * @param mixed $value
+     *
+     * @return static
+     */
+    public function same($value): self;
+
     /**
      * @param CheckInterface $check
      * @param bool $isInterrupting
