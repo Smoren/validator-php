@@ -188,21 +188,15 @@ class ContainerRule extends Rule implements ContainerRuleInterface
      */
     public function lengthIs(IntegerRuleInterface $rule): self
     {
-        $violations = [];
         return $this->check(new Check(
             CheckName::LENGTH_IS,
             CheckErrorName::BAD_LENGTH,
-            static function ($value) use ($rule, &$violations) {
-                try {
-                    /** @var \Countable $value */
-                    $rule->validate(\count($value));
-                    return true;
-                } catch (ValidationError $e) {
-                    $violations = $e->getSummary();
-                    return false;
-                }
+            static function ($value) use ($rule) {
+                /** @var \Countable $value */
+                $rule->validate(\count($value));
+                return true;
             },
-            [Param::VIOLATIONS => &$violations],
+            [],
             [$this->getCountableCheck()]
         ));
     }
@@ -218,24 +212,14 @@ class ContainerRule extends Rule implements ContainerRuleInterface
             return $this->check($this->getHasAttributeCheck($name));
         }
 
-        $violations = [];
         return $this->check(new Check(
             CheckName::HAS_ATTRIBUTE,
             CheckErrorName::BAD_ATTRIBUTE,
-            function ($value) use ($name, $rule, &$violations) {
-                try {
-                    $rule->validate(ContainerAccessHelper::getAttributeValue($value, $name));
-                    return true;
-                } catch (ValidationError $e) {
-                    $violations = $e->getSummary();
-                    return false;
-                }
+            static function ($value, string $name) use ($rule) {
+                $rule->validate(ContainerAccessHelper::getAttributeValue($value, $name));
+                return true;
             },
-            [
-                Param::ATTRIBUTE => $name,
-                Param::RULE => $rule->getName(),
-                Param::VIOLATIONS => &$violations,
-            ],
+            [Param::ATTRIBUTE => $name],
             [$this->getHasAttributeCheck($name)]
         ));
     }
@@ -247,27 +231,17 @@ class ContainerRule extends Rule implements ContainerRuleInterface
      */
     public function hasOptionalAttribute(string $name, RuleInterface $rule): self
     {
-        $violations = [];
         return $this->check(new Check(
             CheckName::HAS_ATTRIBUTE,
             CheckErrorName::BAD_ATTRIBUTE,
-            function ($value) use ($name, $rule, &$violations) {
+            static function ($value) use ($name, $rule) {
                 if (!ContainerAccessHelper::hasAccessibleAttribute($value, $name)) {
                     return true;
                 }
-                try {
-                    $rule->validate(ContainerAccessHelper::getAttributeValue($value, $name));
-                    return true;
-                } catch (ValidationError $e) {
-                    $violations = $e->getSummary();
-                    return false;
-                }
+                $rule->validate(ContainerAccessHelper::getAttributeValue($value, $name));
+                return true;
             },
-            [
-                Param::ATTRIBUTE => $name,
-                Param::RULE => $rule->getName(),
-                Param::VIOLATIONS => &$violations,
-            ],
+            [Param::ATTRIBUTE => $name],
         ));
     }
 
@@ -278,26 +252,17 @@ class ContainerRule extends Rule implements ContainerRuleInterface
      */
     public function allKeysAre(RuleInterface $rule): self
     {
-        $violations = [];
         return $this->check(
             new Check(
                 CheckName::ALL_KEYS_ARE,
                 CheckErrorName::SOME_KEYS_BAD,
-                static function ($value) use ($rule, &$violations) {
+                static function ($value) use ($rule) {
                     foreach ($value as $k => $v) {
-                        try {
-                            $rule->validate($k);
-                        } catch (ValidationError $e) {
-                            $violations = $e->getSummary();
-                            return false;
-                        }
+                        $rule->validate($k);
                     }
                     return true;
                 },
-                [
-                    Param::RULE => $rule->getName(),
-                    Param::VIOLATIONS => &$violations,
-                ],
+                [],
                 [$this->getIterableCheck()]
             )
         );
@@ -310,26 +275,17 @@ class ContainerRule extends Rule implements ContainerRuleInterface
      */
     public function allValuesAre(RuleInterface $rule): self
     {
-        $violations = [];
         return $this->check(
             new Check(
                 CheckName::ALL_VALUES_ARE,
                 CheckErrorName::SOME_VALUES_BAD,
-                static function ($value) use ($rule, &$violations) {
+                static function ($value) use ($rule) {
                     foreach ($value as $v) {
-                        try {
-                            $rule->validate($v);
-                        } catch (ValidationError $e) {
-                            $violations = $e->getSummary();
-                            return false;
-                        }
+                        $rule->validate($v);
                     }
                     return true;
                 },
-                [
-                    Param::RULE => $rule->getName(),
-                    Param::VIOLATIONS => &$violations,
-                ],
+                [],
                 [$this->getIterableCheck()]
             )
         );

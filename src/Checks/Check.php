@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Smoren\Validator\Checks;
 
 use Smoren\Validator\Exceptions\CheckError;
+use Smoren\Validator\Exceptions\ValidationError;
 use Smoren\Validator\Interfaces\CheckInterface;
+use Smoren\Validator\Structs\Param;
 
 class Check implements CheckInterface
 {
@@ -60,8 +62,15 @@ class Check implements CheckInterface
             $check->execute($value, $previousErrors);
         }
 
-        if (($this->predicate)($value, ...array_values($this->params)) === false) {
-            throw new CheckError($this->errorName, $value, $this->params);
+        try {
+            if (($this->predicate)($value, ...array_values($this->params)) === false) {
+                throw new CheckError($this->errorName, $value, $this->params);
+            }
+        } catch (ValidationError $e) {
+            $params = $this->params;
+            $params[Param::RULE] = $e->getName();
+            $params[Param::VIOLATIONS] = $e->getSummary();
+            throw new CheckError($this->errorName, $value, $params);
         }
     }
 }

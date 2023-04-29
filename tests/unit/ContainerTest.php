@@ -8,7 +8,6 @@ use Codeception\Test\Unit;
 use Smoren\Validator\Exceptions\ValidationError;
 use Smoren\Validator\Factories\Value;
 use Smoren\Validator\Interfaces\ContainerRuleInterface;
-use Smoren\Validator\Rules\IntegerRule;
 use Smoren\Validator\Structs\CheckErrorName;
 use Smoren\Validator\Structs\Param;
 
@@ -133,7 +132,7 @@ class ContainerTest extends Unit
                 Value::container()
                     ->lengthIs(Value::integer()->odd()),
                 [
-                    [CheckErrorName::BAD_LENGTH, [Param::VIOLATIONS => [['not_odd', []]]]],
+                    [CheckErrorName::BAD_LENGTH, [Param::RULE => 'integer', Param::VIOLATIONS => [['not_odd', []]]]],
                 ],
             ],
             [
