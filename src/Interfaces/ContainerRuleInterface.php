@@ -70,18 +70,11 @@ interface ContainerRuleInterface
 
     /**
      * @param string $name
+     * @param BaseRuleInterface|null $rule
      *
      * @return self
      */
-    public function hasAttribute(string $name): self;
-
-    /**
-     * @param string $name
-     * @param BaseRuleInterface $rule
-     *
-     * @return self
-     */
-    public function isAttribute(string $name, BaseRuleInterface $rule): self;
+    public function hasAttribute(string $name, ?BaseRuleInterface $rule = null): self;
 
     /**
      * @param BaseRuleInterface $rule

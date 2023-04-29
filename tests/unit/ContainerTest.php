@@ -153,7 +153,7 @@ class ContainerTest extends Unit
             [
                 [['a' => '1a', 'b' => 2], ['a' => false, 'd', 'b' => null]],
                 (new ContainerRule())
-                    ->isAttribute('a', new NumericRule()),
+                    ->hasAttribute('a', new NumericRule()),
                 [
                     [ContainerRule::ERROR_BAD_ATTRIBUTE, ['name' => 'a', 'violations' => [['not_numeric', []]]]],
                 ],
@@ -161,7 +161,7 @@ class ContainerTest extends Unit
             [
                 [['b' => 2], ['d', 'b' => null]],
                 (new ContainerRule())
-                    ->isAttribute('a', new NumericRule()),
+                    ->hasAttribute('a', new NumericRule()),
                 [
                     [ContainerRule::ERROR_ATTRIBUTE_NOT_EXIST, ['name' => 'a']],
                 ],

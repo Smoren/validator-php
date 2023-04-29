@@ -217,18 +217,12 @@ class ContainerRule extends Rule implements ContainerRuleInterface
      *
      * @return static
      */
-    public function hasAttribute(string $name): self
+    public function hasAttribute(string $name, ?BaseRuleInterface $rule = null): self
     {
-        return $this->addCheck($this->getHasAttributeCheck($name));
-    }
+        if ($rule === null) {
+            return $this->addCheck($this->getHasAttributeCheck($name));
+        }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @return static
-     */
-    public function isAttribute(string $name, BaseRuleInterface $rule): self
-    {
         $violations = [];
         return $this->addCheck(new Check(
             self::ERROR_BAD_ATTRIBUTE,
