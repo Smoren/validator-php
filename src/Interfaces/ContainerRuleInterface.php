@@ -2,7 +2,7 @@
 
 namespace Smoren\Validator\Interfaces;
 
-interface ContainerRuleInterface
+interface ContainerRuleInterface extends RuleInterface
 {
     /**
      * @return static

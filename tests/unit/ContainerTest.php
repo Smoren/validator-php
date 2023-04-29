@@ -8,6 +8,7 @@ use Codeception\Test\Unit;
 use Smoren\Validator\Exceptions\ValidationError;
 use Smoren\Validator\Factories\Value;
 use Smoren\Validator\Interfaces\ContainerRuleInterface;
+use Smoren\Validator\Rules\IntegerRule;
 use Smoren\Validator\Structs\CheckErrorName;
 use Smoren\Validator\Structs\Param;
 
@@ -75,6 +76,24 @@ class ContainerTest extends Unit
                 Value::container()
                     ->allValuesAre(Value::integer()->even()),
             ],
+            [
+                [
+                    [
+                        'id' => 13,
+                        'probability' => 0.92,
+                        'vectors' => [[1, 2], [3, 4], [5, 6]],
+                    ],
+                ],
+                Value::container()
+                    ->hasAttribute('id', Value::integer()->positive())
+                    ->hasAttribute('probability', Value::float()->between(0, 1))
+                    ->hasAttribute('vectors', Value::container()->array()->allValuesAre(
+                        Value::container()
+                            ->array()
+                            ->lengthIs(Value::integer()->equal(2))
+                            ->allValuesAre(Value::integer())
+                    ))
+            ]
         ];
     }
 
