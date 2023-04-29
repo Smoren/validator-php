@@ -62,6 +62,11 @@ interface RuleInterface
     public function check(CheckInterface $check, bool $isInterrupting = false): self;
 
     /**
+     * @return array<string>
+     */
+    public function getCheckNames(): array;
+
+    /**
      * @return static
      */
     public function stopOnViolation(): self;

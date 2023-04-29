@@ -23,4 +23,12 @@ class RetrospectiveCheck implements CheckInterface
             throw ValidationError::fromCheckErrors($value, $previousErrors);
         }
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getName(): ?string
+    {
+        return null;
+    }
 }

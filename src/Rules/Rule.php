@@ -110,6 +110,21 @@ class Rule extends BaseRule implements RuleInterface
 
     /**
      * {@inheritDoc}
+     */
+    public function getCheckNames(): array
+    {
+        $result = [];
+        foreach ($this->checks as $check) {
+            $name = $check->getCheck()->getName();
+            if ($name !== null) {
+                $result[] = $name;
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * {@inheritDoc}
      *
      * @return static
      */

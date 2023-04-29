@@ -17,4 +17,9 @@ interface CheckInterface
      * @throws CheckError if check fails
      */
     public function execute($value, array $previousErrors): void;
+
+    /**
+     * @return string|null
+     */
+    public function getName(): ?string;
 }

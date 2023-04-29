@@ -57,4 +57,12 @@ class Check implements CheckInterface
             throw new CheckError($this->name, $value, $this->params);
         }
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
 }
