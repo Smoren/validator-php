@@ -77,6 +77,14 @@ interface ContainerRuleInterface
     public function hasAttribute(string $name, ?RuleInterface $rule = null): self;
 
     /**
+     * @param string $name
+     * @param RuleInterface $rule
+     *
+     * @return static
+     */
+    public function hasOptionalAttribute(string $name, RuleInterface $rule): self;
+
+    /**
      * @param RuleInterface $rule
      *
      * @return static

@@ -244,6 +244,32 @@ class ContainerRule extends Rule implements ContainerRuleInterface
      *
      * @return static
      */
+    public function hasOptionalAttribute(string $name, RuleInterface $rule): self
+    {
+        $violations = [];
+        return $this->check(new Check(
+            self::ERROR_BAD_ATTRIBUTE,
+            function ($value) use ($name, $rule, &$violations) {
+                if (!ContainerAccessHelper::hasAccessibleAttribute($value, $name)) {
+                    return true;
+                }
+                try {
+                    $rule->validate(ContainerAccessHelper::getAttributeValue($value, $name));
+                    return true;
+                } catch (ValidationError $e) {
+                    $violations = $e->getSummary();
+                    return false;
+                }
+            },
+            ['name' => $name, 'violations' => &$violations]
+        ));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return static
+     */
     public function everyKeyIs(RuleInterface $rule): self
     {
         $violations = [];
