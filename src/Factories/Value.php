@@ -14,7 +14,7 @@ use Smoren\Validator\Rules\IntegerRule;
 use Smoren\Validator\Rules\NumericRule;
 use Smoren\Validator\Rules\OrRule;
 
-class Validate
+class Value
 {
     /**
      * @return NumericRule

@@ -6,7 +6,7 @@ namespace Smoren\Validator\Tests\Unit;
 
 use Codeception\Test\Unit;
 use Smoren\Validator\Exceptions\ValidationError;
-use Smoren\Validator\Factories\Validate;
+use Smoren\Validator\Factories\Value;
 use Smoren\Validator\Interfaces\IntegerRuleInterface;
 use Smoren\Validator\Rules\IntegerRule;
 use Smoren\Validator\Rules\NumericRule;
@@ -33,70 +33,70 @@ class IntegerTest extends Unit
         return [
             [
                 [1, 2, 3, -1, -2, -3],
-                Validate::integer(),
+                Value::integer(),
             ],
             [
                 [null, 1, 2, 3, -1, -2, -3],
-                Validate::integer()
+                Value::integer()
                     ->nullable(),
             ],
             [
                 [1, 2, 3, 10, 150],
-                Validate::integer()
+                Value::integer()
                     ->positive(),
             ],
             [
                 [-1, -2, -3, -10, -150],
-                Validate::integer()
+                Value::integer()
                     ->negative(),
             ],
             [
                 [-1, -2, -3, -0, -150],
-                Validate::integer()
+                Value::integer()
                     ->nonPositive(),
             ],
             [
                 [0, 1, 2, 3, 10, 150],
-                Validate::integer()
+                Value::integer()
                     ->nonNegative(),
             ],
             [
                 [6, 7, 8, 10, 150],
-                Validate::integer()
+                Value::integer()
                     ->greaterTran(5),
             ],
             [
                 [5, 6, 7, 8, 10, 150],
-                Validate::integer()
+                Value::integer()
                     ->greaterOrEqual(5),
             ],
             [
                 [4, 3, 2, 1, 0, -100],
-                Validate::integer()
+                Value::integer()
                     ->lessTran(5),
             ],
             [
                 [5, 4, 3, 2, 1, 0, -100],
-                Validate::integer()
+                Value::integer()
                     ->lessOrEqual(5),
             ],
             [
                 [6, 8],
-                Validate::integer()
+                Value::integer()
                     ->positive()
                     ->even()
                     ->inInterval(5, 10),
             ],
             [
                 [7, 9],
-                Validate::integer()
+                Value::integer()
                     ->positive()
                     ->odd()
                     ->inInterval(5, 10),
             ],
             [
                 [null, 7, 9],
-                Validate::integer()
+                Value::integer()
                     ->nullable()
                     ->positive()
                     ->odd()
@@ -104,21 +104,21 @@ class IntegerTest extends Unit
             ],
             [
                 [6, 8, 10],
-                Validate::integer()
+                Value::integer()
                     ->positive()
                     ->even()
                     ->between(5, 10),
             ],
             [
                 [5, 7, 9],
-                Validate::integer()
+                Value::integer()
                     ->positive()
                     ->odd()
                     ->between(5, 10),
             ],
             [
                 [5, 7, 9, null],
-                Validate::integer()
+                Value::integer()
                     ->positive()
                     ->nullable()
                     ->odd()
@@ -153,21 +153,21 @@ class IntegerTest extends Unit
         return [
             [
                 [null],
-                Validate::integer(),
+                Value::integer(),
                 [
                     [Rule::ERROR_NULL, []],
                 ],
             ],
             [
                 ['1', 'a', true, false, []],
-                Validate::integer(),
+                Value::integer(),
                 [
                     [IntegerRule::ERROR_NOT_INTEGER, []],
                 ],
             ],
             [
                 ['1', 'a', true, false, []],
-                Validate::integer()
+                Value::integer()
                     ->nullable(),
                 [
                     [IntegerRule::ERROR_NOT_INTEGER, []],
@@ -175,7 +175,7 @@ class IntegerTest extends Unit
             ],
             [
                 ['1', 'a', true, false, []],
-                Validate::integer()
+                Value::integer()
                     ->nullable()
                     ->positive(),
                 [
@@ -184,7 +184,7 @@ class IntegerTest extends Unit
             ],
             [
                 [0, -1, -2, -3, -10, -150],
-                Validate::integer()
+                Value::integer()
                     ->positive(),
                 [
                     [NumericRule::ERROR_NOT_POSITIVE, []],
@@ -192,7 +192,7 @@ class IntegerTest extends Unit
             ],
             [
                 [0, 1, 3, 10, 150],
-                Validate::integer()
+                Value::integer()
                     ->negative(),
                 [
                     [NumericRule::ERROR_NOT_NEGATIVE, []],
@@ -200,7 +200,7 @@ class IntegerTest extends Unit
             ],
             [
                 [1, 2, 3, 10, 150],
-                Validate::integer()
+                Value::integer()
                     ->nonPositive(),
                 [
                     [NumericRule::ERROR_NOT_NON_POSITIVE, []],
@@ -208,7 +208,7 @@ class IntegerTest extends Unit
             ],
             [
                 [-1, -2, -3, -10, -150],
-                Validate::integer()
+                Value::integer()
                     ->nonNegative(),
                 [
                     [NumericRule::ERROR_NOT_NON_NEGATIVE, []],
@@ -216,7 +216,7 @@ class IntegerTest extends Unit
             ],
             [
                 [5, 4, 3, 2, 1, 0, -100],
-                Validate::integer()
+                Value::integer()
                     ->greaterTran(5),
                 [
                     [NumericRule::ERROR_NOT_GREATER, ['number' => 5]],
@@ -224,7 +224,7 @@ class IntegerTest extends Unit
             ],
             [
                 [4, 3, 2, 1, 0, -100],
-                Validate::integer()
+                Value::integer()
                     ->greaterOrEqual(5),
                 [
                     [NumericRule::ERROR_NOT_GREATER_OR_EQUEAL, ['number' => 5]],
@@ -232,7 +232,7 @@ class IntegerTest extends Unit
             ],
             [
                 [5, 6, 7, 8, 10, 150],
-                Validate::integer()
+                Value::integer()
                     ->lessTran(5),
                 [
                     [NumericRule::ERROR_NOT_LESS, ['number' => 5]],
@@ -240,7 +240,7 @@ class IntegerTest extends Unit
             ],
             [
                 [6, 7, 8, 10, 150],
-                Validate::integer()
+                Value::integer()
                     ->lessOrEqual(5),
                 [
                     [NumericRule::ERROR_NOT_LESS_OR_EQUEAL, ['number' => 5]],
@@ -248,7 +248,7 @@ class IntegerTest extends Unit
             ],
             [
                 [1, 3, 11, 13],
-                Validate::integer()
+                Value::integer()
                     ->positive()
                     ->even()
                     ->inInterval(5, 10),
@@ -259,7 +259,7 @@ class IntegerTest extends Unit
             ],
             [
                 [-1, -3, -11, -13],
-                Validate::integer()
+                Value::integer()
                     ->positive()
                     ->even()
                     ->inInterval(5, 10),
@@ -271,7 +271,7 @@ class IntegerTest extends Unit
             ],
             [
                 [-1, -3, -11, -13],
-                Validate::integer()
+                Value::integer()
                     ->positive()
                     ->even()
                     ->stopOnViolation()
@@ -283,7 +283,7 @@ class IntegerTest extends Unit
             ],
             [
                 [-1, -3, -11, -13],
-                Validate::integer()
+                Value::integer()
                     ->positive()
                     ->stopOnViolation()
                     ->nonNegative()
@@ -296,7 +296,7 @@ class IntegerTest extends Unit
             ],
             [
                 [1, 3, 5, 7, 9],
-                Validate::integer()
+                Value::integer()
                     ->positive()
                     ->stopOnViolation()
                     ->nonNegative()
@@ -309,7 +309,7 @@ class IntegerTest extends Unit
             ],
             [
                 [-1, -3, -11, -13],
-                Validate::integer()
+                Value::integer()
                     ->positive()
                     ->even()
                     ->inInterval(5, 10)
@@ -320,7 +320,7 @@ class IntegerTest extends Unit
             ],
             [
                 [7, 9],
-                Validate::integer()
+                Value::integer()
                     ->positive()
                     ->even()
                     ->inInterval(5, 10),
@@ -330,7 +330,7 @@ class IntegerTest extends Unit
             ],
             [
                 [6, 8],
-                Validate::integer()
+                Value::integer()
                     ->positive()
                     ->odd()
                     ->inInterval(5, 10),
@@ -340,7 +340,7 @@ class IntegerTest extends Unit
             ],
             [
                 [6, 8],
-                Validate::integer()
+                Value::integer()
                     ->positive()
                     ->odd()
                     ->between(5, 10),
@@ -350,7 +350,7 @@ class IntegerTest extends Unit
             ],
             [
                 [1, 3, 11, 13],
-                Validate::integer()
+                Value::integer()
                     ->positive()
                     ->odd()
                     ->between(5, 10),
@@ -360,7 +360,7 @@ class IntegerTest extends Unit
             ],
             [
                 [2, 4, 12, 14],
-                Validate::integer()
+                Value::integer()
                     ->positive()
                     ->odd()
                     ->between(5, 10),
@@ -371,7 +371,7 @@ class IntegerTest extends Unit
             ],
             [
                 [2, 4, 12, 14],
-                Validate::integer()
+                Value::integer()
                     ->positive()
                     ->stopOnAnyPriorViolation()
                     ->odd()
@@ -383,7 +383,7 @@ class IntegerTest extends Unit
             ],
             [
                 [6, 8, 10],
-                Validate::integer()
+                Value::integer()
                     ->positive()
                     ->odd()
                     ->between(5, 10),

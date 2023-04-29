@@ -6,7 +6,7 @@ namespace Smoren\Validator\Tests\Unit;
 
 use Codeception\Test\Unit;
 use Smoren\Validator\Exceptions\ValidationError;
-use Smoren\Validator\Factories\Validate;
+use Smoren\Validator\Factories\Value;
 use Smoren\Validator\Rules\FloatRule;
 use Smoren\Validator\Rules\IntegerRule;
 use Smoren\Validator\Rules\NumericRule;
@@ -34,27 +34,27 @@ class OrRuleTest extends Unit
         return [
             [
                 [1, 2, 3, -1, -2, -3, 1.0, 1.1, 2.71, 3.14],
-                Validate::or([]),
+                Value::or([]),
             ],
             [
                 [1, 2, 3, -1, -2, -3, 1.0, 1.1, 2.71, 3.14],
-                Validate::or([
-                    Validate::integer(),
-                    Validate::float(),
+                Value::or([
+                    Value::integer(),
+                    Value::float(),
                 ]),
             ],
             [
                 [null, 1, 2, 3, -1, -2, -3, 1.0, 1.1, 2.71, 3.14],
-                Validate::or([
-                    Validate::integer(),
-                    Validate::float(),
+                Value::or([
+                    Value::integer(),
+                    Value::float(),
                 ])->nullable(),
             ],
             [
                 [null, 1, 2, 3, -1, -2, -3, 1.0, 2.0, 3.0],
-                Validate::or([
-                    Validate::integer(),
-                    Validate::float()->nonFractional(),
+                Value::or([
+                    Value::integer(),
+                    Value::float()->nonFractional(),
                 ])->nullable(),
             ],
         ];
@@ -86,16 +86,16 @@ class OrRuleTest extends Unit
         return [
             [
                 [null],
-                Validate::or([]),
+                Value::or([]),
                 [
                     [Rule::ERROR_NULL, []],
                 ],
             ],
             [
                 ['1', '2.2', 'a', true, false, [], (object)[1, 2, 3]],
-                Validate::or([
-                    Validate::integer(),
-                    Validate::float(),
+                Value::or([
+                    Value::integer(),
+                    Value::float(),
                 ]),
                 [
                     [IntegerRule::ERROR_NOT_INTEGER, []],
@@ -104,9 +104,9 @@ class OrRuleTest extends Unit
             ],
             [
                 [null],
-                Validate::or([
-                    Validate::integer(),
-                    Validate::float(),
+                Value::or([
+                    Value::integer(),
+                    Value::float(),
                 ]),
                 [
                     [Rule::ERROR_NULL, []],
@@ -114,9 +114,9 @@ class OrRuleTest extends Unit
             ],
             [
                 [1.1, 2.1, 3.1],
-                Validate::or([
-                    Validate::integer()->positive(),
-                    Validate::float()->positive()->nonFractional(),
+                Value::or([
+                    Value::integer()->positive(),
+                    Value::float()->positive()->nonFractional(),
                 ])->nullable(),
                 [
                     [IntegerRule::ERROR_NOT_INTEGER, []],
@@ -125,9 +125,9 @@ class OrRuleTest extends Unit
             ],
             [
                 [-1.1, -2.1, -3.1],
-                Validate::or([
-                    Validate::integer()->positive(),
-                    Validate::float()->positive()->nonFractional(),
+                Value::or([
+                    Value::integer()->positive(),
+                    Value::float()->positive()->nonFractional(),
                 ])->nullable(),
                 [
                     [IntegerRule::ERROR_NOT_INTEGER, []],
