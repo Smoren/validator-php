@@ -38,4 +38,18 @@ interface BaseRuleInterface
      * @return static
      */
     public function falsy(): self;
+
+    /**
+     * @param mixed $values
+     *
+     * @return static
+     */
+    public function equal($values): self;
+
+    /**
+     * @param mixed $value
+     *
+     * @return static
+     */
+    public function same($value): self;
 }

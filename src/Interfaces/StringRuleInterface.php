@@ -7,20 +7,6 @@ namespace Smoren\Validator\Interfaces;
 interface StringRuleInterface extends RuleInterface
 {
     /**
-     * @param string|numeric $value
-     *
-     * @return static
-     */
-    public function equal($value): self;
-
-    /**
-     * @param string $value
-     *
-     * @return static
-     */
-    public function same(string $value): self;
-
-    /**
      * @return static
      */
     public function numeric(): self;
@@ -41,6 +27,27 @@ interface StringRuleInterface extends RuleInterface
      * @return static
      */
     public function match(string $regex): self;
+
+    /**
+     * @param string $substr
+     *
+     * @return static
+     */
+    public function hasSubstring(string $substr): self;
+
+    /**
+     * @param string $substr
+     *
+     * @return static
+     */
+    public function startsWith(string $substr): self;
+
+    /**
+     * @param string $substr
+     *
+     * @return static
+     */
+    public function endsWith(string $substr): self;
 
     /**
      * @param IntegerRuleInterface $rule

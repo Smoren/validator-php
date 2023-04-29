@@ -17,8 +17,6 @@ class NumericRule extends Rule implements NumericRuleInterface
     public const ERROR_NOT_NON_NEGATIVE = 'not_non_negative';
     public const ERROR_NOT_NEGATIVE = 'not_negative';
     public const ERROR_NOT_GREATER = 'not_greater';
-    public const ERROR_NOT_EQUEAL = 'equal';
-    public const ERROR_NOT_SAME = 'same';
     public const ERROR_NOT_GREATER_OR_EQUEAL = 'not_greater_or_equal';
     public const ERROR_NOT_LESS = 'not_less';
     public const ERROR_NOT_LESS_OR_EQUEAL = 'not_less_or_equal';
@@ -112,34 +110,6 @@ class NumericRule extends Rule implements NumericRuleInterface
         return $this->check(new Check(
             self::ERROR_NOT_NEGATIVE,
             fn ($value) => $value < 0
-        ));
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @return static
-     */
-    public function equal($number): NumericRuleInterface
-    {
-        return $this->check(new Check(
-            self::ERROR_NOT_EQUEAL,
-            fn ($value) => $value == $number,
-            ['number' => $number]
-        ));
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @return static
-     */
-    public function same($number): NumericRuleInterface
-    {
-        return $this->check(new Check(
-            self::ERROR_NOT_SAME,
-            fn ($value) => $value === $number,
-            ['number' => $number]
         ));
     }
 

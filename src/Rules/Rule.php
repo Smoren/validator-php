@@ -20,6 +20,8 @@ class Rule extends BaseRule implements RuleInterface
     public const ERROR_NULL = 'null';
     public const ERROR_NOT_TRUTHY = 'not_truthy';
     public const ERROR_NOT_FALSY = 'not_falsy';
+    public const ERROR_NOT_EQUEAL = 'equal';
+    public const ERROR_NOT_SAME = 'same';
 
     /**
      * @var array<CheckWrapperInterface>
@@ -64,6 +66,34 @@ class Rule extends BaseRule implements RuleInterface
         return $this->check(new Check(
             self::ERROR_NOT_FALSY,
             fn ($value) => !boolval($value),
+        ));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return static
+     */
+    public function equal($values): self
+    {
+        return $this->check(new Check(
+            self::ERROR_NOT_EQUEAL,
+            fn ($value) => $value == $values,
+            ['number' => $values]
+        ));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return static
+     */
+    public function same($value): self
+    {
+        return $this->check(new Check(
+            self::ERROR_NOT_SAME,
+            fn ($value) => $value === $value,
+            ['number' => $value]
         ));
     }
 
