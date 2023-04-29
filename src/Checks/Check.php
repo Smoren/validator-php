@@ -14,6 +14,10 @@ class Check implements CheckInterface
      */
     protected string $name;
     /**
+     * @var string
+     */
+    protected string $errorName;
+    /**
      * @var callable
      */
     protected $predicate;
@@ -24,24 +28,27 @@ class Check implements CheckInterface
     /**
      * @var array<CheckInterface>
      */
-    protected array $dependsOn;
+    protected array $dependsOnChecks;
 
     /**
      * @param string $name
+     * @param string $errorName
      * @param callable $predicate
      * @param array<string, mixed> $params
-     * @param array<CheckInterface> $dependsOn
+     * @param array<CheckInterface> $dependsOnChecks
      */
     public function __construct(
         string $name,
+        string $errorName,
         callable $predicate,
         array $params = [],
-        array $dependsOn = []
+        array $dependsOnChecks = []
     ) {
         $this->name = $name;
+        $this->errorName = $errorName;
         $this->predicate = $predicate;
         $this->params = $params;
-        $this->dependsOn = $dependsOn;
+        $this->dependsOnChecks = $dependsOnChecks;
     }
 
     /**
@@ -49,20 +56,12 @@ class Check implements CheckInterface
      */
     public function execute($value, array $previousErrors): void
     {
-        foreach ($this->dependsOn as $check) {
+        foreach ($this->dependsOnChecks as $check) {
             $check->execute($value, $previousErrors);
         }
 
         if (($this->predicate)($value, ...array_values($this->params)) === false) {
-            throw new CheckError($this->name, $value, $this->params);
+            throw new CheckError($this->errorName, $value, $this->params);
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getName(): ?string
-    {
-        return $this->name;
     }
 }

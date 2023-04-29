@@ -7,11 +7,8 @@ namespace Smoren\Validator\Tests\Unit;
 use Codeception\Test\Unit;
 use Smoren\Validator\Exceptions\ValidationError;
 use Smoren\Validator\Factories\Value;
-use Smoren\Validator\Rules\FloatRule;
-use Smoren\Validator\Rules\IntegerRule;
-use Smoren\Validator\Rules\NumericRule;
 use Smoren\Validator\Rules\OrRule;
-use Smoren\Validator\Rules\Rule;
+use Smoren\Validator\Structs\CheckErrorName;
 
 class OrRuleTest extends Unit
 {
@@ -88,7 +85,7 @@ class OrRuleTest extends Unit
                 [null],
                 Value::or([]),
                 [
-                    [Rule::ERROR_NULL, []],
+                    [CheckErrorName::NULL, []],
                 ],
             ],
             [
@@ -98,8 +95,8 @@ class OrRuleTest extends Unit
                     Value::float(),
                 ]),
                 [
-                    [IntegerRule::ERROR_NOT_INTEGER, []],
-                    [FloatRule::ERROR_NOT_FLOAT, []],
+                    [CheckErrorName::NOT_INTEGER, []],
+                    [CheckErrorName::NOT_FLOAT, []],
                 ],
             ],
             [
@@ -109,7 +106,7 @@ class OrRuleTest extends Unit
                     Value::float(),
                 ]),
                 [
-                    [Rule::ERROR_NULL, []],
+                    [CheckErrorName::NULL, []],
                 ],
             ],
             [
@@ -119,8 +116,8 @@ class OrRuleTest extends Unit
                     Value::float()->positive()->nonFractional(),
                 ])->nullable(),
                 [
-                    [IntegerRule::ERROR_NOT_INTEGER, []],
-                    [FloatRule::ERROR_FRACTIONAL, []],
+                    [CheckErrorName::NOT_INTEGER, []],
+                    [CheckErrorName::FRACTIONAL, []],
                 ],
             ],
             [
@@ -130,9 +127,9 @@ class OrRuleTest extends Unit
                     Value::float()->positive()->nonFractional(),
                 ])->nullable(),
                 [
-                    [IntegerRule::ERROR_NOT_INTEGER, []],
-                    [NumericRule::ERROR_NOT_POSITIVE, []],
-                    [FloatRule::ERROR_FRACTIONAL, []],
+                    [CheckErrorName::NOT_INTEGER, []],
+                    [CheckErrorName::NOT_POSITIVE, []],
+                    [CheckErrorName::FRACTIONAL, []],
                 ],
             ],
         ];

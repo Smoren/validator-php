@@ -6,30 +6,20 @@ namespace Smoren\Validator\Rules;
 
 use Smoren\Validator\Checks\Check;
 use Smoren\Validator\Interfaces\NumericRuleInterface;
+use Smoren\Validator\Structs\CheckErrorName;
+use Smoren\Validator\Structs\CheckName;
 
 class NumericRule extends Rule implements NumericRuleInterface
 {
-    public const ERROR_NOT_NUMERIC = 'not_numeric';
-    public const ERROR_NOT_NUMBER = 'not_number';
-    public const ERROR_NOT_STRING = 'not_string';
-    public const ERROR_NOT_POSITIVE = 'not_positive';
-    public const ERROR_NOT_NON_POSITIVE = 'not_non_positive';
-    public const ERROR_NOT_NON_NEGATIVE = 'not_non_negative';
-    public const ERROR_NOT_NEGATIVE = 'not_negative';
-    public const ERROR_NOT_GREATER = 'not_greater';
-    public const ERROR_NOT_GREATER_OR_EQUEAL = 'not_greater_or_equal';
-    public const ERROR_NOT_LESS = 'not_less';
-    public const ERROR_NOT_LESS_OR_EQUEAL = 'not_less_or_equal';
-    public const ERROR_NOT_IN_SEGMENT = 'not_in_segment';
-    public const ERROR_NOT_IN_INTERVAL = 'not_in_interval';
-
     /**
-     * NumericRule constructor.
+     * @param string $name
      */
-    public function __construct()
+    public function __construct(string $name)
     {
+        parent::__construct($name);
         $this->check(new Check(
-            self::ERROR_NOT_NUMERIC,
+            CheckName::NUMERIC,
+            CheckErrorName::NOT_NUMERIC,
             fn ($value) => is_numeric($value),
             []
         ), true);
@@ -43,7 +33,8 @@ class NumericRule extends Rule implements NumericRuleInterface
     public function number(): self
     {
         return $this->check(new Check(
-            self::ERROR_NOT_NUMBER,
+            CheckName::NUMBER,
+            CheckErrorName::NOT_NUMBER,
             fn ($value) => is_int($value) || is_float($value)
         ));
     }
@@ -56,7 +47,8 @@ class NumericRule extends Rule implements NumericRuleInterface
     public function string(): self
     {
         return $this->check(new Check(
-            self::ERROR_NOT_STRING,
+            CheckName::STRING,
+            CheckErrorName::NOT_STRING,
             fn ($value) => is_string($value)
         ));
     }
@@ -69,7 +61,8 @@ class NumericRule extends Rule implements NumericRuleInterface
     public function positive(): self
     {
         return $this->check(new Check(
-            self::ERROR_NOT_POSITIVE,
+            CheckName::POSITIVE,
+            CheckErrorName::NOT_POSITIVE,
             fn ($value) => $value > 0
         ));
     }
@@ -82,7 +75,8 @@ class NumericRule extends Rule implements NumericRuleInterface
     public function nonPositive(): self
     {
         return $this->check(new Check(
-            self::ERROR_NOT_NON_POSITIVE,
+            CheckName::NON_POSITIVE,
+            CheckErrorName::NOT_NON_POSITIVE,
             fn ($value) => $value <= 0
         ));
     }
@@ -95,7 +89,8 @@ class NumericRule extends Rule implements NumericRuleInterface
     public function nonNegative(): self
     {
         return $this->check(new Check(
-            self::ERROR_NOT_NON_NEGATIVE,
+            CheckName::NON_NEGATIVE,
+            CheckErrorName::NOT_NON_NEGATIVE,
             fn ($value) => $value >= 0
         ));
     }
@@ -108,7 +103,8 @@ class NumericRule extends Rule implements NumericRuleInterface
     public function negative(): self
     {
         return $this->check(new Check(
-            self::ERROR_NOT_NEGATIVE,
+            CheckName::NEGATIVE,
+            CheckErrorName::NOT_NEGATIVE,
             fn ($value) => $value < 0
         ));
     }
@@ -121,7 +117,8 @@ class NumericRule extends Rule implements NumericRuleInterface
     public function greaterTran($number): NumericRuleInterface
     {
         return $this->check(new Check(
-            self::ERROR_NOT_GREATER,
+            CheckName::GREATER,
+            CheckErrorName::NOT_GREATER,
             fn ($value) => $value > $number,
             ['number' => $number]
         ));
@@ -135,7 +132,8 @@ class NumericRule extends Rule implements NumericRuleInterface
     public function greaterOrEqual($number): NumericRuleInterface
     {
         return $this->check(new Check(
-            self::ERROR_NOT_GREATER_OR_EQUEAL,
+            CheckName::GREATER_OR_EQUEAL,
+            CheckErrorName::NOT_GREATER_OR_EQUEAL,
             fn ($value) => $value >= $number,
             ['number' => $number]
         ));
@@ -149,7 +147,8 @@ class NumericRule extends Rule implements NumericRuleInterface
     public function lessTran($number): NumericRuleInterface
     {
         return $this->check(new Check(
-            self::ERROR_NOT_LESS,
+            CheckName::LESS,
+            CheckErrorName::NOT_LESS,
             fn ($value) => $value < $number,
             ['number' => $number]
         ));
@@ -163,7 +162,8 @@ class NumericRule extends Rule implements NumericRuleInterface
     public function lessOrEqual($number): NumericRuleInterface
     {
         return $this->check(new Check(
-            self::ERROR_NOT_LESS_OR_EQUEAL,
+            CheckName::LESS_OR_EQUEAL,
+            CheckErrorName::NOT_LESS_OR_EQUEAL,
             fn ($value) => $value <= $number,
             ['number' => $number]
         ));
@@ -177,7 +177,8 @@ class NumericRule extends Rule implements NumericRuleInterface
     public function between($start, $end): self
     {
         return $this->check(new Check(
-            self::ERROR_NOT_IN_SEGMENT,
+            CheckName::BETWEEN,
+            CheckErrorName::NOT_BETWEEN,
             fn ($value) => $value >= $start && $value <= $end,
             ['start' => $start, 'end' => $end]
         ));
@@ -189,7 +190,8 @@ class NumericRule extends Rule implements NumericRuleInterface
     public function inInterval($start, $end): self
     {
         return $this->check(new Check(
-            self::ERROR_NOT_IN_INTERVAL,
+            CheckName::IN_INTERVAL,
+            CheckErrorName::NOT_IN_INTERVAL,
             fn ($value) => $value > $start && $value < $end,
             ['start' => $start, 'end' => $end]
         ));

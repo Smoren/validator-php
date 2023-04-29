@@ -15,58 +15,69 @@ use Smoren\Validator\Rules\FloatRule;
 use Smoren\Validator\Rules\IntegerRule;
 use Smoren\Validator\Rules\NumericRule;
 use Smoren\Validator\Rules\OrRule;
+use Smoren\Validator\Structs\RuleName;
 
 class Value
 {
     /**
+     * @param string $name
+     *
      * @return NumericRule
      */
-    public static function numeric(): NumericRule
+    public static function numeric(string $name = RuleName::NUMERIC): NumericRule
     {
-        return new NumericRule();
+        return new NumericRule($name);
     }
 
     /**
+     * @param string $name
+     *
      * @return IntegerRuleInterface
      */
-    public static function integer(): IntegerRuleInterface
+    public static function integer(string $name = RuleName::INTEGER): IntegerRuleInterface
     {
-        return new IntegerRule();
+        return new IntegerRule($name);
     }
 
     /**
+     * @param string $name
+     *
      * @return FloatRuleInterface
      */
-    public static function float(): FloatRuleInterface
+    public static function float(string $name = RuleName::FLOAT): FloatRuleInterface
     {
-        return new FloatRule();
+        return new FloatRule($name);
     }
 
     /**
+     * @param string $name
+     *
      * @return ContainerRuleInterface
      */
-    public static function container(): ContainerRuleInterface
+    public static function container(string $name = RuleName::CONTAINER): ContainerRuleInterface
     {
-        return new ContainerRule();
+        return new ContainerRule($name);
     }
 
     /**
      * @param array<RuleInterface> $rules
+     * @param string $name
      *
      * @return CompositeRuleInterface
      */
-    public static function or(array $rules): CompositeRuleInterface
+    public static function or(array $rules, string $name = RuleName::OR): CompositeRuleInterface
     {
-        return new OrRule($rules);
+        return new OrRule($rules, $name);
     }
 
     /**
      * @param array<RuleInterface> $rules
+     * @param string $name
      *
      * @return CompositeRuleInterface
      */
-    public static function and(array $rules): CompositeRuleInterface
+    public static function and(array $rules, string $name = RuleName::AND): CompositeRuleInterface
     {
-        return new AndRule($rules);
+        return new AndRule($rules, $name);
     }
 }

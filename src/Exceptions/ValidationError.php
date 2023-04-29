@@ -7,6 +7,10 @@ namespace Smoren\Validator\Exceptions;
 class ValidationError extends \DomainException
 {
     /**
+     * @var string
+     */
+    protected string $name;
+    /**
      * @var mixed
      */
     protected $value;
@@ -16,24 +20,28 @@ class ValidationError extends \DomainException
     protected array $summary;
 
     /**
+     * @param string $name
      * @param mixed $value
      * @param array<CheckError> $checkErrors
+     *
      * @return self
      */
-    public static function fromCheckErrors($value, array $checkErrors): self
+    public static function fromCheckErrors(string $name, $value, array $checkErrors): self
     {
-        return new self($value, array_map(
+        return new self($name, $value, array_map(
             fn (CheckError $error) => [$error->getName(), $error->getParams()],
             $checkErrors
         ));
     }
 
     /**
+     * @param string $name
      * @param mixed $value
      * @param array<ValidationError> $validationErrors
+     *
      * @return self
      */
-    public static function fromValidationErrors($value, array $validationErrors): self
+    public static function fromValidationErrors(string $name, $value, array $validationErrors): self
     {
         $summary = [];
 
@@ -43,18 +51,27 @@ class ValidationError extends \DomainException
             }
         }
 
-        return new self($value, $summary);
+        return new self($name, $value, $summary);
     }
 
     /**
      * @param mixed $value
      * @param array<array{string, array<string, mixed>}> $summary
      */
-    public function __construct($value, array $summary)
+    public function __construct(string $name, $value, array $summary)
     {
         parent::__construct('Validation error');
+        $this->name = $name;
         $this->value = $value;
         $this->summary = $summary;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
     }
 
     /**

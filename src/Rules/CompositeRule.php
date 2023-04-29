@@ -17,8 +17,9 @@ abstract class CompositeRule extends Rule implements CompositeRuleInterface
     /**
      * @param array<RuleInterface> $rules
      */
-    public function __construct(array $rules)
+    public function __construct(array $rules, string $name)
     {
+        parent::__construct($name);
         foreach ($rules as $rule) {
             $this->addRule($rule);
         }

@@ -6,19 +6,22 @@ namespace Smoren\Validator\Rules;
 
 use Smoren\Validator\Checks\Check;
 use Smoren\Validator\Interfaces\FloatRuleInterface;
+use Smoren\Validator\Structs\CheckErrorName;
+use Smoren\Validator\Structs\CheckName;
 
 class FloatRule extends NumericRule implements FloatRuleInterface
 {
-    public const ERROR_NOT_FLOAT = 'not_float';
-    public const ERROR_FRACTIONAL = 'fractional';
-    public const ERROR_NOT_FRACTIONAL = 'not_fractional';
-    public const ERROR_NOT_INFINITE = 'not_infinite';
-    public const ERROR_NOT_FINITE = 'not_finite';
+    protected const DEFAULT_NAME = 'float';
 
-    public function __construct()
+    /**
+     * @param string $name
+     */
+    public function __construct(string $name)
     {
+        Rule::__construct($name);
         $this->check(new Check(
-            self::ERROR_NOT_FLOAT,
+            CheckName::FLOAT,
+            CheckErrorName::NOT_FLOAT,
             fn ($value) => is_float($value),
             []
         ), true);
@@ -32,7 +35,8 @@ class FloatRule extends NumericRule implements FloatRuleInterface
     public function fractional(): self
     {
         return $this->check(new Check(
-            self::ERROR_NOT_FRACTIONAL,
+            CheckName::FRACTIONAL,
+            CheckErrorName::NOT_FRACTIONAL,
             fn ($value) => \abs($value - \round($value)) >= PHP_FLOAT_EPSILON
         ));
     }
@@ -45,7 +49,8 @@ class FloatRule extends NumericRule implements FloatRuleInterface
     public function nonFractional(): self
     {
         return $this->check(new Check(
-            self::ERROR_FRACTIONAL,
+            CheckName::NOT_FRACTIONAL,
+            CheckErrorName::FRACTIONAL,
             fn ($value) => \abs($value - \round($value)) < PHP_FLOAT_EPSILON
         ));
     }
@@ -58,7 +63,8 @@ class FloatRule extends NumericRule implements FloatRuleInterface
     public function finite(): self
     {
         return $this->check(new Check(
-            self::ERROR_NOT_FINITE,
+            CheckName::FINITE,
+            CheckErrorName::NOT_FINITE,
             fn ($value) => $value > -INF && $value < INF,
         ));
     }
@@ -71,7 +77,8 @@ class FloatRule extends NumericRule implements FloatRuleInterface
     public function infinite(): self
     {
         return$this->check(new Check(
-            self::ERROR_NOT_INFINITE,
+            CheckName::INFINITE,
+            CheckErrorName::NOT_INFINITE,
             fn ($value) => $value === -INF || $value === INF,
         ));
     }

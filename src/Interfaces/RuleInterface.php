@@ -18,6 +18,11 @@ interface RuleInterface
     public function validate($value): void;
 
     /**
+     * @return string
+     */
+    public function getName(): string;
+
+    /**
      * @param mixed $value
      *
      * @return bool
@@ -40,11 +45,11 @@ interface RuleInterface
     public function falsy(): self;
 
     /**
-     * @param mixed $values
+     * @param mixed $value
      *
      * @return static
      */
-    public function equal($values): self;
+    public function equal($value): self;
 
     /**
      * @param mixed $value
@@ -60,11 +65,6 @@ interface RuleInterface
      * @return static
      */
     public function check(CheckInterface $check, bool $isInterrupting = false): self;
-
-    /**
-     * @return array<string>
-     */
-    public function getCheckNames(): array;
 
     /**
      * @return static

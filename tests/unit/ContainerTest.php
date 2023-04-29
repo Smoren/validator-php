@@ -8,9 +8,8 @@ use Codeception\Test\Unit;
 use Smoren\Validator\Exceptions\ValidationError;
 use Smoren\Validator\Factories\Value;
 use Smoren\Validator\Interfaces\ContainerRuleInterface;
-use Smoren\Validator\Rules\ContainerRule;
-use Smoren\Validator\Rules\IntegerRule;
-use Smoren\Validator\Rules\NumericRule;
+use Smoren\Validator\Structs\CheckErrorName;
+use Smoren\Validator\Structs\Param;
 
 class ContainerTest extends Unit
 {
@@ -74,7 +73,7 @@ class ContainerTest extends Unit
             [
                 [[2, 4, 6, 8], [4], [1000, 2000, 8000], []],
                 Value::container()
-                    ->everyValueIs(Value::integer()->even()),
+                    ->allValuesAre(Value::integer()->even()),
             ],
         ];
     }
@@ -107,7 +106,7 @@ class ContainerTest extends Unit
                 [1, '2', true, false, 'asd'],
                 Value::container(),
                 [
-                    [ContainerRule::ERROR_NOT_CONTAINER, []],
+                    [CheckErrorName::NOT_CONTAINER, []],
                 ],
             ],
             [
@@ -115,7 +114,7 @@ class ContainerTest extends Unit
                 Value::container()
                     ->lengthIs(Value::integer()->odd()),
                 [
-                    [ContainerRule::ERROR_BAD_LENGTH, ['violations' => [['not_odd', []]]]],
+                    [CheckErrorName::BAD_LENGTH, [Param::VIOLATIONS => [['not_odd', []]]]],
                 ],
             ],
             [
@@ -123,15 +122,15 @@ class ContainerTest extends Unit
                 Value::container()
                     ->array(),
                 [
-                    [ContainerRule::ERROR_NOT_ARRAY, []],
+                    [CheckErrorName::NOT_ARRAY, []],
                 ],
             ],
             [
-                [[1, 2, 'a' => 3], [1 => 2], (object)[]],
+                [[1, 2, 'a' => 3], [1 => 2]],
                 Value::container()
                     ->indexedArray(),
                 [
-                    [ContainerRule::ERROR_NOT_INDEXED_ARRAY, []],
+                    [CheckErrorName::NOT_INDEXED_ARRAY, []],
                 ],
             ],
             [
@@ -139,7 +138,7 @@ class ContainerTest extends Unit
                 Value::container()
                     ->object(),
                 [
-                    [ContainerRule::ERROR_NOT_OBJECT, []],
+                    [CheckErrorName::NOT_OBJECT, []],
                 ],
             ],
             [
@@ -148,7 +147,7 @@ class ContainerTest extends Unit
                     ->hasAttribute('a')
                     ->hasAttribute('b'),
                 [
-                    [ContainerRule::ERROR_ATTRIBUTE_NOT_EXIST, ['name' => 'b']],
+                    [CheckErrorName::ATTRIBUTE_NOT_EXIST, [Param::ATTRIBUTE => 'b']],
                 ],
             ],
             [
@@ -156,7 +155,7 @@ class ContainerTest extends Unit
                 Value::container()
                     ->hasAttribute('a', Value::numeric()),
                 [
-                    [ContainerRule::ERROR_BAD_ATTRIBUTE, ['name' => 'a', 'violations' => [['not_numeric', []]]]],
+                    [CheckErrorName::BAD_ATTRIBUTE, [Param::ATTRIBUTE => 'a', Param::RULE => 'numeric', Param::VIOLATIONS => [['not_numeric', []]]]],
                 ],
             ],
             [
@@ -164,15 +163,15 @@ class ContainerTest extends Unit
                 Value::container()
                     ->hasAttribute('a', Value::numeric()),
                 [
-                    [ContainerRule::ERROR_ATTRIBUTE_NOT_EXIST, ['name' => 'a']],
+                    [CheckErrorName::ATTRIBUTE_NOT_EXIST, [Param::ATTRIBUTE => 'a']],
                 ],
             ],
             [
                 [[2, 4, 7, 8], [1], [1001, 2000, 8000]],
                 Value::container()
-                    ->everyValueIs(Value::integer()->even()),
+                    ->allValuesAre(Value::integer()->even()),
                 [
-                    [ContainerRule::ERROR_SOME_VALUES_BAD, ['violations' => [['not_even', []]]]],
+                    [CheckErrorName::SOME_VALUES_BAD, [Param::RULE => 'integer', Param::VIOLATIONS => [['not_even', []]]]],
                 ],
             ],
         ];

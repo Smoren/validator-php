@@ -1,0 +1,53 @@
+<?php
+
+namespace Smoren\Validator\Structs;
+
+class CheckName
+{
+    public const NOT_NULL = 'not_null';
+    public const TRUTHY = 'truthy';
+    public const FALSY = 'falsy';
+    public const EQUEAL = 'equal';
+    public const SAME = 'same';
+
+    public const NUMERIC = 'numeric';
+    public const NUMBER = 'number';
+    public const STRING = 'string';
+    public const POSITIVE = 'positive';
+    public const NON_POSITIVE = 'non_positive';
+    public const NON_NEGATIVE = 'non_negative';
+    public const NEGATIVE = 'negative';
+    public const GREATER = 'greater';
+    public const GREATER_OR_EQUEAL = 'greater_or_equal';
+    public const LESS = 'less';
+    public const LESS_OR_EQUEAL = 'less_or_equal';
+    public const BETWEEN = 'in_segment';
+    public const IN_INTERVAL = 'in_interval';
+
+    public const INTEGER = 'integer';
+    public const EVEN = 'even';
+    public const ODD = 'odd';
+
+    public const FLOAT = 'float';
+    public const NOT_FRACTIONAL = 'not_fractional';
+    public const FRACTIONAL = 'fractional';
+    public const INFINITE = 'infinite';
+    public const FINITE = 'finite';
+
+    public const CONTAINER = 'container';
+    public const ARRAY = 'array';
+    public const INDEXED_ARRAY = 'indexed_array';
+    public const ASSOCIATIVE_ARRAY = 'associative_array';
+    public const ITERABLE = 'iterable';
+    public const COUNTABLE = 'countable';
+    public const EMPTY = 'not_empty';
+    public const NOT_EMPTY = 'not_empty';
+    public const ARRAY_ACCESSIBLE = 'array_accessible';
+    public const OBJECT = 'object';
+    public const STD_OBJECT = 'std_object';
+    public const INSTANCE_OF = 'instance_of';
+    public const LENGTH_IS = 'length_is';
+    public const HAS_ATTRIBUTE = 'has_attribute';
+    public const ALL_KEYS_ARE = 'all_keys_are';
+    public const ALL_VALUES_ARE = 'all_values_are';
+}

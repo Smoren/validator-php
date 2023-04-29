@@ -89,12 +89,12 @@ interface ContainerRuleInterface
      *
      * @return static
      */
-    public function everyKeyIs(RuleInterface $rule): self;
+    public function allKeysAre(RuleInterface $rule): self;
 
     /**
      * @param RuleInterface $rule
      *
      * @return static
      */
-    public function everyValueIs(RuleInterface $rule): self;
+    public function allValuesAre(RuleInterface $rule): self;
 }

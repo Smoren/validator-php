@@ -4,31 +4,21 @@ declare(strict_types=1);
 
 namespace Smoren\Validator\Checks;
 
-use Smoren\Validator\Exceptions\ValidationError;
-use Smoren\Validator\Interfaces\CheckInterface;
+use Smoren\Validator\Exceptions\CheckError;
+use Smoren\Validator\Interfaces\UtilityCheckInterface;
 
 /**
  * @internal
  */
-class RetrospectiveCheck implements CheckInterface
+class RetrospectiveCheck implements UtilityCheckInterface
 {
     /**
      * {@inheritDoc}
-     *
-     * @throws ValidationError if there are previous errors
      */
     public function execute($value, array $previousErrors): void
     {
         if (\count($previousErrors)) {
-            throw ValidationError::fromCheckErrors($value, $previousErrors);
+            throw new CheckError('retrospective', $value, $previousErrors);
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getName(): ?string
-    {
-        return null;
     }
 }

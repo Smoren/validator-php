@@ -11,18 +11,19 @@ use Smoren\Validator\Exceptions\ValidationError;
 use Smoren\Validator\Interfaces\CheckInterface;
 use Smoren\Validator\Interfaces\CheckWrapperInterface;
 use Smoren\Validator\Interfaces\RuleInterface;
+use Smoren\Validator\Interfaces\UtilityCheckInterface;
 use Smoren\Validator\Interfaces\ValidationResultInterface;
+use Smoren\Validator\Structs\CheckErrorName;
+use Smoren\Validator\Structs\CheckName;
 use Smoren\Validator\Structs\CheckWrapper;
 use Smoren\Validator\Structs\ValidationSuccessResult;
 
 class Rule extends BaseRule implements RuleInterface
 {
-    public const ERROR_NULL = 'null';
-    public const ERROR_NOT_TRUTHY = 'not_truthy';
-    public const ERROR_NOT_FALSY = 'not_falsy';
-    public const ERROR_NOT_EQUEAL = 'equal';
-    public const ERROR_NOT_SAME = 'same';
-
+    /**
+     * @var string
+     */
+    protected string $name;
     /**
      * @var array<CheckWrapperInterface>
      */
@@ -31,6 +32,14 @@ class Rule extends BaseRule implements RuleInterface
      * @var bool
      */
     protected bool $isNullable = false;
+
+    /**
+     * @param string $name
+     */
+    public function __construct(string $name)
+    {
+        $this->name = $name;
+    }
 
     /**
      * {@inheritDoc}
@@ -51,7 +60,8 @@ class Rule extends BaseRule implements RuleInterface
     public function truthy(): self
     {
         return $this->check(new Check(
-            self::ERROR_NOT_TRUTHY,
+            CheckName::TRUTHY,
+            CheckErrorName::NOT_TRUTHY,
             fn ($value) => boolval($value),
         ));
     }
@@ -64,7 +74,8 @@ class Rule extends BaseRule implements RuleInterface
     public function falsy(): self
     {
         return $this->check(new Check(
-            self::ERROR_NOT_FALSY,
+            CheckName::FALSY,
+            CheckErrorName::NOT_FALSY,
             fn ($value) => !boolval($value),
         ));
     }
@@ -74,12 +85,13 @@ class Rule extends BaseRule implements RuleInterface
      *
      * @return static
      */
-    public function equal($values): self
+    public function equal($value): self
     {
         return $this->check(new Check(
-            self::ERROR_NOT_EQUEAL,
-            fn ($value) => $value == $values,
-            ['number' => $values]
+            CheckName::EQUEAL,
+            CheckErrorName::NOT_EQUEAL,
+            fn ($val) => $value == $val,
+            ['value' => $value]
         ));
     }
 
@@ -91,9 +103,10 @@ class Rule extends BaseRule implements RuleInterface
     public function same($value): self
     {
         return $this->check(new Check(
-            self::ERROR_NOT_SAME,
-            fn ($value) => $value === $value,
-            ['number' => $value]
+            CheckName::SAME,
+            CheckErrorName::NOT_SAME,
+            fn ($val) => $value === $val,
+            ['value' => $value]
         ));
     }
 
@@ -110,27 +123,12 @@ class Rule extends BaseRule implements RuleInterface
 
     /**
      * {@inheritDoc}
-     */
-    public function getCheckNames(): array
-    {
-        $result = [];
-        foreach ($this->checks as $check) {
-            $name = $check->getCheck()->getName();
-            if ($name !== null) {
-                $result[] = $name;
-            }
-        }
-        return $result;
-    }
-
-    /**
-     * {@inheritDoc}
      *
      * @return static
      */
     public function stopOnViolation(): self
     {
-        return $this->check(new RetrospectiveCheck());
+        return $this->check(new RetrospectiveCheck(), true);
     }
 
     /**
@@ -152,6 +150,14 @@ class Rule extends BaseRule implements RuleInterface
     public function validate($value): void
     {
         $this->execute($value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getName(): string
+    {
+        return $this->name;
     }
 
     /**
@@ -182,7 +188,7 @@ class Rule extends BaseRule implements RuleInterface
                 return new ValidationSuccessResult(true);
             }
 
-            throw new ValidationError($value, [[self::ERROR_NULL, []]]);
+            throw new ValidationError($this->name, $value, [[CheckErrorName::NULL, []]]);
         }
 
         $errors = [];
@@ -191,15 +197,18 @@ class Rule extends BaseRule implements RuleInterface
             try {
                 $check->getCheck()->execute($value, $errors);
             } catch (CheckError $e) {
-                $errors[] = $e;
+                if (!($check->getCheck() instanceof UtilityCheckInterface)) {
+                    $errors[] = $e;
+                }
+
                 if ($check->isInterrupting()) {
-                    throw ValidationError::fromCheckErrors($value, $errors);
+                    throw ValidationError::fromCheckErrors($this->name, $value, $errors);
                 }
             }
         }
 
         if (\count($errors) > 0) {
-            throw ValidationError::fromCheckErrors($value, $errors);
+            throw ValidationError::fromCheckErrors($this->name, $value, $errors);
         }
 
         return new ValidationSuccessResult(false);

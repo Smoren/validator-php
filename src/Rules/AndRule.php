@@ -36,6 +36,6 @@ class AndRule extends CompositeRule
             return $result;
         }
 
-        throw ValidationError::fromValidationErrors($value, $errors);
+        throw ValidationError::fromValidationErrors($this->name, $value, $errors);
     }
 }
