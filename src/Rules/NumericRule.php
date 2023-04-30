@@ -20,8 +20,7 @@ class NumericRule extends Rule implements NumericRuleInterface
         $this->check(new Check(
             CheckName::NUMERIC,
             CheckErrorName::NOT_NUMERIC,
-            fn ($value) => is_numeric($value),
-            []
+            fn ($value) => \is_numeric($value)
         ), true);
     }
 
@@ -35,7 +34,7 @@ class NumericRule extends Rule implements NumericRuleInterface
         return $this->check(new Check(
             CheckName::NUMBER,
             CheckErrorName::NOT_NUMBER,
-            fn ($value) => is_int($value) || is_float($value)
+            fn ($value) => \is_int($value) || \is_float($value)
         ));
     }
 
@@ -49,7 +48,7 @@ class NumericRule extends Rule implements NumericRuleInterface
         return $this->check(new Check(
             CheckName::STRING,
             CheckErrorName::NOT_STRING,
-            fn ($value) => is_string($value)
+            fn ($value) => \is_string($value)
         ));
     }
 

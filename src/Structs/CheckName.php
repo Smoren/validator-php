@@ -50,4 +50,8 @@ class CheckName
     public const HAS_ATTRIBUTE = 'has_attribute';
     public const ALL_KEYS_ARE = 'all_keys_are';
     public const ALL_VALUES_ARE = 'all_values_are';
+
+    public const MATCH = 'match';
+    public const HAS_SUBSTRING = 'has_substring';
+    public const STARTS_WITH = 'starts_with';
 }

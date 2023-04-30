@@ -51,4 +51,8 @@ class CheckErrorName
     public const BAD_ATTRIBUTE = 'bad_attribute';
     public const SOME_KEYS_BAD = 'some_keys_bad';
     public const SOME_VALUES_BAD = 'some_values_bad';
+
+    public const NOT_MATCH = 'not_match';
+    public const HAS_NOT_SUBSTRING = 'has_not_substring';
+    public const NOT_STARTS_WITH = 'not_starts_with';
 }
