@@ -7,7 +7,7 @@ namespace Smoren\Validator\Tests\Unit;
 use Codeception\Test\Unit;
 use Smoren\Validator\Exceptions\ValidationError;
 use Smoren\Validator\Factories\Value;
-use Smoren\Validator\Interfaces\IntegerRuleInterface;
+use Smoren\Validator\Interfaces\RuleInterface;
 use Smoren\Validator\Structs\CheckErrorName;
 
 class IntegerTest extends Unit
@@ -15,11 +15,12 @@ class IntegerTest extends Unit
     /**
      * @dataProvider dataProviderForSuccess
      * @param array $input
-     * @param IntegerRuleInterface $rule
+     * @param callable(): RuleInterface $ruleFactory
      * @return void
      */
-    public function testSuccess(array $input, IntegerRuleInterface $rule): void
+    public function testSuccess(array $input, callable $ruleFactory): void
     {
+        $rule = $ruleFactory();
         foreach ($input as $value) {
             $rule->validate($value);
         }
@@ -31,70 +32,80 @@ class IntegerTest extends Unit
         return [
             [
                 [1, 2, 3, -1, -2, -3],
-                Value::integer(),
+                fn () => Value::integer(),
             ],
             [
                 [null, 1, 2, 3, -1, -2, -3],
-                Value::integer()
+                fn () => Value::integer()
                     ->nullable(),
             ],
             [
+                [0, -0],
+                fn () => Value::integer()
+                    ->falsy(),
+            ],
+            [
+                [1, -1, 2, -2, 3],
+                fn () => Value::integer()
+                    ->truthy(),
+            ],
+            [
                 [1, 2, 3, 10, 150],
-                Value::integer()
+                fn () => Value::integer()
                     ->positive(),
             ],
             [
                 [-1, -2, -3, -10, -150],
-                Value::integer()
+                fn () => Value::integer()
                     ->negative(),
             ],
             [
                 [-1, -2, -3, -0, -150],
-                Value::integer()
+                fn () => Value::integer()
                     ->nonPositive(),
             ],
             [
                 [0, 1, 2, 3, 10, 150],
-                Value::integer()
+                fn () => Value::integer()
                     ->nonNegative(),
             ],
             [
                 [6, 7, 8, 10, 150],
-                Value::integer()
+                fn () => Value::integer()
                     ->greaterTran(5),
             ],
             [
                 [5, 6, 7, 8, 10, 150],
-                Value::integer()
+                fn () => Value::integer()
                     ->greaterOrEqual(5),
             ],
             [
                 [4, 3, 2, 1, 0, -100],
-                Value::integer()
+                fn () => Value::integer()
                     ->lessTran(5),
             ],
             [
                 [5, 4, 3, 2, 1, 0, -100],
-                Value::integer()
+                fn () => Value::integer()
                     ->lessOrEqual(5),
             ],
             [
                 [6, 8],
-                Value::integer()
+                fn () => Value::integer()
                     ->positive()
                     ->even()
                     ->inInterval(5, 10),
             ],
             [
                 [7, 9],
-                Value::integer()
+                fn () => Value::integer()
                     ->positive()
                     ->odd()
                     ->inInterval(5, 10),
             ],
             [
                 [null, 7, 9],
-                Value::integer()
+                fn () => Value::integer()
                     ->nullable()
                     ->positive()
                     ->odd()
@@ -102,21 +113,21 @@ class IntegerTest extends Unit
             ],
             [
                 [6, 8, 10],
-                Value::integer()
+                fn () => Value::integer()
                     ->positive()
                     ->even()
                     ->between(5, 10),
             ],
             [
                 [5, 7, 9],
-                Value::integer()
+                fn () => Value::integer()
                     ->positive()
                     ->odd()
                     ->between(5, 10),
             ],
             [
                 [5, 7, 9, null],
-                Value::integer()
+                fn () => Value::integer()
                     ->positive()
                     ->nullable()
                     ->odd()
@@ -128,12 +139,13 @@ class IntegerTest extends Unit
     /**
      * @dataProvider dataProviderForFail
      * @param array $input
-     * @param IntegerRuleInterface $rule
+     * @param callable(): RuleInterface $ruleFactory
      * @param array $errors
      * @return void
      */
-    public function testFail(array $input, IntegerRuleInterface $rule, array $errors): void
+    public function testFail(array $input, callable $ruleFactory, array $errors): void
     {
+        $rule = $ruleFactory();
         foreach ($input as $value) {
             try {
                 $rule->validate($value);
@@ -151,29 +163,45 @@ class IntegerTest extends Unit
         return [
             [
                 [null],
-                Value::integer(),
+                fn () => Value::integer(),
                 [
                     [CheckErrorName::NULL, []],
                 ],
             ],
             [
                 ['1', 'a', true, false, []],
-                Value::integer(),
+                fn () => Value::integer(),
                 [
                     [CheckErrorName::NOT_INTEGER, []],
                 ],
             ],
             [
                 ['1', 'a', true, false, []],
-                Value::integer()
+                fn () => Value::integer()
                     ->nullable(),
                 [
                     [CheckErrorName::NOT_INTEGER, []],
                 ],
             ],
             [
+                [1, -1, 2, -2, 3],
+                fn () => Value::integer()
+                    ->falsy(),
+                [
+                    [CheckErrorName::NOT_FALSY, []],
+                ],
+            ],
+            [
+                [0, -0],
+                fn () => Value::integer()
+                    ->truthy(),
+                [
+                    [CheckErrorName::NOT_TRUTHY, []],
+                ],
+            ],
+            [
                 ['1', 'a', true, false, []],
-                Value::integer()
+                fn () => Value::integer()
                     ->nullable()
                     ->positive(),
                 [
@@ -182,7 +210,7 @@ class IntegerTest extends Unit
             ],
             [
                 [0, -1, -2, -3, -10, -150],
-                Value::integer()
+                fn () => Value::integer()
                     ->positive(),
                 [
                     [CheckErrorName::NOT_POSITIVE, []],
@@ -190,7 +218,7 @@ class IntegerTest extends Unit
             ],
             [
                 [0, 1, 3, 10, 150],
-                Value::integer()
+                fn () => Value::integer()
                     ->negative(),
                 [
                     [CheckErrorName::NOT_NEGATIVE, []],
@@ -198,7 +226,7 @@ class IntegerTest extends Unit
             ],
             [
                 [1, 2, 3, 10, 150],
-                Value::integer()
+                fn () => Value::integer()
                     ->nonPositive(),
                 [
                     [CheckErrorName::NOT_NON_POSITIVE, []],
@@ -206,7 +234,7 @@ class IntegerTest extends Unit
             ],
             [
                 [-1, -2, -3, -10, -150],
-                Value::integer()
+                fn () => Value::integer()
                     ->nonNegative(),
                 [
                     [CheckErrorName::NOT_NON_NEGATIVE, []],
@@ -214,7 +242,7 @@ class IntegerTest extends Unit
             ],
             [
                 [5, 4, 3, 2, 1, 0, -100],
-                Value::integer()
+                fn () => Value::integer()
                     ->greaterTran(5),
                 [
                     [CheckErrorName::NOT_GREATER, ['number' => 5]],
@@ -222,7 +250,7 @@ class IntegerTest extends Unit
             ],
             [
                 [4, 3, 2, 1, 0, -100],
-                Value::integer()
+                fn () => Value::integer()
                     ->greaterOrEqual(5),
                 [
                     [CheckErrorName::NOT_GREATER_OR_EQUEAL, ['number' => 5]],
@@ -230,7 +258,7 @@ class IntegerTest extends Unit
             ],
             [
                 [5, 6, 7, 8, 10, 150],
-                Value::integer()
+                fn () => Value::integer()
                     ->lessTran(5),
                 [
                     [CheckErrorName::NOT_LESS, ['number' => 5]],
@@ -238,7 +266,7 @@ class IntegerTest extends Unit
             ],
             [
                 [6, 7, 8, 10, 150],
-                Value::integer()
+                fn () => Value::integer()
                     ->lessOrEqual(5),
                 [
                     [CheckErrorName::NOT_LESS_OR_EQUEAL, ['number' => 5]],
@@ -246,7 +274,7 @@ class IntegerTest extends Unit
             ],
             [
                 [1, 3, 11, 13],
-                Value::integer()
+                fn () => Value::integer()
                     ->positive()
                     ->even()
                     ->inInterval(5, 10),
@@ -257,7 +285,7 @@ class IntegerTest extends Unit
             ],
             [
                 [-1, -3, -11, -13],
-                Value::integer()
+                fn () => Value::integer()
                     ->positive()
                     ->even()
                     ->inInterval(5, 10),
@@ -269,7 +297,7 @@ class IntegerTest extends Unit
             ],
             [
                 [-1, -3, -11, -13],
-                Value::integer()
+                fn () => Value::integer()
                     ->positive()
                     ->even()
                     ->stopOnViolation()
@@ -281,7 +309,7 @@ class IntegerTest extends Unit
             ],
             [
                 [-1, -3, -11, -13],
-                Value::integer()
+                fn () => Value::integer()
                     ->positive()
                     ->stopOnViolation()
                     ->nonNegative()
@@ -294,7 +322,7 @@ class IntegerTest extends Unit
             ],
             [
                 [1, 3, 5, 7, 9],
-                Value::integer()
+                fn () => Value::integer()
                     ->positive()
                     ->stopOnViolation()
                     ->nonNegative()
@@ -307,7 +335,7 @@ class IntegerTest extends Unit
             ],
             [
                 [-1, -3, -11, -13],
-                Value::integer()
+                fn () => Value::integer()
                     ->positive()
                     ->even()
                     ->inInterval(5, 10)
@@ -318,7 +346,7 @@ class IntegerTest extends Unit
             ],
             [
                 [7, 9],
-                Value::integer()
+                fn () => Value::integer()
                     ->positive()
                     ->even()
                     ->inInterval(5, 10),
@@ -328,7 +356,7 @@ class IntegerTest extends Unit
             ],
             [
                 [6, 8],
-                Value::integer()
+                fn () => Value::integer()
                     ->positive()
                     ->odd()
                     ->inInterval(5, 10),
@@ -338,7 +366,7 @@ class IntegerTest extends Unit
             ],
             [
                 [6, 8],
-                Value::integer()
+                fn () => Value::integer()
                     ->positive()
                     ->odd()
                     ->between(5, 10),
@@ -348,7 +376,7 @@ class IntegerTest extends Unit
             ],
             [
                 [1, 3, 11, 13],
-                Value::integer()
+                fn () => Value::integer()
                     ->positive()
                     ->odd()
                     ->between(5, 10),
@@ -358,7 +386,7 @@ class IntegerTest extends Unit
             ],
             [
                 [2, 4, 12, 14],
-                Value::integer()
+                fn () => Value::integer()
                     ->positive()
                     ->odd()
                     ->between(5, 10),
@@ -369,7 +397,7 @@ class IntegerTest extends Unit
             ],
             [
                 [2, 4, 12, 14],
-                Value::integer()
+                fn () => Value::integer()
                     ->positive()
                     ->stopOnAnyPriorViolation()
                     ->odd()
@@ -381,7 +409,7 @@ class IntegerTest extends Unit
             ],
             [
                 [6, 8, 10],
-                Value::integer()
+                fn () => Value::integer()
                     ->positive()
                     ->odd()
                     ->between(5, 10),

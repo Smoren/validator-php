@@ -7,7 +7,7 @@ namespace Smoren\Validator\Tests\Unit;
 use Codeception\Test\Unit;
 use Smoren\Validator\Exceptions\ValidationError;
 use Smoren\Validator\Factories\Value;
-use Smoren\Validator\Rules\OrRule;
+use Smoren\Validator\Interfaces\RuleInterface;
 use Smoren\Validator\Structs\CheckErrorName;
 
 class OrRuleTest extends Unit
@@ -15,11 +15,12 @@ class OrRuleTest extends Unit
     /**
      * @dataProvider dataProviderForSuccess
      * @param array $input
-     * @param OrRule $rule
+     * @param callable(): RuleInterface $ruleFactory
      * @return void
      */
-    public function testSuccess(array $input, OrRule $rule): void
+    public function testSuccess(array $input, callable $ruleFactory): void
     {
+        $rule = $ruleFactory();
         foreach ($input as $value) {
             $rule->validate($value);
         }
@@ -31,25 +32,25 @@ class OrRuleTest extends Unit
         return [
             [
                 [1, 2, 3, -1, -2, -3, 1.0, 1.1, 2.71, 3.14],
-                Value::or([]),
+                fn () => Value::or([]),
             ],
             [
                 [1, 2, 3, -1, -2, -3, 1.0, 1.1, 2.71, 3.14],
-                Value::or([
+                fn () => Value::or([
                     Value::integer(),
                     Value::float(),
                 ]),
             ],
             [
                 [null, 1, 2, 3, -1, -2, -3, 1.0, 1.1, 2.71, 3.14],
-                Value::or([
+                fn () => Value::or([
                     Value::integer(),
                     Value::float(),
                 ])->nullable(),
             ],
             [
                 [null, 1, 2, 3, -1, -2, -3, 1.0, 2.0, 3.0],
-                Value::or([
+                fn () => Value::or([
                     Value::integer(),
                     Value::float()->nonFractional(),
                 ])->nullable(),
@@ -60,12 +61,13 @@ class OrRuleTest extends Unit
     /**
      * @dataProvider dataProviderForFail
      * @param array $input
-     * @param OrRule $rule
+     * @param callable(): RuleInterface $ruleFactory
      * @param array $errors
      * @return void
      */
-    public function testFail(array $input, OrRule $rule, array $errors): void
+    public function testFail(array $input, callable $ruleFactory, array $errors): void
     {
+        $rule = $ruleFactory();
         foreach ($input as $value) {
             try {
                 $rule->validate($value);
@@ -83,14 +85,14 @@ class OrRuleTest extends Unit
         return [
             [
                 [null],
-                Value::or([]),
+                fn () => Value::or([]),
                 [
                     [CheckErrorName::NULL, []],
                 ],
             ],
             [
                 ['1', '2.2', 'a', true, false, [], (object)[1, 2, 3]],
-                Value::or([
+                fn () => Value::or([
                     Value::integer(),
                     Value::float(),
                 ]),
@@ -101,7 +103,7 @@ class OrRuleTest extends Unit
             ],
             [
                 [null],
-                Value::or([
+                fn () => Value::or([
                     Value::integer(),
                     Value::float(),
                 ]),
@@ -111,7 +113,7 @@ class OrRuleTest extends Unit
             ],
             [
                 [1.1, 2.1, 3.1],
-                Value::or([
+                fn () => Value::or([
                     Value::integer()->positive(),
                     Value::float()->positive()->nonFractional(),
                 ])->nullable(),
@@ -122,7 +124,7 @@ class OrRuleTest extends Unit
             ],
             [
                 [-1.1, -2.1, -3.1],
-                Value::or([
+                fn () => Value::or([
                     Value::integer()->positive(),
                     Value::float()->positive()->nonFractional(),
                 ])->nullable(),

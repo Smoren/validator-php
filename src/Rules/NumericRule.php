@@ -57,6 +57,34 @@ class NumericRule extends Rule implements NumericRuleInterface
      *
      * @return static
      */
+    public function truthy(): self
+    {
+        return $this->check(new Check(
+            CheckName::TRUTHY,
+            CheckErrorName::NOT_TRUTHY,
+            fn ($value) => boolval(floatval($value) ),
+        ));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return static
+     */
+    public function falsy(): self
+    {
+        return $this->check(new Check(
+            CheckName::FALSY,
+            CheckErrorName::NOT_FALSY,
+            fn ($value) => !boolval(floatval($value)),
+        ));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return static
+     */
     public function positive(): self
     {
         return $this->check(new Check(
