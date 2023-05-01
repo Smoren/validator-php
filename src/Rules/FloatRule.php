@@ -11,8 +11,6 @@ use Smoren\Validator\Structs\CheckName;
 
 class FloatRule extends NumericRule implements FloatRuleInterface
 {
-    protected const DEFAULT_NAME = 'float';
-
     /**
      * @param string $name
      */
