@@ -8,6 +8,7 @@ class RuleName
     public const NUMERIC = 'numeric';
     public const INTEGER = 'integer';
     public const FLOAT = 'float';
+    public const STRING = 'string';
     public const CONTAINER = 'container';
     public const OR = 'or';
     public const AND = 'and';

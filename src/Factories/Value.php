@@ -9,11 +9,13 @@ use Smoren\Validator\Interfaces\CompositeRuleInterface;
 use Smoren\Validator\Interfaces\ContainerRuleInterface;
 use Smoren\Validator\Interfaces\FloatRuleInterface;
 use Smoren\Validator\Interfaces\IntegerRuleInterface;
+use Smoren\Validator\Interfaces\StringRuleInterface;
 use Smoren\Validator\Rules\AndRule;
 use Smoren\Validator\Rules\ContainerRule;
 use Smoren\Validator\Rules\FloatRule;
 use Smoren\Validator\Rules\IntegerRule;
 use Smoren\Validator\Rules\NumericRule;
+use Smoren\Validator\Rules\StringRule;
 use Smoren\Validator\Rules\OrRule;
 use Smoren\Validator\Structs\RuleName;
 
@@ -47,6 +49,16 @@ class Value
     public static function float(string $name = RuleName::FLOAT): FloatRuleInterface
     {
         return new FloatRule($name);
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return StringRuleInterface
+     */
+    public static function string(string $name = RuleName::STRING): StringRuleInterface
+    {
+        return new StringRule($name);
     }
 
     /**
