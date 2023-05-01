@@ -62,7 +62,7 @@ class NumericRule extends Rule implements NumericRuleInterface
         return $this->check(new Check(
             CheckName::TRUTHY,
             CheckErrorName::NOT_TRUTHY,
-            fn ($value) => boolval(floatval($value) ),
+            fn ($value) => boolval(floatval($value)),
         ));
     }
 
