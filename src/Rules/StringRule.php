@@ -28,7 +28,7 @@ class StringRule extends Rule implements StringRuleInterface
         return $this->check(new Check(
             CheckName::NUMERIC,
             CheckErrorName::NOT_NUMERIC,
-            fn ($value) => is_numeric($value)
+            fn ($value) => \is_numeric($value)
         ));
     }
 
