@@ -1,4 +1,4 @@
-# PHP Validator
+# PHP Validation Tools
 
 ![Packagist PHP Version Support](https://img.shields.io/packagist/php-v/smoren/validator)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Smoren/validator-php/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Smoren/validator-php/?branch=master)
@@ -110,4 +110,4 @@ PHP Validator Tools conforms to the following standards:
 
 ## License
 
-PHP Formula Tools is licensed under the MIT License.
+PHP Validation Tools is licensed under the MIT License.
