@@ -11,6 +11,87 @@
 composer require smoren/validator
 ```
 
+## Usage
+
+```php
+use Smoren\Validator\Factories\Value;
+use Smoren\Validator\Exceptions\ValidationError;
+
+$rule = Value::container()
+    ->hasAttribute('id', Value::integer()->positive())
+    ->hasAttribute('probability', Value::float()->between(0, 1))
+    ->hasAttribute('vectors', Value::container()->array()->allValuesAre(
+        Value::container()
+            ->array()
+            ->lengthIs(Value::integer()->equal(2))
+            ->allValuesAre(Value::integer())
+    ))
+
+$validInput = [
+    'id' => 13,
+    'probability' => 0.92,
+    'vectors' => [[1, 2], [3, 4], [5, 6]],
+];
+
+try {
+    $rule->validate($validInput);
+} catch (ValidationError $e) {
+    // Input is valid so this block is unreachable.
+}
+
+$invalidInput = [
+    'id' => '13',
+    'probability' => 1.92,
+    'vectors' => [[1, 2.1], [3, 4], [5, 6]],
+];
+
+try {
+    $rule->validate($invalidInput);
+} catch (ValidationError $e) {
+    // Input is invalid so we catch the exception.
+    print_r($e->getViolatedRestrictions());
+    /*
+    [
+        ['attribute_is', [
+            'attribute' => 'id',
+            'rule' => 'integer',
+            'violated_restrictions' => [
+                ['integer', []]
+            ]
+        ]],
+        ['attribute_is', [
+            'attribute' => 'probability',
+            'rule' => 'float',
+            'violated_restrictions' => [
+                ['in_segment', [
+                    'start' => 0,
+                    'end' => 1
+                ]]
+            ]
+        ]],
+        ['attribute_is', [
+            'attribute' => 'vectors',
+            'rule' => 'container',
+            'violated_restrictions' => [
+                ['all_values_are', [
+                    'rule' => 'container',
+                    'violated_restrictions' => [
+                        ['all_values_are', [
+                            'rule' => 'integer',
+                            'violated_restrictions' => [
+                                ['integer', []]
+                            ]
+                        ]]
+                    ]
+                ]]
+            ]
+        ]]
+    ]
+    */
+}
+
+```
+
 ## Unit testing
 ```
 composer install
