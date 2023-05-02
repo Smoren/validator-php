@@ -8,6 +8,7 @@ use Smoren\Validator\Checks\Check;
 use Smoren\Validator\Interfaces\NumericRuleInterface;
 use Smoren\Validator\Structs\CheckErrorName;
 use Smoren\Validator\Structs\CheckName;
+use Smoren\Validator\Structs\Param;
 
 class NumericRule extends Rule implements NumericRuleInterface
 {
@@ -147,7 +148,7 @@ class NumericRule extends Rule implements NumericRuleInterface
             CheckName::GREATER,
             CheckErrorName::NOT_GREATER,
             fn ($value) => $value > $number,
-            ['number' => $number]
+            [Param::GIVEN_VALUE => $number]
         ));
     }
 
@@ -162,7 +163,7 @@ class NumericRule extends Rule implements NumericRuleInterface
             CheckName::GREATER_OR_EQUEAL,
             CheckErrorName::NOT_GREATER_OR_EQUEAL,
             fn ($value) => $value >= $number,
-            ['number' => $number]
+            [Param::GIVEN_VALUE => $number]
         ));
     }
 
@@ -177,7 +178,7 @@ class NumericRule extends Rule implements NumericRuleInterface
             CheckName::LESS,
             CheckErrorName::NOT_LESS,
             fn ($value) => $value < $number,
-            ['number' => $number]
+            [Param::GIVEN_VALUE => $number]
         ));
     }
 
@@ -192,7 +193,7 @@ class NumericRule extends Rule implements NumericRuleInterface
             CheckName::LESS_OR_EQUEAL,
             CheckErrorName::NOT_LESS_OR_EQUEAL,
             fn ($value) => $value <= $number,
-            ['number' => $number]
+            [Param::GIVEN_VALUE => $number]
         ));
     }
 

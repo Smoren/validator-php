@@ -9,6 +9,7 @@ use Smoren\Validator\Exceptions\ValidationError;
 use Smoren\Validator\Factories\Value;
 use Smoren\Validator\Interfaces\RuleInterface;
 use Smoren\Validator\Structs\CheckErrorName;
+use Smoren\Validator\Structs\Param;
 
 class FloatTest extends Unit
 {
@@ -221,7 +222,7 @@ class FloatTest extends Unit
                 fn () => Value::float()
                     ->greaterTran(5),
                 [
-                    [CheckErrorName::NOT_GREATER, ['number' => 5]],
+                    [CheckErrorName::NOT_GREATER, [Param::GIVEN_VALUE => 5]],
                 ],
             ],
             [
@@ -229,7 +230,7 @@ class FloatTest extends Unit
                 fn () => Value::float()
                     ->greaterOrEqual(5),
                 [
-                    [CheckErrorName::NOT_GREATER_OR_EQUEAL, ['number' => 5]],
+                    [CheckErrorName::NOT_GREATER_OR_EQUEAL, [Param::GIVEN_VALUE => 5]],
                 ],
             ],
             [
@@ -237,7 +238,7 @@ class FloatTest extends Unit
                 fn () => Value::float()
                     ->lessTran(5),
                 [
-                    [CheckErrorName::NOT_LESS, ['number' => 5]],
+                    [CheckErrorName::NOT_LESS, [Param::GIVEN_VALUE => 5]],
                 ],
             ],
             [
@@ -245,7 +246,7 @@ class FloatTest extends Unit
                 fn () => Value::float()
                     ->lessOrEqual(5),
                 [
-                    [CheckErrorName::NOT_LESS_OR_EQUEAL, ['number' => 5]],
+                    [CheckErrorName::NOT_LESS_OR_EQUEAL, [Param::GIVEN_VALUE => 5]],
                 ],
             ],
             [
