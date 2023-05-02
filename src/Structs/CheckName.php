@@ -7,7 +7,7 @@ class CheckName
     public const NOT_NULL = 'not_null';
     public const TRUTHY = 'truthy';
     public const FALSY = 'falsy';
-    public const EQUEAL = 'equal';
+    public const EQUAL = 'equal';
     public const SAME = 'same';
 
     public const NUMERIC = 'numeric';
@@ -48,6 +48,7 @@ class CheckName
     public const INSTANCE_OF = 'instance_of';
     public const LENGTH_IS = 'length_is';
     public const HAS_ATTRIBUTE = 'has_attribute';
+    public const ATTRIBUTE_IS = 'attribute_is';
     public const ALL_KEYS_ARE = 'all_keys_are';
     public const ALL_VALUES_ARE = 'all_values_are';
 

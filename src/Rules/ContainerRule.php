@@ -208,7 +208,7 @@ class ContainerRule extends Rule implements ContainerRuleInterface
         }
 
         return $this->check(
-            CheckBuilder::create(CheckName::HAS_ATTRIBUTE)
+            CheckBuilder::create(CheckName::ATTRIBUTE_IS)
                 ->withPredicate(static function ($value, string $name) use ($rule) {
                     $rule->validate(ContainerAccessHelper::getAttributeValue($value, $name));
                     return true;

@@ -88,7 +88,7 @@ class Rule extends BaseRule implements RuleInterface
     public function equal($value): self
     {
         return $this->check(
-            CheckBuilder::create(CheckName::EQUEAL)
+            CheckBuilder::create(CheckName::EQUAL)
                 ->withPredicate(fn ($actual, $expected) => $actual == $expected)
                 ->withParams([Param::EXPECTED => $value])
                 ->build()

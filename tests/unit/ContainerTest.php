@@ -293,7 +293,7 @@ class ContainerTest extends Unit
                     ->hasAttribute('a', Value::numeric()),
                 [
                     [
-                        CheckName::HAS_ATTRIBUTE,
+                        CheckName::ATTRIBUTE_IS,
                         [
                             Param::ATTRIBUTE => 'a',
                             Param::RULE => RuleName::NUMERIC,
@@ -301,6 +301,17 @@ class ContainerTest extends Unit
                                 [CheckName::NUMERIC, []],
                             ],
                         ],
+                    ],
+                ],
+            ],
+            [
+                [['b' => 2], ['d', 'b' => null]],
+                fn () => Value::container()
+                    ->hasAttribute('a', Value::numeric()),
+                [
+                    [
+                        CheckName::HAS_ATTRIBUTE,
+                        [Param::ATTRIBUTE => 'a'],
                     ],
                 ],
             ],
@@ -376,25 +387,73 @@ class ContainerTest extends Unit
                     ],
                 ],
             ],
-//            [
-//                [
-//                    [
-//                        'id' => '13',
-//                        'probability' => 1.92,
-//                        'vectors' => [[1, 2.1], [3, 4], [5, 6]],
-//                    ],
-//                ],
-//                fn () => Value::container()
-//                    ->hasAttribute('id', Value::integer()->positive())
-//                    ->hasAttribute('probability', Value::float()->between(0, 1)->equal(0.5))
-//                    ->hasAttribute('vectors', Value::container()->array()->allValuesAre(
-//                        Value::container()
-//                            ->array()
-//                            ->lengthIs(Value::integer()->equal(2))
-//                            ->allValuesAre(Value::integer())
-//                    )),
-//                []
-//            ],
+            [
+                [
+                    [
+                        'id' => '13',
+                        'probability' => 1.92,
+                        'vectors' => [[1, 2.1], [3, 4], [5, 6]],
+                    ],
+                ],
+                fn () => Value::container()
+                    ->hasAttribute('id', Value::integer()->positive())
+                    ->hasAttribute('probability', Value::float()->between(0, 1)->equal(0.5))
+                    ->hasAttribute('vectors', Value::container()->array()->allValuesAre(
+                        Value::container()
+                            ->array()
+                            ->lengthIs(Value::integer()->equal(2))
+                            ->allValuesAre(Value::integer())
+                    )),
+                [
+                    [
+                        CheckName::ATTRIBUTE_IS,
+                        [
+                            Param::ATTRIBUTE => 'id',
+                            Param::RULE => RuleName::INTEGER,
+                            Param::VIOLATED_RESTRICTIONS => [
+                                [CheckName::INTEGER, []],
+                            ],
+                        ]
+                    ],
+                    [
+                        CheckName::ATTRIBUTE_IS,
+                        [
+                            Param::ATTRIBUTE => 'probability',
+                            Param::RULE => RuleName::FLOAT,
+                            Param::VIOLATED_RESTRICTIONS => [
+                                [CheckName::BETWEEN, ['start' => 0, 'end' => 1]],
+                                [CheckName::EQUAL, [Param::EXPECTED => 0.5]],
+                            ],
+                        ],
+                    ],
+                    [
+                        CheckName::ATTRIBUTE_IS,
+                        [
+                            Param::ATTRIBUTE => 'vectors',
+                            Param::RULE => RuleName::CONTAINER,
+                            Param::VIOLATED_RESTRICTIONS => [
+                                [
+                                    CheckName::ALL_VALUES_ARE,
+                                    [
+                                        Param::RULE => RuleName::CONTAINER,
+                                        Param::VIOLATED_RESTRICTIONS => [
+                                            [
+                                                CheckName::ALL_VALUES_ARE,
+                                                [
+                                                    Param::RULE => RuleName::INTEGER,
+                                                    Param::VIOLATED_RESTRICTIONS => [
+                                                        [CheckName::INTEGER, []],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ]
+                    ],
+                ],
+            ],
         ];
     }
 }
