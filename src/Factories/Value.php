@@ -12,12 +12,12 @@ use Smoren\Validator\Interfaces\FloatRuleInterface;
 use Smoren\Validator\Interfaces\IntegerRuleInterface;
 use Smoren\Validator\Interfaces\StringRuleInterface;
 use Smoren\Validator\Rules\AndRule;
-use Smoren\Validator\Rules\BoolRule;
-use Smoren\Validator\Rules\ContainerRule;
+use Smoren\Validator\Rules\BoolMixedRule;
+use Smoren\Validator\Rules\ContainerMixedRule;
 use Smoren\Validator\Rules\FloatRule;
 use Smoren\Validator\Rules\IntegerRule;
-use Smoren\Validator\Rules\NumericRule;
-use Smoren\Validator\Rules\StringRule;
+use Smoren\Validator\Rules\NumericMixedRule;
+use Smoren\Validator\Rules\StringMixedRule;
 use Smoren\Validator\Rules\OrRule;
 use Smoren\Validator\Structs\RuleName;
 
@@ -26,11 +26,11 @@ class Value
     /**
      * @param string $name
      *
-     * @return NumericRule
+     * @return NumericMixedRule
      */
-    public static function numeric(string $name = RuleName::NUMERIC): NumericRule
+    public static function numeric(string $name = RuleName::NUMERIC): NumericMixedRule
     {
-        return new NumericRule($name);
+        return new NumericMixedRule($name);
     }
 
     /**
@@ -60,7 +60,7 @@ class Value
      */
     public static function bool(string $name = RuleName::BOOL): BoolRuleInterface
     {
-        return new BoolRule($name);
+        return new BoolMixedRule($name);
     }
 
     /**
@@ -70,7 +70,7 @@ class Value
      */
     public static function string(string $name = RuleName::STRING): StringRuleInterface
     {
-        return new StringRule($name);
+        return new StringMixedRule($name);
     }
 
     /**
@@ -80,7 +80,7 @@ class Value
      */
     public static function container(string $name = RuleName::CONTAINER): ContainerRuleInterface
     {
-        return new ContainerRule($name);
+        return new ContainerMixedRule($name);
     }
 
     /**

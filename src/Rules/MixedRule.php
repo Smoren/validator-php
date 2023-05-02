@@ -18,7 +18,7 @@ use Smoren\Validator\Structs\CheckWrapper;
 use Smoren\Validator\Structs\Param;
 use Smoren\Validator\Structs\ValidationSuccessResult;
 
-class Rule extends BaseRule implements RuleInterface
+class MixedRule extends BaseRule implements RuleInterface
 {
     /**
      * @var string

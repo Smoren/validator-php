@@ -8,14 +8,14 @@ use Smoren\Validator\Factories\CheckBuilder;
 use Smoren\Validator\Interfaces\FloatRuleInterface;
 use Smoren\Validator\Structs\CheckName;
 
-class FloatRule extends NumericRule implements FloatRuleInterface
+class FloatRule extends NumericMixedRule implements FloatRuleInterface
 {
     /**
      * @param string $name
      */
     public function __construct(string $name)
     {
-        Rule::__construct($name);
+        MixedRule::__construct($name);
         $this->check(
             CheckBuilder::create(CheckName::FLOAT)
                 ->withPredicate(fn ($value) => \is_float($value))

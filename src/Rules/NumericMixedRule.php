@@ -9,7 +9,7 @@ use Smoren\Validator\Interfaces\NumericRuleInterface;
 use Smoren\Validator\Structs\CheckName;
 use Smoren\Validator\Structs\Param;
 
-class NumericRule extends Rule implements NumericRuleInterface
+class NumericMixedRule extends MixedRule implements NumericRuleInterface
 {
     /**
      * @param string $name

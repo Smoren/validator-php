@@ -7,7 +7,7 @@ namespace Smoren\Validator\Rules;
 use Smoren\Validator\Interfaces\RuleInterface;
 use Smoren\Validator\Interfaces\CompositeRuleInterface;
 
-abstract class CompositeRule extends Rule implements CompositeRuleInterface
+abstract class CompositeMixedRule extends MixedRule implements CompositeRuleInterface
 {
     /**
      * @var array<RuleInterface>

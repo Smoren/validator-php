@@ -14,7 +14,7 @@ use Smoren\Validator\Interfaces\IntegerRuleInterface;
 use Smoren\Validator\Structs\CheckName;
 use Smoren\Validator\Structs\Param;
 
-class ContainerRule extends Rule implements ContainerRuleInterface
+class ContainerMixedRule extends MixedRule implements ContainerRuleInterface
 {
     /**
      * ContainerRule constructor.

@@ -8,7 +8,7 @@ use Smoren\Validator\Exceptions\ValidationError;
 use Smoren\Validator\Interfaces\ValidationResultInterface;
 use Smoren\Validator\Structs\ValidationSuccessResult;
 
-class AndRule extends CompositeRule
+class AndRule extends CompositeMixedRule
 {
     /**
      * {@inheritDoc}

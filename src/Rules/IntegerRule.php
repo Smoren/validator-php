@@ -8,14 +8,14 @@ use Smoren\Validator\Factories\CheckBuilder;
 use Smoren\Validator\Interfaces\IntegerRuleInterface;
 use Smoren\Validator\Structs\CheckName;
 
-class IntegerRule extends NumericRule implements IntegerRuleInterface
+class IntegerRule extends NumericMixedRule implements IntegerRuleInterface
 {
     /**
      * @param string $name
      */
     public function __construct(string $name)
     {
-        Rule::__construct($name);
+        MixedRule::__construct($name);
         $this->check(
             CheckBuilder::create(CheckName::INTEGER)
                 ->withPredicate(fn ($value) => \is_int($value))

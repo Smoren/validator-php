@@ -7,7 +7,7 @@ use Smoren\Validator\Interfaces\IntegerRuleInterface;
 use Smoren\Validator\Interfaces\StringRuleInterface;
 use Smoren\Validator\Structs\CheckName;
 
-class StringRule extends Rule implements StringRuleInterface
+class StringMixedRule extends MixedRule implements StringRuleInterface
 {
     /**
      * @param string $name

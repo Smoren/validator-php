@@ -8,7 +8,7 @@ use Smoren\Validator\Factories\CheckBuilder;
 use Smoren\Validator\Interfaces\BoolRuleInterface;
 use Smoren\Validator\Structs\CheckName;
 
-class BoolRule extends Rule implements BoolRuleInterface
+class BoolMixedRule extends MixedRule implements BoolRuleInterface
 {
     /**
      * @param string $name
