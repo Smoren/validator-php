@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Smoren\Validator\Factories;
 
+use Smoren\Validator\Interfaces\BoolRuleInterface;
 use Smoren\Validator\Interfaces\RuleInterface;
 use Smoren\Validator\Interfaces\CompositeRuleInterface;
 use Smoren\Validator\Interfaces\ContainerRuleInterface;
@@ -11,6 +12,7 @@ use Smoren\Validator\Interfaces\FloatRuleInterface;
 use Smoren\Validator\Interfaces\IntegerRuleInterface;
 use Smoren\Validator\Interfaces\StringRuleInterface;
 use Smoren\Validator\Rules\AndRule;
+use Smoren\Validator\Rules\BoolRule;
 use Smoren\Validator\Rules\ContainerRule;
 use Smoren\Validator\Rules\FloatRule;
 use Smoren\Validator\Rules\IntegerRule;
@@ -49,6 +51,16 @@ class Value
     public static function float(string $name = RuleName::FLOAT): FloatRuleInterface
     {
         return new FloatRule($name);
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return BoolRuleInterface
+     */
+    public static function bool(string $name = RuleName::BOOL): BoolRuleInterface
+    {
+        return new BoolRule($name);
     }
 
     /**

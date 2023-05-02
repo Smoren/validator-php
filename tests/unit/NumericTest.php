@@ -61,6 +61,16 @@ class NumericTest extends Unit
                     ->truthy(),
             ],
             [
+                [1, 1.0],
+                fn () => Value::numeric()
+                    ->equal(1),
+            ],
+            [
+                [1],
+                fn () => Value::numeric()
+                    ->same(1),
+            ],
+            [
                 [1, 2, '3', 10, '150'],
                 fn () => Value::numeric()
                     ->positive(),
@@ -156,6 +166,22 @@ class NumericTest extends Unit
                     ->truthy(),
                 [
                     [CheckName::TRUTHY, []],
+                ],
+            ],
+            [
+                [2, 1.1],
+                fn () => Value::numeric()
+                    ->equal(1),
+                [
+                    [CheckName::EQUAL, [Param::EXPECTED => 1]],
+                ],
+            ],
+            [
+                [1.0],
+                fn () => Value::numeric()
+                    ->same(1),
+                [
+                    [CheckName::SAME, [Param::EXPECTED => 1]],
                 ],
             ],
             [
