@@ -8,7 +8,7 @@ use Traversable;
  * @implements \ArrayAccess<mixed>
  * @implements \Countable
  */
-class ArrayAccessListFixture implements \ArrayAccess, \Countable, \IteratorAggregate
+class ArrayAccessMapFixture implements \ArrayAccess, \Countable, \IteratorAggregate
 {
     /**
      * @var array<mixed>
@@ -35,11 +35,7 @@ class ArrayAccessListFixture implements \ArrayAccess, \Countable, \IteratorAggre
 
     public function offsetSet($offset, $value): void
     {
-        if ($offset === null) {
-            $this->data[] = $value;
-        } else {
-            $this->data[$offset] = $value;
-        }
+        $this->data[$offset] = $value;
     }
 
     public function offsetUnset($offset): void

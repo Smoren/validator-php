@@ -12,6 +12,8 @@ use Smoren\Validator\Structs\CheckName;
 use Smoren\Validator\Structs\Param;
 use Smoren\Validator\Structs\RuleName;
 use Smoren\Validator\Tests\Unit\Fixture\ArrayAccessListFixture;
+use Smoren\Validator\Tests\Unit\Fixture\ArrayAccessMapFixture;
+use Smoren\Validator\Tests\Unit\Fixture\SomeClassFixture;
 
 class ContainerTest extends Unit
 {
@@ -107,6 +109,21 @@ class ContainerTest extends Unit
                 [['a' => 1, 'b' => 2], ['a' => '1.23', 'd', 'b' => null]],
                 fn () => Value::container()
                     ->hasAttribute('a', Value::numeric()),
+            ],
+            [
+                [(object)['a' => 1, 'b' => 2], ['a' => '1.23', 'd', 'b' => null]],
+                fn () => Value::container()
+                    ->hasAttribute('a', Value::numeric()),
+            ],
+            [
+                [new ArrayAccessMapFixture(['a' => 1, 'b' => 2]), new ArrayAccessMapFixture(['a' => '1.23', 'd', 'b' => null])],
+                fn () => Value::container()
+                    ->hasAttribute('a', Value::numeric()),
+            ],
+            [
+                [new SomeClassFixture()],
+                fn () => Value::container()
+                    ->hasAttribute('public', Value::string()),
             ],
             [
                 [['a' => 1, 'b' => 2], ['a' => 2, 'd', 'b' => null], [], ['b' => 123]],
@@ -285,6 +302,46 @@ class ContainerTest extends Unit
                     ->hasAttribute('b'),
                 [
                     [CheckName::HAS_ATTRIBUTE, [Param::ATTRIBUTE => 'b']],
+                ],
+            ],
+            [
+                [(object)['b' => 2], ['d', 'b' => null]],
+                fn () => Value::container()
+                    ->hasAttribute('a', Value::numeric()),
+                [
+                    [CheckName::HAS_ATTRIBUTE, [Param::ATTRIBUTE => 'a']],
+                ],
+            ],
+            [
+                [new ArrayAccessMapFixture(['b' => 2]), new ArrayAccessMapFixture(['d', 'b' => null])],
+                fn () => Value::container()
+                    ->hasAttribute('a', Value::numeric()),
+                [
+                    [CheckName::HAS_ATTRIBUTE, [Param::ATTRIBUTE => 'a']],
+                ],
+            ],
+            [
+                [new SomeClassFixture()],
+                fn () => Value::container()
+                    ->hasAttribute('private', Value::string()),
+                [
+                    [CheckName::HAS_ATTRIBUTE, [Param::ATTRIBUTE => 'private']],
+                ],
+            ],
+            [
+                [new SomeClassFixture()],
+                fn () => Value::container()
+                    ->hasAttribute('protected', Value::string()),
+                [
+                    [CheckName::HAS_ATTRIBUTE, [Param::ATTRIBUTE => 'protected']],
+                ],
+            ],
+            [
+                [new SomeClassFixture()],
+                fn () => Value::container()
+                    ->hasAttribute('not_exist', Value::string()),
+                [
+                    [CheckName::HAS_ATTRIBUTE, [Param::ATTRIBUTE => 'not_exist']],
                 ],
             ],
             [
