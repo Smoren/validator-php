@@ -8,7 +8,7 @@ use Smoren\Validator\Factories\CheckBuilder;
 use Smoren\Validator\Interfaces\IntegerRuleInterface;
 use Smoren\Validator\Structs\CheckName;
 
-class IntegerRule extends NumericMixedRule implements IntegerRuleInterface
+class IntegerRule extends NumericRule implements IntegerRuleInterface
 {
     /**
      * @param string $name
