@@ -2,7 +2,6 @@
 
 namespace Smoren\Validator\Rules;
 
-use Smoren\Validator\Checks\Check;
 use Smoren\Validator\Factories\CheckBuilder;
 use Smoren\Validator\Interfaces\IntegerRuleInterface;
 use Smoren\Validator\Interfaces\StringRuleInterface;
@@ -56,7 +55,7 @@ class StringRule extends Rule implements StringRuleInterface
     {
         return $this->check(
             CheckBuilder::create(CheckName::MATCH, CheckErrorName::NOT_MATCH)
-                ->withPredicate(fn ($value, $regex) => \preg_match($regex, $value))
+                ->withPredicate(fn ($value, string $regex) => \boolval(\preg_match($regex, $value)))
                 ->withParams(['regex' => $regex])
                 ->build()
         );
@@ -66,7 +65,7 @@ class StringRule extends Rule implements StringRuleInterface
     {
         return $this->check(
             CheckBuilder::create(CheckName::HAS_SUBSTRING, CheckErrorName::HAS_NOT_SUBSTRING)
-                ->withPredicate(fn ($value, $substr) => \mb_strpos($value, $substr) !== false)
+                ->withPredicate(fn ($value, string $substr) => \mb_strpos($value, $substr) !== false)
                 ->withParams(['substring' => $substr])
                 ->build()
         );
@@ -76,7 +75,7 @@ class StringRule extends Rule implements StringRuleInterface
     {
         return $this->check(
             CheckBuilder::create(CheckName::STARTS_WITH, CheckErrorName::NOT_STARTS_WITH)
-                ->withPredicate(fn ($value, $substr) => \mb_strpos($value, $substr) === 0)
+                ->withPredicate(fn ($value, string $substr) => \mb_strpos($value, $substr) === 0)
                 ->withParams(['substring' => $substr])
                 ->build()
         );
@@ -86,9 +85,9 @@ class StringRule extends Rule implements StringRuleInterface
     {
         return $this->check(
             CheckBuilder::create(CheckName::ENDS_WITH, CheckErrorName::NOT_ENDS_WITH)
-                ->withPredicate(
-                    fn ($value, $substr) => \mb_strpos($value, $substr) === \mb_strlen($value) - \mb_strlen($substr)
-                )
+                ->withPredicate(static function ($value, string $substr) {
+                    return \substr($value, \mb_strlen($value) - \mb_strlen($substr)) === $substr;
+                })
                 ->withParams(['substring' => $substr])
                 ->build()
         );
@@ -97,7 +96,7 @@ class StringRule extends Rule implements StringRuleInterface
     public function lengthIs(IntegerRuleInterface $rule): StringRuleInterface
     {
         return $this->check(
-            CheckBuilder::create(CheckName::LENGTH_IS, CheckErrorName::BAD_LENGTH)
+            CheckBuilder::create(CheckName::LENGTH_IS, CheckErrorName::INVALID_LENGTH)
                 ->withPredicate(static function ($value) use ($rule) {
                     /** @var string $value */
                     $rule->validate(\mb_strlen($value));

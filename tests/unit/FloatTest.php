@@ -222,7 +222,7 @@ class FloatTest extends Unit
                 fn () => Value::float()
                     ->greaterTran(5),
                 [
-                    [CheckErrorName::NOT_GREATER, [Param::GIVEN_VALUE => 5]],
+                    [CheckErrorName::NOT_GREATER, [Param::EXPECTED => 5]],
                 ],
             ],
             [
@@ -230,7 +230,7 @@ class FloatTest extends Unit
                 fn () => Value::float()
                     ->greaterOrEqual(5),
                 [
-                    [CheckErrorName::NOT_GREATER_OR_EQUEAL, [Param::GIVEN_VALUE => 5]],
+                    [CheckErrorName::NOT_GREATER_OR_EQUEAL, [Param::EXPECTED => 5]],
                 ],
             ],
             [
@@ -238,7 +238,7 @@ class FloatTest extends Unit
                 fn () => Value::float()
                     ->lessTran(5),
                 [
-                    [CheckErrorName::NOT_LESS, [Param::GIVEN_VALUE => 5]],
+                    [CheckErrorName::NOT_LESS, [Param::EXPECTED => 5]],
                 ],
             ],
             [
@@ -246,7 +246,7 @@ class FloatTest extends Unit
                 fn () => Value::float()
                     ->lessOrEqual(5),
                 [
-                    [CheckErrorName::NOT_LESS_OR_EQUEAL, [Param::GIVEN_VALUE => 5]],
+                    [CheckErrorName::NOT_LESS_OR_EQUEAL, [Param::EXPECTED => 5]],
                 ],
             ],
             [

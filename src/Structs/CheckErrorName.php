@@ -46,11 +46,11 @@ class CheckErrorName
     public const NOT_OBJECT = 'not_object';
     public const NOT_STD_OBJECT = 'not_std_object';
     public const NOT_INSTANCE_OF = 'not_instance_of';
-    public const BAD_LENGTH = 'bad_length';
+    public const INVALID_LENGTH = 'invalid_length';
     public const ATTRIBUTE_NOT_EXIST = 'attribute_not_exist';
-    public const BAD_ATTRIBUTE = 'bad_attribute';
-    public const SOME_KEYS_BAD = 'some_keys_bad';
-    public const SOME_VALUES_BAD = 'some_values_bad';
+    public const INVALID_ATTRIBUTE = 'invalid_attribute';
+    public const SOME_KEYS_INVALID = 'some_keys_invalid';
+    public const SOME_VALUES_INVALID = 'some_values_invalid';
 
     public const NOT_MATCH = 'not_match';
     public const HAS_NOT_SUBSTRING = 'has_not_substring';

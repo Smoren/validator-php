@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Smoren\Validator\Rules;
 
-use Smoren\Validator\Checks\Check;
 use Smoren\Validator\Factories\CheckBuilder;
-use Smoren\Validator\Helpers\TypeHelper;
 use Smoren\Validator\Interfaces\NumericRuleInterface;
 use Smoren\Validator\Structs\CheckErrorName;
 use Smoren\Validator\Structs\CheckName;
@@ -151,7 +149,7 @@ class NumericRule extends Rule implements NumericRuleInterface
         return $this->check(
             CheckBuilder::create(CheckName::GREATER, CheckErrorName::NOT_GREATER)
                 ->withPredicate(fn ($value, $number) => $value > $number)
-                ->withParams([Param::GIVEN_VALUE => $number])
+                ->withParams([Param::EXPECTED => $number])
                 ->build()
         );
     }
@@ -166,7 +164,7 @@ class NumericRule extends Rule implements NumericRuleInterface
         return $this->check(
             CheckBuilder::create(CheckName::GREATER_OR_EQUEAL, CheckErrorName::NOT_GREATER_OR_EQUEAL)
                 ->withPredicate(fn ($value, $number) => $value >= $number)
-                ->withParams([Param::GIVEN_VALUE => $number])
+                ->withParams([Param::EXPECTED => $number])
                 ->build()
         );
     }
@@ -181,7 +179,7 @@ class NumericRule extends Rule implements NumericRuleInterface
         return $this->check(
             CheckBuilder::create(CheckName::LESS, CheckErrorName::NOT_LESS)
                 ->withPredicate(fn ($value, $number) => $value < $number)
-                ->withParams([Param::GIVEN_VALUE => $number])
+                ->withParams([Param::EXPECTED => $number])
                 ->build()
         );
     }
@@ -196,7 +194,7 @@ class NumericRule extends Rule implements NumericRuleInterface
         return $this->check(
             CheckBuilder::create(CheckName::LESS_OR_EQUEAL, CheckErrorName::NOT_LESS_OR_EQUEAL)
                 ->withPredicate(fn ($value, $number) => $value <= $number)
-                ->withParams([Param::GIVEN_VALUE => $number])
+                ->withParams([Param::EXPECTED => $number])
                 ->build()
         );
     }

@@ -180,7 +180,7 @@ class ContainerTest extends Unit
                 fn () => Value::container()
                     ->lengthIs(Value::integer()->odd()),
                 [
-                    [CheckErrorName::BAD_LENGTH, [Param::RULE => 'integer', Param::VIOLATIONS => [['not_odd', []]]]],
+                    [CheckErrorName::INVALID_LENGTH, [Param::RULE => 'integer', Param::VIOLATIONS => [['not_odd', []]]]],
                 ],
             ],
             [
@@ -286,7 +286,7 @@ class ContainerTest extends Unit
                     ->hasAttribute('a', Value::numeric()),
                 [
                     [
-                        CheckErrorName::BAD_ATTRIBUTE,
+                        CheckErrorName::INVALID_ATTRIBUTE,
                         [
                             Param::ATTRIBUTE => 'a',
                             Param::RULE => 'numeric',
@@ -311,7 +311,7 @@ class ContainerTest extends Unit
                     ->hasOptionalAttribute('a', Value::integer()),
                 [
                     [
-                        CheckErrorName::BAD_ATTRIBUTE, [
+                        CheckErrorName::INVALID_ATTRIBUTE, [
                             Param::ATTRIBUTE => 'a',
                             Param::RULE => 'integer',
                             Param::VIOLATIONS => [
@@ -326,7 +326,7 @@ class ContainerTest extends Unit
                 fn () => Value::container()
                     ->allKeysAre(Value::numeric()->nonNegative()),
                 [
-                    [CheckErrorName::SOME_KEYS_BAD, [
+                    [CheckErrorName::SOME_KEYS_INVALID, [
                         Param::RULE => 'numeric',
                         Param::VIOLATIONS => [
                             [CheckErrorName::NOT_NUMERIC, []],
@@ -339,7 +339,7 @@ class ContainerTest extends Unit
                 fn () => Value::container()
                     ->allKeysAre(Value::numeric()->nonNegative()),
                 [
-                    [CheckErrorName::SOME_KEYS_BAD, [
+                    [CheckErrorName::SOME_KEYS_INVALID, [
                         Param::RULE => 'numeric',
                         Param::VIOLATIONS => [
                             [CheckErrorName::NOT_NON_NEGATIVE, []],
@@ -352,7 +352,7 @@ class ContainerTest extends Unit
                 fn () => Value::container()
                     ->allValuesAre(Value::integer()->even()),
                 [
-                    [CheckErrorName::SOME_VALUES_BAD,
+                    [CheckErrorName::SOME_VALUES_INVALID,
                         [
                             Param::RULE => 'integer',
                             Param::VIOLATIONS => [

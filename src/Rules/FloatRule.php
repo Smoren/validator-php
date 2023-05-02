@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Smoren\Validator\Rules;
 
-use Smoren\Validator\Checks\Check;
 use Smoren\Validator\Factories\CheckBuilder;
 use Smoren\Validator\Interfaces\FloatRuleInterface;
 use Smoren\Validator\Structs\CheckErrorName;
