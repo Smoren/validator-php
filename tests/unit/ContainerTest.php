@@ -56,6 +56,16 @@ class ContainerTest extends Unit
                     ->object(),
             ],
             [
+                [[]],
+                fn () => Value::container()
+                    ->empty(),
+            ],
+            [
+                [[1], ['a' => 1], [1, 2, 3]],
+                fn () => Value::container()
+                    ->notEmpty(),
+            ],
+            [
                 [[1, 2, 3], [1, 2, 3, 4, 5], [1]],
                 fn () => Value::container()
                     ->lengthIs(Value::integer()->odd()),
@@ -72,9 +82,19 @@ class ContainerTest extends Unit
                     ->hasAttribute('a', Value::numeric()),
             ],
             [
+                [['a' => 1, 'b' => 2], ['a' => 2, 'd', 'b' => null], [], ['b' => 123]],
+                fn () => Value::container()
+                    ->hasOptionalAttribute('a', Value::integer()),
+            ],
+            [
                 [[2, 4, 6, 8], [4], [1000, 2000, 8000], []],
                 fn () => Value::container()
                     ->allValuesAre(Value::integer()->even()),
+            ],
+            [
+                [[1, 2, 3, 4], [5], [1 => 2, 3 => 5], []],
+                fn () => Value::container()
+                    ->allKeysAre(Value::numeric()->nonNegative()),
             ],
             [
                 [
@@ -162,6 +182,22 @@ class ContainerTest extends Unit
                 ],
             ],
             [
+                [[1], ['a' => 1], [1, 2, 3]],
+                fn () => Value::container()
+                    ->empty(),
+                [
+                    [CheckErrorName::NOT_EMPTY, []],
+                ],
+            ],
+            [
+                [[]],
+                fn () => Value::container()
+                    ->notEmpty(),
+                [
+                    [CheckErrorName::EMPTY, []],
+                ],
+            ],
+            [
                 [['a' => 1], ['a' => [], 'd']],
                 fn () => Value::container()
                     ->hasAttribute('a')
@@ -175,7 +211,16 @@ class ContainerTest extends Unit
                 fn () => Value::container()
                     ->hasAttribute('a', Value::numeric()),
                 [
-                    [CheckErrorName::BAD_ATTRIBUTE, [Param::ATTRIBUTE => 'a', Param::RULE => 'numeric', Param::VIOLATIONS => [['not_numeric', []]]]],
+                    [
+                        CheckErrorName::BAD_ATTRIBUTE,
+                        [
+                            Param::ATTRIBUTE => 'a',
+                            Param::RULE => 'numeric',
+                            Param::VIOLATIONS => [
+                                ['not_numeric', []],
+                            ],
+                        ],
+                    ],
                 ],
             ],
             [
@@ -187,11 +232,60 @@ class ContainerTest extends Unit
                 ],
             ],
             [
+                [['a' => '1', 'b' => 2], ['a' => true, 'd', 'b' => null]],
+                fn () => Value::container()
+                    ->hasOptionalAttribute('a', Value::integer()),
+                [
+                    [
+                        CheckErrorName::BAD_ATTRIBUTE, [
+                            Param::ATTRIBUTE => 'a',
+                            Param::RULE => 'integer',
+                            Param::VIOLATIONS => [
+                                [CheckErrorName::NOT_INTEGER, []],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            [
+                [['a' => 1, 2, 3, 4], ['' => 5], [1 => 2, 'b' => 5]],
+                fn () => Value::container()
+                    ->allKeysAre(Value::numeric()->nonNegative()),
+                [
+                    [CheckErrorName::SOME_KEYS_BAD, [
+                        Param::RULE => 'numeric',
+                        Param::VIOLATIONS => [
+                            [CheckErrorName::NOT_NUMERIC, []],
+                        ],
+                    ]],
+                ],
+            ],
+            [
+                [[-1 => 1, 2, 3, 4], [-100 => 5], [1 => 2, -3 => 5]],
+                fn () => Value::container()
+                    ->allKeysAre(Value::numeric()->nonNegative()),
+                [
+                    [CheckErrorName::SOME_KEYS_BAD, [
+                        Param::RULE => 'numeric',
+                        Param::VIOLATIONS => [
+                            [CheckErrorName::NOT_NON_NEGATIVE, []],
+                        ],
+                    ]],
+                ],
+            ],
+            [
                 [[2, 4, 7, 8], [1], [1001, 2000, 8000]],
                 fn () => Value::container()
                     ->allValuesAre(Value::integer()->even()),
                 [
-                    [CheckErrorName::SOME_VALUES_BAD, [Param::RULE => 'integer', Param::VIOLATIONS => [['not_even', []]]]],
+                    [CheckErrorName::SOME_VALUES_BAD,
+                        [
+                            Param::RULE => 'integer',
+                            Param::VIOLATIONS => [
+                                ['not_even', []],
+                            ],
+                        ],
+                    ],
                 ],
             ],
 //            [
