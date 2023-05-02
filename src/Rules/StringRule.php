@@ -3,6 +3,7 @@
 namespace Smoren\Validator\Rules;
 
 use Smoren\Validator\Checks\Check;
+use Smoren\Validator\Factories\CheckBuilder;
 use Smoren\Validator\Interfaces\IntegerRuleInterface;
 use Smoren\Validator\Interfaces\StringRuleInterface;
 use Smoren\Validator\Structs\CheckErrorName;
@@ -16,86 +17,93 @@ class StringRule extends Rule implements StringRuleInterface
     public function __construct(string $name)
     {
         parent::__construct($name);
-        $this->check(new Check(
-            CheckName::STRING,
-            CheckErrorName::NOT_STRING,
-            fn ($value) => \is_string($value)
-        ), true);
+        $this->check(
+            CheckBuilder::create(CheckName::STRING, CheckErrorName::NOT_STRING)
+                ->withPredicate(fn ($value) => \is_string($value))
+                ->build(),
+            true
+        );
     }
 
     public function numeric(): StringRuleInterface
     {
-        return $this->check(new Check(
-            CheckName::NUMERIC,
-            CheckErrorName::NOT_NUMERIC,
-            fn ($value) => \is_numeric($value)
-        ));
+        return $this->check(
+            CheckBuilder::create(CheckName::NUMERIC, CheckErrorName::NOT_NUMERIC)
+                ->withPredicate(fn ($value) => \is_numeric($value))
+                ->build()
+        );
     }
 
     public function empty(): StringRuleInterface
     {
-        return $this->check(new Check(
-            CheckName::EMPTY,
-            CheckErrorName::NOT_EMPTY,
-            fn ($value) => $value === ''
-        ));
+        return $this->check(
+            CheckBuilder::create(CheckName::EMPTY, CheckErrorName::NOT_EMPTY)
+                ->withPredicate(fn ($value) => $value === '')
+                ->build()
+        );
     }
 
     public function notEmpty(): StringRuleInterface
     {
-        return $this->check(new Check(
-            CheckName::NOT_EMPTY,
-            CheckErrorName::EMPTY,
-            fn ($value) => $value !== ''
-        ));
+        return $this->check(
+            CheckBuilder::create(CheckName::NOT_EMPTY, CheckErrorName::EMPTY)
+                ->withPredicate(fn ($value) => $value !== '')
+                ->build()
+        );
     }
 
     public function match(string $regex): StringRuleInterface
     {
-        return $this->check(new Check(
-            CheckName::MATCH,
-            CheckErrorName::NOT_MATCH,
-            fn ($value) => \preg_match($regex, $value)
-        ));
+        return $this->check(
+            CheckBuilder::create(CheckName::MATCH, CheckErrorName::NOT_MATCH)
+                ->withPredicate(fn ($value, $regex) => \preg_match($regex, $value))
+                ->withParams(['regex' => $regex])
+                ->build()
+        );
     }
 
     public function hasSubstring(string $substr): StringRuleInterface
     {
-        return $this->check(new Check(
-            CheckName::HAS_SUBSTRING,
-            CheckErrorName::HAS_NOT_SUBSTRING,
-            fn ($value) => \mb_strpos($value, $substr) !== false
-        ));
+        return $this->check(
+            CheckBuilder::create(CheckName::HAS_SUBSTRING, CheckErrorName::HAS_NOT_SUBSTRING)
+                ->withPredicate(fn ($value, $substr) => \mb_strpos($value, $substr) !== false)
+                ->withParams(['substring' => $substr])
+                ->build()
+        );
     }
 
     public function startsWith(string $substr): StringRuleInterface
     {
-        return $this->check(new Check(
-            CheckName::STARTS_WITH,
-            CheckErrorName::NOT_STARTS_WITH,
-            fn ($value) => \mb_strpos($value, $substr) === 0
-        ));
+        return $this->check(
+            CheckBuilder::create(CheckName::STARTS_WITH, CheckErrorName::NOT_STARTS_WITH)
+                ->withPredicate(fn ($value, $substr) => \mb_strpos($value, $substr) === 0)
+                ->withParams(['substring' => $substr])
+                ->build()
+        );
     }
 
     public function endsWith(string $substr): StringRuleInterface
     {
-        return $this->check(new Check(
-            CheckName::STARTS_WITH,
-            CheckErrorName::NOT_STARTS_WITH,
-            fn ($value) => \mb_strpos($value, $substr) === \mb_strlen($value) - \mb_strlen($substr)
-        ));
+        return $this->check(
+            CheckBuilder::create(CheckName::ENDS_WITH, CheckErrorName::NOT_ENDS_WITH)
+                ->withPredicate(
+                    fn ($value, $substr) => \mb_strpos($value, $substr) === \mb_strlen($value) - \mb_strlen($substr)
+                )
+                ->withParams(['substring' => $substr])
+                ->build()
+        );
     }
 
     public function lengthIs(IntegerRuleInterface $rule): StringRuleInterface
     {
-        return $this->check(new Check(
-            CheckName::LENGTH_IS,
-            CheckErrorName::BAD_LENGTH,
-            static function ($value) use ($rule) {
-                /** @var string $value */
-                $rule->validate(\mb_strlen($value));
-                return true;
-            }
-        ));
+        return $this->check(
+            CheckBuilder::create(CheckName::LENGTH_IS, CheckErrorName::BAD_LENGTH)
+                ->withPredicate(static function ($value) use ($rule) {
+                    /** @var string $value */
+                    $rule->validate(\mb_strlen($value));
+                    return true;
+                })
+                ->build()
+        );
     }
 }

@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Smoren\Validator\Rules;
 
 use Smoren\Validator\Checks\Check;
+use Smoren\Validator\Factories\CheckBuilder;
+use Smoren\Validator\Helpers\TypeHelper;
 use Smoren\Validator\Interfaces\NumericRuleInterface;
 use Smoren\Validator\Structs\CheckErrorName;
 use Smoren\Validator\Structs\CheckName;
@@ -18,11 +20,13 @@ class NumericRule extends Rule implements NumericRuleInterface
     public function __construct(string $name)
     {
         parent::__construct($name);
-        $this->check(new Check(
-            CheckName::NUMERIC,
-            CheckErrorName::NOT_NUMERIC,
-            fn ($value) => \is_numeric($value)
-        ), true);
+
+        $this->check(
+            CheckBuilder::create(CheckName::NUMERIC, CheckErrorName::NOT_NUMERIC)
+                ->withPredicate(fn ($value) => \is_numeric($value))
+                ->build(),
+            true
+        );
     }
 
     /**
@@ -32,11 +36,11 @@ class NumericRule extends Rule implements NumericRuleInterface
      */
     public function number(): self
     {
-        return $this->check(new Check(
-            CheckName::NUMBER,
-            CheckErrorName::NOT_NUMBER,
-            fn ($value) => \is_int($value) || \is_float($value)
-        ));
+        return $this->check(
+            CheckBuilder::create(CheckName::NUMBER, CheckErrorName::NOT_NUMBER)
+                ->withPredicate(fn ($value) => \is_int($value) || \is_float($value))
+                ->build()
+        );
     }
 
     /**
@@ -46,11 +50,11 @@ class NumericRule extends Rule implements NumericRuleInterface
      */
     public function string(): self
     {
-        return $this->check(new Check(
-            CheckName::STRING,
-            CheckErrorName::NOT_STRING,
-            fn ($value) => \is_string($value)
-        ));
+        return $this->check(
+            CheckBuilder::create(CheckName::STRING, CheckErrorName::NOT_STRING)
+                ->withPredicate(fn ($value) => \is_string($value))
+                ->build()
+        );
     }
 
     /**
@@ -60,11 +64,11 @@ class NumericRule extends Rule implements NumericRuleInterface
      */
     public function truthy(): self
     {
-        return $this->check(new Check(
-            CheckName::TRUTHY,
-            CheckErrorName::NOT_TRUTHY,
-            fn ($value) => boolval(floatval($value)),
-        ));
+        return $this->check(
+            CheckBuilder::create(CheckName::TRUTHY, CheckErrorName::NOT_TRUTHY)
+                ->withPredicate(fn ($value) => \boolval(floatval($value)))
+                ->build()
+        );
     }
 
     /**
@@ -74,11 +78,11 @@ class NumericRule extends Rule implements NumericRuleInterface
      */
     public function falsy(): self
     {
-        return $this->check(new Check(
-            CheckName::FALSY,
-            CheckErrorName::NOT_FALSY,
-            fn ($value) => !boolval(floatval($value)),
-        ));
+        return $this->check(
+            CheckBuilder::create(CheckName::FALSY, CheckErrorName::NOT_FALSY)
+                ->withPredicate(fn ($value) => !\boolval(floatval($value)))
+                ->build()
+        );
     }
 
     /**
@@ -88,11 +92,11 @@ class NumericRule extends Rule implements NumericRuleInterface
      */
     public function positive(): self
     {
-        return $this->check(new Check(
-            CheckName::POSITIVE,
-            CheckErrorName::NOT_POSITIVE,
-            fn ($value) => $value > 0
-        ));
+        return $this->check(
+            CheckBuilder::create(CheckName::POSITIVE, CheckErrorName::NOT_POSITIVE)
+                ->withPredicate(fn ($value) => $value > 0)
+                ->build()
+        );
     }
 
     /**
@@ -102,11 +106,11 @@ class NumericRule extends Rule implements NumericRuleInterface
      */
     public function nonPositive(): self
     {
-        return $this->check(new Check(
-            CheckName::NON_POSITIVE,
-            CheckErrorName::NOT_NON_POSITIVE,
-            fn ($value) => $value <= 0
-        ));
+        return $this->check(
+            CheckBuilder::create(CheckName::NON_POSITIVE, CheckErrorName::NOT_NON_POSITIVE)
+                ->withPredicate(fn ($value) => $value <= 0)
+                ->build()
+        );
     }
 
     /**
@@ -116,11 +120,11 @@ class NumericRule extends Rule implements NumericRuleInterface
      */
     public function nonNegative(): self
     {
-        return $this->check(new Check(
-            CheckName::NON_NEGATIVE,
-            CheckErrorName::NOT_NON_NEGATIVE,
-            fn ($value) => $value >= 0
-        ));
+        return $this->check(
+            CheckBuilder::create(CheckName::NON_NEGATIVE, CheckErrorName::NOT_NON_NEGATIVE)
+                ->withPredicate(fn ($value) => $value >= 0)
+                ->build()
+        );
     }
 
     /**
@@ -130,11 +134,11 @@ class NumericRule extends Rule implements NumericRuleInterface
      */
     public function negative(): self
     {
-        return $this->check(new Check(
-            CheckName::NEGATIVE,
-            CheckErrorName::NOT_NEGATIVE,
-            fn ($value) => $value < 0
-        ));
+        return $this->check(
+            CheckBuilder::create(CheckName::NEGATIVE, CheckErrorName::NOT_NEGATIVE)
+                ->withPredicate(fn ($value) => $value < 0)
+                ->build()
+        );
     }
 
     /**
@@ -144,12 +148,12 @@ class NumericRule extends Rule implements NumericRuleInterface
      */
     public function greaterTran($number): NumericRuleInterface
     {
-        return $this->check(new Check(
-            CheckName::GREATER,
-            CheckErrorName::NOT_GREATER,
-            fn ($value) => $value > $number,
-            [Param::GIVEN_VALUE => $number]
-        ));
+        return $this->check(
+            CheckBuilder::create(CheckName::GREATER, CheckErrorName::NOT_GREATER)
+                ->withPredicate(fn ($value, $number) => $value > $number)
+                ->withParams([Param::GIVEN_VALUE => $number])
+                ->build()
+        );
     }
 
     /**
@@ -159,12 +163,12 @@ class NumericRule extends Rule implements NumericRuleInterface
      */
     public function greaterOrEqual($number): NumericRuleInterface
     {
-        return $this->check(new Check(
-            CheckName::GREATER_OR_EQUEAL,
-            CheckErrorName::NOT_GREATER_OR_EQUEAL,
-            fn ($value) => $value >= $number,
-            [Param::GIVEN_VALUE => $number]
-        ));
+        return $this->check(
+            CheckBuilder::create(CheckName::GREATER_OR_EQUEAL, CheckErrorName::NOT_GREATER_OR_EQUEAL)
+                ->withPredicate(fn ($value, $number) => $value >= $number)
+                ->withParams([Param::GIVEN_VALUE => $number])
+                ->build()
+        );
     }
 
     /**
@@ -174,12 +178,12 @@ class NumericRule extends Rule implements NumericRuleInterface
      */
     public function lessTran($number): NumericRuleInterface
     {
-        return $this->check(new Check(
-            CheckName::LESS,
-            CheckErrorName::NOT_LESS,
-            fn ($value) => $value < $number,
-            [Param::GIVEN_VALUE => $number]
-        ));
+        return $this->check(
+            CheckBuilder::create(CheckName::LESS, CheckErrorName::NOT_LESS)
+                ->withPredicate(fn ($value, $number) => $value < $number)
+                ->withParams([Param::GIVEN_VALUE => $number])
+                ->build()
+        );
     }
 
     /**
@@ -189,12 +193,12 @@ class NumericRule extends Rule implements NumericRuleInterface
      */
     public function lessOrEqual($number): NumericRuleInterface
     {
-        return $this->check(new Check(
-            CheckName::LESS_OR_EQUEAL,
-            CheckErrorName::NOT_LESS_OR_EQUEAL,
-            fn ($value) => $value <= $number,
-            [Param::GIVEN_VALUE => $number]
-        ));
+        return $this->check(
+            CheckBuilder::create(CheckName::LESS_OR_EQUEAL, CheckErrorName::NOT_LESS_OR_EQUEAL)
+                ->withPredicate(fn ($value, $number) => $value <= $number)
+                ->withParams([Param::GIVEN_VALUE => $number])
+                ->build()
+        );
     }
 
     /**
@@ -204,12 +208,12 @@ class NumericRule extends Rule implements NumericRuleInterface
      */
     public function between($start, $end): self
     {
-        return $this->check(new Check(
-            CheckName::BETWEEN,
-            CheckErrorName::NOT_BETWEEN,
-            fn ($value) => $value >= $start && $value <= $end,
-            ['start' => $start, 'end' => $end]
-        ));
+        return $this->check(
+            CheckBuilder::create(CheckName::BETWEEN, CheckErrorName::NOT_BETWEEN)
+                ->withPredicate(fn ($value, $start, $end) => $value >= $start && $value <= $end)
+                ->withParams(['start' => $start, 'end' => $end])
+                ->build()
+        );
     }
 
     /**
@@ -217,11 +221,11 @@ class NumericRule extends Rule implements NumericRuleInterface
      */
     public function inInterval($start, $end): self
     {
-        return $this->check(new Check(
-            CheckName::IN_INTERVAL,
-            CheckErrorName::NOT_IN_INTERVAL,
-            fn ($value) => $value > $start && $value < $end,
-            ['start' => $start, 'end' => $end]
-        ));
+        return $this->check(
+            CheckBuilder::create(CheckName::IN_INTERVAL, CheckErrorName::NOT_IN_INTERVAL)
+                ->withPredicate(fn ($value, $start, $end) => $value > $start && $value < $end)
+                ->withParams(['start' => $start, 'end' => $end])
+                ->build()
+        );
     }
 }

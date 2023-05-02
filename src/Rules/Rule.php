@@ -8,6 +8,7 @@ use Smoren\Validator\Checks\Check;
 use Smoren\Validator\Checks\RetrospectiveCheck;
 use Smoren\Validator\Exceptions\CheckError;
 use Smoren\Validator\Exceptions\ValidationError;
+use Smoren\Validator\Factories\CheckBuilder;
 use Smoren\Validator\Interfaces\CheckInterface;
 use Smoren\Validator\Interfaces\CheckWrapperInterface;
 use Smoren\Validator\Interfaces\RuleInterface;
@@ -16,6 +17,7 @@ use Smoren\Validator\Interfaces\ValidationResultInterface;
 use Smoren\Validator\Structs\CheckErrorName;
 use Smoren\Validator\Structs\CheckName;
 use Smoren\Validator\Structs\CheckWrapper;
+use Smoren\Validator\Structs\Param;
 use Smoren\Validator\Structs\ValidationSuccessResult;
 
 class Rule extends BaseRule implements RuleInterface
@@ -59,11 +61,11 @@ class Rule extends BaseRule implements RuleInterface
      */
     public function truthy(): self
     {
-        return $this->check(new Check(
-            CheckName::TRUTHY,
-            CheckErrorName::NOT_TRUTHY,
-            fn ($value) => boolval($value),
-        ));
+        return $this->check(
+            CheckBuilder::create(CheckName::TRUTHY, CheckErrorName::NOT_TRUTHY)
+                ->withPredicate(fn ($value) => \boolval($value))
+                ->build()
+        );
     }
 
     /**
@@ -73,11 +75,11 @@ class Rule extends BaseRule implements RuleInterface
      */
     public function falsy(): self
     {
-        return $this->check(new Check(
-            CheckName::FALSY,
-            CheckErrorName::NOT_FALSY,
-            fn ($value) => !boolval($value),
-        ));
+        return $this->check(
+            CheckBuilder::create(CheckName::FALSY, CheckErrorName::NOT_FALSY)
+                ->withPredicate(fn ($value) => !\boolval($value))
+                ->build()
+        );
     }
 
     /**
@@ -87,12 +89,12 @@ class Rule extends BaseRule implements RuleInterface
      */
     public function equal($value): self
     {
-        return $this->check(new Check(
-            CheckName::EQUEAL,
-            CheckErrorName::NOT_EQUEAL,
-            fn ($val) => $value == $val,
-            ['value' => $value]
-        ));
+        return $this->check(
+            CheckBuilder::create(CheckName::EQUEAL, CheckErrorName::NOT_EQUEAL)
+                ->withPredicate(fn ($actual, $expected) => $actual == $expected)
+                ->withParams([Param::EXPECTED => $value])
+                ->build()
+        );
     }
 
     /**
@@ -102,12 +104,12 @@ class Rule extends BaseRule implements RuleInterface
      */
     public function same($value): self
     {
-        return $this->check(new Check(
-            CheckName::SAME,
-            CheckErrorName::NOT_SAME,
-            fn ($val) => $value === $val,
-            ['value' => $value]
-        ));
+        return $this->check(
+            CheckBuilder::create(CheckName::SAME, CheckErrorName::NOT_SAME)
+                ->withPredicate(fn ($actual, $expected) => $actual === $expected)
+                ->withParams([Param::EXPECTED => $value])
+                ->build()
+        );
     }
 
     /**

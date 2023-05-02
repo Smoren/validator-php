@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Smoren\Validator\Rules;
 
 use Smoren\Validator\Checks\Check;
+use Smoren\Validator\Factories\CheckBuilder;
 use Smoren\Validator\Interfaces\IntegerRuleInterface;
 use Smoren\Validator\Structs\CheckErrorName;
 use Smoren\Validator\Structs\CheckName;
@@ -17,12 +18,12 @@ class IntegerRule extends NumericRule implements IntegerRuleInterface
     public function __construct(string $name)
     {
         Rule::__construct($name);
-        $this->check(new Check(
-            CheckName::INTEGER,
-            CheckErrorName::NOT_INTEGER,
-            fn ($value) => is_int($value),
-            []
-        ), true);
+        $this->check(
+            CheckBuilder::create(CheckName::INTEGER, CheckErrorName::NOT_INTEGER)
+                ->withPredicate(fn ($value) => \is_int($value))
+                ->build(),
+            true
+        );
     }
 
     /**
@@ -32,11 +33,11 @@ class IntegerRule extends NumericRule implements IntegerRuleInterface
      */
     public function even(): self
     {
-        return $this->check(new Check(
-            CheckName::EVEN,
-            CheckErrorName::NOT_EVEN,
-            fn ($value) => $value % 2 === 0,
-        ));
+        return $this->check(
+            CheckBuilder::create(CheckName::EVEN, CheckErrorName::NOT_EVEN)
+                ->withPredicate(fn ($value) => $value % 2 === 0)
+                ->build()
+        );
     }
 
     /**
@@ -46,10 +47,10 @@ class IntegerRule extends NumericRule implements IntegerRuleInterface
      */
     public function odd(): self
     {
-        return $this->check(new Check(
-            CheckName::ODD,
-            CheckErrorName::NOT_ODD,
-            fn ($value) => $value % 2 !== 0
-        ));
+        return $this->check(
+            CheckBuilder::create(CheckName::ODD, CheckErrorName::NOT_ODD)
+                ->withPredicate(fn ($value) => $value % 2 !== 0)
+                ->build()
+        );
     }
 }

@@ -55,4 +55,5 @@ class CheckErrorName
     public const NOT_MATCH = 'not_match';
     public const HAS_NOT_SUBSTRING = 'has_not_substring';
     public const NOT_STARTS_WITH = 'not_starts_with';
+    public const NOT_ENDS_WITH = 'ends_with';
 }

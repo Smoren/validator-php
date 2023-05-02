@@ -54,4 +54,5 @@ class CheckName
     public const MATCH = 'match';
     public const HAS_SUBSTRING = 'has_substring';
     public const STARTS_WITH = 'starts_with';
+    public const ENDS_WITH = 'ends_with';
 }
