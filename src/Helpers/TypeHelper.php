@@ -1,0 +1,17 @@
+<?php
+
+namespace Smoren\Validator\Helpers;
+
+class TypeHelper
+{
+    /**
+     * @param mixed $value
+     * @return string
+     */
+    public static function getType($value): string
+    {
+        return \is_object($value)
+            ? \get_class($value)
+            : \gettype($value);
+    }
+}

@@ -7,6 +7,7 @@ namespace Smoren\Validator\Rules;
 use Smoren\Validator\Checks\Check;
 use Smoren\Validator\Exceptions\ValidationError;
 use Smoren\Validator\Helpers\ContainerAccessHelper;
+use Smoren\Validator\Helpers\TypeHelper;
 use Smoren\Validator\Interfaces\RuleInterface;
 use Smoren\Validator\Interfaces\CheckInterface;
 use Smoren\Validator\Interfaces\ContainerRuleInterface;
@@ -53,6 +54,7 @@ class ContainerRule extends Rule implements ContainerRuleInterface
             CheckErrorName::NOT_INDEXED_ARRAY,
             fn ($value) => (\array_values($value) === $value),
             [],
+            [],
             [$this->getArrayCheck()]
         ));
     }
@@ -68,6 +70,7 @@ class ContainerRule extends Rule implements ContainerRuleInterface
             CheckName::ASSOCIATIVE_ARRAY,
             CheckErrorName::NOT_ASSOCIATIVE_ARRAY,
             fn ($value) => \array_values($value) !== $value,
+            [],
             [],
             [$this->getArrayCheck()]
         ));
@@ -119,6 +122,7 @@ class ContainerRule extends Rule implements ContainerRuleInterface
             CheckErrorName::NOT_EMPTY,
             fn ($value) => \count($value) === 0,
             [],
+            [],
             [$this->getCountableCheck()]
         ));
     }
@@ -134,6 +138,7 @@ class ContainerRule extends Rule implements ContainerRuleInterface
             CheckName::NOT_EMPTY,
             CheckErrorName::EMPTY,
             fn ($value) => \count($value) > 0,
+            [],
             [],
             [$this->getCountableCheck()]
         ));
@@ -177,7 +182,11 @@ class ContainerRule extends Rule implements ContainerRuleInterface
         return $this->check(new Check(
             CheckName::INSTANCE_OF,
             CheckErrorName::NOT_INSTANCE_OF,
-            fn ($value) => $value instanceof $class
+            fn ($value) => $value instanceof $class,
+            [],
+            [
+                Param::GIVEN_TYPE => fn ($value) => TypeHelper::getType($value),
+            ],
         ));
     }
 
@@ -196,6 +205,7 @@ class ContainerRule extends Rule implements ContainerRuleInterface
                 $rule->validate(\count($value));
                 return true;
             },
+            [],
             [],
             [$this->getCountableCheck()]
         ));
@@ -220,6 +230,7 @@ class ContainerRule extends Rule implements ContainerRuleInterface
                 return true;
             },
             [Param::ATTRIBUTE => $name],
+            [],
             [$this->getHasAttributeCheck($name)]
         ));
     }
@@ -263,6 +274,7 @@ class ContainerRule extends Rule implements ContainerRuleInterface
                     return true;
                 },
                 [],
+                [],
                 [$this->getIterableCheck()]
             )
         );
@@ -285,6 +297,7 @@ class ContainerRule extends Rule implements ContainerRuleInterface
                     }
                     return true;
                 },
+                [],
                 [],
                 [$this->getIterableCheck()]
             )

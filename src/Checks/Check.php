@@ -28,6 +28,10 @@ class Check implements CheckInterface
      */
     protected array $params;
     /**
+     * @var array<string, callable>
+     */
+    protected array $calculatedParams;
+    /**
      * @var array<CheckInterface>
      */
     protected array $dependsOnChecks;
@@ -44,12 +48,14 @@ class Check implements CheckInterface
         string $errorName,
         callable $predicate,
         array $params = [],
+        array $calculatedParams = [],
         array $dependsOnChecks = []
     ) {
         $this->name = $name;
         $this->errorName = $errorName;
         $this->predicate = $predicate;
         $this->params = $params;
+        $this->calculatedParams = $calculatedParams;
         $this->dependsOnChecks = $dependsOnChecks;
     }
 
@@ -62,12 +68,16 @@ class Check implements CheckInterface
             $check->execute($value, $previousErrors);
         }
 
+        $params = $this->params;
+        foreach ($this->calculatedParams as $key => $paramGetter) {
+            $params[$key] = $paramGetter($value);
+        }
+
         try {
-            if (($this->predicate)($value, ...array_values($this->params)) === false) {
-                throw new CheckError($this->errorName, $value, $this->params);
+            if (($this->predicate)($value, ...array_values($params)) === false) {
+                throw new CheckError($this->errorName, $value, $params);
             }
         } catch (ValidationError $e) {
-            $params = $this->params;
             $params[Param::RULE] = $e->getName();
             $params[Param::VIOLATIONS] = $e->getSummary();
             throw new CheckError($this->errorName, $value, $params);

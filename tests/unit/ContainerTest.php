@@ -240,11 +240,19 @@ class ContainerTest extends Unit
                 ],
             ],
             [
-                [[], [1, 2, 3], (object)[], (object)[1, 2, 3]],
+                [[], [1, 2, 3]],
                 fn () => Value::container()
                     ->instanceOf(ArrayAccessListFixture::class),
                 [
-                    [CheckErrorName::NOT_INSTANCE_OF, []],
+                    [CheckErrorName::NOT_INSTANCE_OF, [Param::GIVEN_TYPE => 'array']],
+                ],
+            ],
+            [
+                [(object)[], (object)[1, 2, 3]],
+                fn () => Value::container()
+                    ->instanceOf(ArrayAccessListFixture::class),
+                [
+                    [CheckErrorName::NOT_INSTANCE_OF, [Param::GIVEN_TYPE => 'stdClass']],
                 ],
             ],
             [
