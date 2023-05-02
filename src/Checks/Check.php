@@ -41,6 +41,7 @@ class Check implements CheckInterface
      * @param string $errorName
      * @param callable $predicate
      * @param array<string, mixed> $params
+     * @param array<string, callable> $calculatedParams
      * @param array<CheckInterface> $dependsOnChecks
      */
     public function __construct(
