@@ -185,7 +185,7 @@ class ContainerTest extends Unit
                         CheckErrorName::INVALID_LENGTH,
                         [
                             Param::RULE => RuleName::INTEGER,
-                            Param::VIOLATIONS => [['not_odd', []]]
+                            Param::VIOLATIONS => [[CheckErrorName::NOT_ODD, []]]
                         ]
                     ],
                 ],
@@ -298,7 +298,7 @@ class ContainerTest extends Unit
                             Param::ATTRIBUTE => 'a',
                             Param::RULE => RuleName::NUMERIC,
                             Param::VIOLATIONS => [
-                                ['not_numeric', []],
+                                [CheckErrorName::NOT_NUMERIC, []],
                             ],
                         ],
                     ],
@@ -363,7 +363,7 @@ class ContainerTest extends Unit
                         [
                             Param::RULE => RuleName::INTEGER,
                             Param::VIOLATIONS => [
-                                ['not_even', []],
+                                [CheckErrorName::NOT_EVEN, []],
                             ],
                         ],
                     ],
