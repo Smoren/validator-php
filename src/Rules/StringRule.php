@@ -5,7 +5,6 @@ namespace Smoren\Validator\Rules;
 use Smoren\Validator\Factories\CheckBuilder;
 use Smoren\Validator\Interfaces\IntegerRuleInterface;
 use Smoren\Validator\Interfaces\StringRuleInterface;
-use Smoren\Validator\Structs\CheckErrorName;
 use Smoren\Validator\Structs\CheckName;
 
 class StringRule extends Rule implements StringRuleInterface
@@ -17,7 +16,7 @@ class StringRule extends Rule implements StringRuleInterface
     {
         parent::__construct($name);
         $this->check(
-            CheckBuilder::create(CheckName::STRING, CheckErrorName::NOT_STRING)
+            CheckBuilder::create(CheckName::STRING)
                 ->withPredicate(fn ($value) => \is_string($value))
                 ->build(),
             true
@@ -27,7 +26,7 @@ class StringRule extends Rule implements StringRuleInterface
     public function numeric(): StringRuleInterface
     {
         return $this->check(
-            CheckBuilder::create(CheckName::NUMERIC, CheckErrorName::NOT_NUMERIC)
+            CheckBuilder::create(CheckName::NUMERIC)
                 ->withPredicate(fn ($value) => \is_numeric($value))
                 ->build()
         );
@@ -36,7 +35,7 @@ class StringRule extends Rule implements StringRuleInterface
     public function empty(): StringRuleInterface
     {
         return $this->check(
-            CheckBuilder::create(CheckName::EMPTY, CheckErrorName::NOT_EMPTY)
+            CheckBuilder::create(CheckName::EMPTY)
                 ->withPredicate(fn ($value) => $value === '')
                 ->build()
         );
@@ -45,7 +44,7 @@ class StringRule extends Rule implements StringRuleInterface
     public function notEmpty(): StringRuleInterface
     {
         return $this->check(
-            CheckBuilder::create(CheckName::NOT_EMPTY, CheckErrorName::EMPTY)
+            CheckBuilder::create(CheckName::NOT_EMPTY)
                 ->withPredicate(fn ($value) => $value !== '')
                 ->build()
         );
@@ -54,7 +53,7 @@ class StringRule extends Rule implements StringRuleInterface
     public function match(string $regex): StringRuleInterface
     {
         return $this->check(
-            CheckBuilder::create(CheckName::MATCH, CheckErrorName::NOT_MATCH)
+            CheckBuilder::create(CheckName::MATCH)
                 ->withPredicate(fn ($value, string $regex) => \boolval(\preg_match($regex, $value)))
                 ->withParams(['regex' => $regex])
                 ->build()
@@ -64,7 +63,7 @@ class StringRule extends Rule implements StringRuleInterface
     public function hasSubstring(string $substr): StringRuleInterface
     {
         return $this->check(
-            CheckBuilder::create(CheckName::HAS_SUBSTRING, CheckErrorName::HAS_NOT_SUBSTRING)
+            CheckBuilder::create(CheckName::HAS_SUBSTRING)
                 ->withPredicate(fn ($value, string $substr) => \mb_strpos($value, $substr) !== false)
                 ->withParams(['substring' => $substr])
                 ->build()
@@ -74,7 +73,7 @@ class StringRule extends Rule implements StringRuleInterface
     public function startsWith(string $substr): StringRuleInterface
     {
         return $this->check(
-            CheckBuilder::create(CheckName::STARTS_WITH, CheckErrorName::NOT_STARTS_WITH)
+            CheckBuilder::create(CheckName::STARTS_WITH)
                 ->withPredicate(fn ($value, string $substr) => \mb_strpos($value, $substr) === 0)
                 ->withParams(['substring' => $substr])
                 ->build()
@@ -84,7 +83,7 @@ class StringRule extends Rule implements StringRuleInterface
     public function endsWith(string $substr): StringRuleInterface
     {
         return $this->check(
-            CheckBuilder::create(CheckName::ENDS_WITH, CheckErrorName::NOT_ENDS_WITH)
+            CheckBuilder::create(CheckName::ENDS_WITH)
                 ->withPredicate(static function ($value, string $substr) {
                     return \substr($value, \mb_strlen($value) - \mb_strlen($substr)) === $substr;
                 })
@@ -96,7 +95,7 @@ class StringRule extends Rule implements StringRuleInterface
     public function lengthIs(IntegerRuleInterface $rule): StringRuleInterface
     {
         return $this->check(
-            CheckBuilder::create(CheckName::LENGTH_IS, CheckErrorName::INVALID_LENGTH)
+            CheckBuilder::create(CheckName::LENGTH_IS)
                 ->withPredicate(static function ($value) use ($rule) {
                     /** @var string $value */
                     $rule->validate(\mb_strlen($value));

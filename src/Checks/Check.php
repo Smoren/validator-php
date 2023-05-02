@@ -16,10 +16,6 @@ class Check implements CheckInterface
      */
     protected string $name;
     /**
-     * @var string
-     */
-    protected string $errorName;
-    /**
      * @var callable
      */
     protected $predicate;
@@ -38,7 +34,6 @@ class Check implements CheckInterface
 
     /**
      * @param string $name
-     * @param string $errorName
      * @param callable $predicate
      * @param array<string, mixed> $params
      * @param array<string, callable> $calculatedParams
@@ -46,14 +41,12 @@ class Check implements CheckInterface
      */
     public function __construct(
         string $name,
-        string $errorName,
         callable $predicate,
         array $params = [],
         array $calculatedParams = [],
         array $dependsOnChecks = []
     ) {
         $this->name = $name;
-        $this->errorName = $errorName;
         $this->predicate = $predicate;
         $this->params = $params;
         $this->calculatedParams = $calculatedParams;
@@ -76,12 +69,12 @@ class Check implements CheckInterface
 
         try {
             if (($this->predicate)($value, ...array_values($params)) === false) {
-                throw new CheckError($this->errorName, $value, $params);
+                throw new CheckError($this->name, $value, $params);
             }
         } catch (ValidationError $e) {
             $params[Param::RULE] = $e->getName();
-            $params[Param::VIOLATIONS] = $e->getSummary();
-            throw new CheckError($this->errorName, $value, $params);
+            $params[Param::VIOLATED_RESTRICTIONS] = $e->getViolatedRestrictions();
+            throw new CheckError($this->name, $value, $params);
         }
     }
 }

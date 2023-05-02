@@ -8,7 +8,7 @@ use Codeception\Test\Unit;
 use Smoren\Validator\Exceptions\ValidationError;
 use Smoren\Validator\Factories\Value;
 use Smoren\Validator\Interfaces\RuleInterface;
-use Smoren\Validator\Structs\CheckErrorName;
+use Smoren\Validator\Structs\CheckName;
 
 class OrRuleTest extends Unit
 {
@@ -74,7 +74,7 @@ class OrRuleTest extends Unit
                 $this->fail();
             } catch (ValidationError $e) {
                 $this->assertSame($value, $e->getValue());
-                $this->assertSame($errors, $e->getSummary());
+                $this->assertSame($errors, $e->getViolatedRestrictions());
             }
         }
         $this->assertTrue(true);
@@ -87,7 +87,7 @@ class OrRuleTest extends Unit
                 [null],
                 fn () => Value::or([]),
                 [
-                    [CheckErrorName::NULL, []],
+                    [CheckName::NOT_NULL, []],
                 ],
             ],
             [
@@ -97,8 +97,8 @@ class OrRuleTest extends Unit
                     Value::float(),
                 ]),
                 [
-                    [CheckErrorName::NOT_INTEGER, []],
-                    [CheckErrorName::NOT_FLOAT, []],
+                    [CheckName::INTEGER, []],
+                    [CheckName::FLOAT, []],
                 ],
             ],
             [
@@ -108,7 +108,7 @@ class OrRuleTest extends Unit
                     Value::float(),
                 ]),
                 [
-                    [CheckErrorName::NULL, []],
+                    [CheckName::NOT_NULL, []],
                 ],
             ],
             [
@@ -118,8 +118,8 @@ class OrRuleTest extends Unit
                     Value::float()->positive()->nonFractional(),
                 ])->nullable(),
                 [
-                    [CheckErrorName::NOT_INTEGER, []],
-                    [CheckErrorName::FRACTIONAL, []],
+                    [CheckName::INTEGER, []],
+                    [CheckName::NON_FRACTIONAL, []],
                 ],
             ],
             [
@@ -129,9 +129,9 @@ class OrRuleTest extends Unit
                     Value::float()->positive()->nonFractional(),
                 ])->nullable(),
                 [
-                    [CheckErrorName::NOT_INTEGER, []],
-                    [CheckErrorName::NOT_POSITIVE, []],
-                    [CheckErrorName::FRACTIONAL, []],
+                    [CheckName::INTEGER, []],
+                    [CheckName::POSITIVE, []],
+                    [CheckName::NON_FRACTIONAL, []],
                 ],
             ],
         ];

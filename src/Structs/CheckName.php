@@ -29,7 +29,7 @@ class CheckName
     public const ODD = 'odd';
 
     public const FLOAT = 'float';
-    public const NOT_FRACTIONAL = 'not_fractional';
+    public const NON_FRACTIONAL = 'not_fractional';
     public const FRACTIONAL = 'fractional';
     public const INFINITE = 'infinite';
     public const FINITE = 'finite';

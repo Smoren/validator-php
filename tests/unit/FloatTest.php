@@ -8,7 +8,7 @@ use Codeception\Test\Unit;
 use Smoren\Validator\Exceptions\ValidationError;
 use Smoren\Validator\Factories\Value;
 use Smoren\Validator\Interfaces\RuleInterface;
-use Smoren\Validator\Structs\CheckErrorName;
+use Smoren\Validator\Structs\CheckName;
 use Smoren\Validator\Structs\Param;
 
 class FloatTest extends Unit
@@ -129,7 +129,7 @@ class FloatTest extends Unit
                 $this->fail();
             } catch (ValidationError $e) {
                 $this->assertSame($value, $e->getValue());
-                $this->assertSame($errors, $e->getSummary());
+                $this->assertSame($errors, $e->getViolatedRestrictions());
             }
         }
         $this->assertTrue(true);
@@ -142,14 +142,14 @@ class FloatTest extends Unit
                 [null],
                 fn () => Value::float(),
                 [
-                    [CheckErrorName::NULL, []],
+                    [CheckName::NOT_NULL, []],
                 ],
             ],
             [
                 ['a', true, false, []],
                 fn () => Value::float(),
                 [
-                    [CheckErrorName::NOT_FLOAT, []],
+                    [CheckName::FLOAT, []],
                 ],
             ],
             [
@@ -157,7 +157,7 @@ class FloatTest extends Unit
                 fn () => Value::float()
                     ->falsy(),
                 [
-                    [CheckErrorName::NOT_FALSY, []],
+                    [CheckName::FALSY, []],
                 ],
             ],
             [
@@ -165,7 +165,7 @@ class FloatTest extends Unit
                 fn () => Value::float()
                     ->truthy(),
                 [
-                    [CheckErrorName::NOT_TRUTHY, []],
+                    [CheckName::TRUTHY, []],
                 ],
             ],
             [
@@ -173,7 +173,7 @@ class FloatTest extends Unit
                 fn () => Value::float()
                     ->nullable(),
                 [
-                    [CheckErrorName::NOT_FLOAT, []],
+                    [CheckName::FLOAT, []],
                 ],
             ],
             [
@@ -182,7 +182,7 @@ class FloatTest extends Unit
                     ->nullable()
                     ->positive(),
                 [
-                    [CheckErrorName::NOT_FLOAT, []],
+                    [CheckName::FLOAT, []],
                 ],
             ],
             [
@@ -190,7 +190,7 @@ class FloatTest extends Unit
                 fn () => Value::float()
                     ->positive(),
                 [
-                    [CheckErrorName::NOT_POSITIVE, []],
+                    [CheckName::POSITIVE, []],
                 ],
             ],
             [
@@ -198,7 +198,7 @@ class FloatTest extends Unit
                 fn () => Value::float()
                     ->negative(),
                 [
-                    [CheckErrorName::NOT_NEGATIVE, []],
+                    [CheckName::NEGATIVE, []],
                 ],
             ],
             [
@@ -206,7 +206,7 @@ class FloatTest extends Unit
                 fn () => Value::float()
                     ->nonPositive(),
                 [
-                    [CheckErrorName::NOT_NON_POSITIVE, []],
+                    [CheckName::NON_POSITIVE, []],
                 ],
             ],
             [
@@ -214,7 +214,7 @@ class FloatTest extends Unit
                 fn () => Value::float()
                     ->nonNegative(),
                 [
-                    [CheckErrorName::NOT_NON_NEGATIVE, []],
+                    [CheckName::NON_NEGATIVE, []],
                 ],
             ],
             [
@@ -222,7 +222,7 @@ class FloatTest extends Unit
                 fn () => Value::float()
                     ->greaterTran(5),
                 [
-                    [CheckErrorName::NOT_GREATER, [Param::EXPECTED => 5]],
+                    [CheckName::GREATER, [Param::EXPECTED => 5]],
                 ],
             ],
             [
@@ -230,7 +230,7 @@ class FloatTest extends Unit
                 fn () => Value::float()
                     ->greaterOrEqual(5),
                 [
-                    [CheckErrorName::NOT_GREATER_OR_EQUEAL, [Param::EXPECTED => 5]],
+                    [CheckName::GREATER_OR_EQUEAL, [Param::EXPECTED => 5]],
                 ],
             ],
             [
@@ -238,7 +238,7 @@ class FloatTest extends Unit
                 fn () => Value::float()
                     ->lessTran(5),
                 [
-                    [CheckErrorName::NOT_LESS, [Param::EXPECTED => 5]],
+                    [CheckName::LESS, [Param::EXPECTED => 5]],
                 ],
             ],
             [
@@ -246,7 +246,7 @@ class FloatTest extends Unit
                 fn () => Value::float()
                     ->lessOrEqual(5),
                 [
-                    [CheckErrorName::NOT_LESS_OR_EQUEAL, [Param::EXPECTED => 5]],
+                    [CheckName::LESS_OR_EQUEAL, [Param::EXPECTED => 5]],
                 ],
             ],
             [
@@ -254,7 +254,7 @@ class FloatTest extends Unit
                 fn () => Value::float()
                     ->fractional(),
                 [
-                    [CheckErrorName::NOT_FRACTIONAL, []],
+                    [CheckName::FRACTIONAL, []],
                 ],
             ],
             [
@@ -262,7 +262,7 @@ class FloatTest extends Unit
                 fn () => Value::float()
                     ->nonFractional(),
                 [
-                    [CheckErrorName::FRACTIONAL, []],
+                    [CheckName::NON_FRACTIONAL, []],
                 ],
             ],
             [
@@ -270,7 +270,7 @@ class FloatTest extends Unit
                 fn () => Value::float()
                     ->finite(),
                 [
-                    [CheckErrorName::NOT_FINITE, []],
+                    [CheckName::FINITE, []],
                 ],
             ],
             [
@@ -278,7 +278,7 @@ class FloatTest extends Unit
                 fn () => Value::float()
                     ->infinite(),
                 [
-                    [CheckErrorName::NOT_INFINITE, []],
+                    [CheckName::INFINITE, []],
                 ],
             ],
         ];

@@ -8,8 +8,7 @@ use Codeception\Test\Unit;
 use Smoren\Validator\Exceptions\ValidationError;
 use Smoren\Validator\Factories\Value;
 use Smoren\Validator\Interfaces\RuleInterface;
-use Smoren\Validator\Rules\IntegerRule;
-use Smoren\Validator\Structs\CheckErrorName;
+use Smoren\Validator\Structs\CheckName;
 use Smoren\Validator\Structs\Param;
 use Smoren\Validator\Structs\RuleName;
 
@@ -101,7 +100,7 @@ class StringTest extends Unit
                 $this->fail();
             } catch (ValidationError $e) {
                 $this->assertSame($value, $e->getValue());
-                $this->assertSame($errors, $e->getSummary());
+                $this->assertSame($errors, $e->getViolatedRestrictions());
             }
         }
         $this->assertTrue(true);
@@ -114,14 +113,14 @@ class StringTest extends Unit
                 [null],
                 fn () => Value::string(),
                 [
-                    [CheckErrorName::NULL, []],
+                    [CheckName::NOT_NULL, []],
                 ],
             ],
             [
                 [1, 1.1, 0, 0.0, [], (object)[]],
                 fn () => Value::string(),
                 [
-                    [CheckErrorName::NOT_STRING, []],
+                    [CheckName::STRING, []],
                 ],
             ],
             [
@@ -129,7 +128,7 @@ class StringTest extends Unit
                 fn () => Value::string()
                     ->numeric(),
                 [
-                    [CheckErrorName::NOT_NUMERIC, []],
+                    [CheckName::NUMERIC, []],
                 ],
             ],
             [
@@ -137,7 +136,7 @@ class StringTest extends Unit
                 fn () => Value::string()
                     ->empty(),
                 [
-                    [CheckErrorName::NOT_EMPTY, []],
+                    [CheckName::EMPTY, []],
                 ],
             ],
             [
@@ -145,7 +144,7 @@ class StringTest extends Unit
                 fn () => Value::string()
                     ->notEmpty(),
                 [
-                    [CheckErrorName::EMPTY, []],
+                    [CheckName::NOT_EMPTY, []],
                 ],
             ],
             [
@@ -153,7 +152,7 @@ class StringTest extends Unit
                 fn () => Value::string()
                     ->match('/^[a-z0-9_]+@[a-z0-9_]+\.[a-z]+$/'),
                 [
-                    [CheckErrorName::NOT_MATCH, ['regex' => '/^[a-z0-9_]+@[a-z0-9_]+\.[a-z]+$/']],
+                    [CheckName::MATCH, ['regex' => '/^[a-z0-9_]+@[a-z0-9_]+\.[a-z]+$/']],
                 ],
             ],
             [
@@ -161,7 +160,7 @@ class StringTest extends Unit
                 fn () => Value::string()
                     ->hasSubstring('cde'),
                 [
-                    [CheckErrorName::HAS_NOT_SUBSTRING, ['substring' => 'cde']],
+                    [CheckName::HAS_SUBSTRING, ['substring' => 'cde']],
                 ],
             ],
             [
@@ -169,7 +168,7 @@ class StringTest extends Unit
                 fn () => Value::string()
                     ->startsWith('abc'),
                 [
-                    [CheckErrorName::NOT_STARTS_WITH, ['substring' => 'abc']],
+                    [CheckName::STARTS_WITH, ['substring' => 'abc']],
                 ],
             ],
             [
@@ -177,7 +176,7 @@ class StringTest extends Unit
                 fn () => Value::string()
                     ->endsWith('abc'),
                 [
-                    [CheckErrorName::NOT_ENDS_WITH, ['substring' => 'abc']],
+                    [CheckName::ENDS_WITH, ['substring' => 'abc']],
                 ],
             ],
             [
@@ -185,11 +184,11 @@ class StringTest extends Unit
                 fn () => Value::string()
                     ->lengthIs(Value::integer()->lessTran(7)),
                 [
-                    [CheckErrorName::INVALID_LENGTH, [
+                    [CheckName::LENGTH_IS, [
                         Param::RULE => RuleName::INTEGER,
-                        Param::VIOLATIONS => [
+                        Param::VIOLATED_RESTRICTIONS => [
                             [
-                                CheckErrorName::NOT_LESS,
+                                CheckName::LESS,
                                 [Param::EXPECTED => 7],
                             ]
                         ],

@@ -8,7 +8,7 @@ use Codeception\Test\Unit;
 use Smoren\Validator\Exceptions\ValidationError;
 use Smoren\Validator\Factories\Value;
 use Smoren\Validator\Interfaces\RuleInterface;
-use Smoren\Validator\Structs\CheckErrorName;
+use Smoren\Validator\Structs\CheckName;
 use Smoren\Validator\Structs\Param;
 use Smoren\Validator\Structs\RuleName;
 use Smoren\Validator\Tests\Unit\Fixture\ArrayAccessListFixture;
@@ -160,7 +160,7 @@ class ContainerTest extends Unit
                 $this->fail();
             } catch (ValidationError $e) {
                 $this->assertSame($value, $e->getValue());
-                $this->assertSame($errors, $e->getSummary());
+                $this->assertSame($errors, $e->getViolatedRestrictions());
             }
         }
         $this->assertTrue(true);
@@ -173,7 +173,7 @@ class ContainerTest extends Unit
                 [1, '2', true, false, 'asd'],
                 fn () => Value::container(),
                 [
-                    [CheckErrorName::NOT_CONTAINER, []],
+                    [CheckName::CONTAINER, []],
                 ],
             ],
             [
@@ -182,10 +182,10 @@ class ContainerTest extends Unit
                     ->lengthIs(Value::integer()->odd()),
                 [
                     [
-                        CheckErrorName::INVALID_LENGTH,
+                        CheckName::LENGTH_IS,
                         [
                             Param::RULE => RuleName::INTEGER,
-                            Param::VIOLATIONS => [[CheckErrorName::NOT_ODD, []]]
+                            Param::VIOLATED_RESTRICTIONS => [[CheckName::ODD, []]]
                         ]
                     ],
                 ],
@@ -195,7 +195,7 @@ class ContainerTest extends Unit
                 fn () => Value::container()
                     ->array(),
                 [
-                    [CheckErrorName::NOT_ARRAY, []],
+                    [CheckName::ARRAY, []],
                 ],
             ],
             [
@@ -203,7 +203,7 @@ class ContainerTest extends Unit
                 fn () => Value::container()
                     ->indexedArray(),
                 [
-                    [CheckErrorName::NOT_INDEXED_ARRAY, []],
+                    [CheckName::INDEXED_ARRAY, []],
                 ],
             ],
             [
@@ -211,7 +211,7 @@ class ContainerTest extends Unit
                 fn () => Value::container()
                     ->object(),
                 [
-                    [CheckErrorName::NOT_OBJECT, []],
+                    [CheckName::OBJECT, []],
                 ],
             ],
             [
@@ -219,7 +219,7 @@ class ContainerTest extends Unit
                 fn () => Value::container()
                     ->arrayAccessible(),
                 [
-                    [CheckErrorName::NOT_ARRAY_ACCESSIBLE, []],
+                    [CheckName::ARRAY_ACCESSIBLE, []],
                 ],
             ],
             [
@@ -227,7 +227,7 @@ class ContainerTest extends Unit
                 fn () => Value::container()
                     ->countable(),
                 [
-                    [CheckErrorName::NOT_COUNTABLE, []],
+                    [CheckName::COUNTABLE, []],
                 ],
             ],
             [
@@ -235,7 +235,7 @@ class ContainerTest extends Unit
                 fn () => Value::container()
                     ->iterable(),
                 [
-                    [CheckErrorName::NOT_ITERABLE, []],
+                    [CheckName::ITERABLE, []],
                 ],
             ],
             [
@@ -243,7 +243,7 @@ class ContainerTest extends Unit
                 fn () => Value::container()
                     ->stdObject(),
                 [
-                    [CheckErrorName::NOT_STD_OBJECT, []],
+                    [CheckName::STD_OBJECT, []],
                 ],
             ],
             [
@@ -251,7 +251,7 @@ class ContainerTest extends Unit
                 fn () => Value::container()
                     ->instanceOf(ArrayAccessListFixture::class),
                 [
-                    [CheckErrorName::NOT_INSTANCE_OF, [Param::GIVEN_TYPE => 'array']],
+                    [CheckName::INSTANCE_OF, [Param::GIVEN_TYPE => 'array']],
                 ],
             ],
             [
@@ -259,7 +259,7 @@ class ContainerTest extends Unit
                 fn () => Value::container()
                     ->instanceOf(ArrayAccessListFixture::class),
                 [
-                    [CheckErrorName::NOT_INSTANCE_OF, [Param::GIVEN_TYPE => 'stdClass']],
+                    [CheckName::INSTANCE_OF, [Param::GIVEN_TYPE => 'stdClass']],
                 ],
             ],
             [
@@ -267,7 +267,7 @@ class ContainerTest extends Unit
                 fn () => Value::container()
                     ->empty(),
                 [
-                    [CheckErrorName::NOT_EMPTY, []],
+                    [CheckName::EMPTY, []],
                 ],
             ],
             [
@@ -275,7 +275,7 @@ class ContainerTest extends Unit
                 fn () => Value::container()
                     ->notEmpty(),
                 [
-                    [CheckErrorName::EMPTY, []],
+                    [CheckName::NOT_EMPTY, []],
                 ],
             ],
             [
@@ -284,7 +284,7 @@ class ContainerTest extends Unit
                     ->hasAttribute('a')
                     ->hasAttribute('b'),
                 [
-                    [CheckErrorName::ATTRIBUTE_NOT_EXIST, [Param::ATTRIBUTE => 'b']],
+                    [CheckName::HAS_ATTRIBUTE, [Param::ATTRIBUTE => 'b']],
                 ],
             ],
             [
@@ -293,12 +293,12 @@ class ContainerTest extends Unit
                     ->hasAttribute('a', Value::numeric()),
                 [
                     [
-                        CheckErrorName::INVALID_ATTRIBUTE,
+                        CheckName::HAS_ATTRIBUTE,
                         [
                             Param::ATTRIBUTE => 'a',
                             Param::RULE => RuleName::NUMERIC,
-                            Param::VIOLATIONS => [
-                                [CheckErrorName::NOT_NUMERIC, []],
+                            Param::VIOLATED_RESTRICTIONS => [
+                                [CheckName::NUMERIC, []],
                             ],
                         ],
                     ],
@@ -309,7 +309,7 @@ class ContainerTest extends Unit
                 fn () => Value::container()
                     ->hasAttribute('a', Value::numeric()),
                 [
-                    [CheckErrorName::ATTRIBUTE_NOT_EXIST, [Param::ATTRIBUTE => 'a']],
+                    [CheckName::HAS_ATTRIBUTE, [Param::ATTRIBUTE => 'a']],
                 ],
             ],
             [
@@ -318,11 +318,11 @@ class ContainerTest extends Unit
                     ->hasOptionalAttribute('a', Value::integer()),
                 [
                     [
-                        CheckErrorName::INVALID_ATTRIBUTE, [
+                        CheckName::HAS_ATTRIBUTE, [
                             Param::ATTRIBUTE => 'a',
                             Param::RULE => RuleName::INTEGER,
-                            Param::VIOLATIONS => [
-                                [CheckErrorName::NOT_INTEGER, []],
+                            Param::VIOLATED_RESTRICTIONS => [
+                                [CheckName::INTEGER, []],
                             ],
                         ],
                     ],
@@ -333,12 +333,15 @@ class ContainerTest extends Unit
                 fn () => Value::container()
                     ->allKeysAre(Value::numeric()->nonNegative()),
                 [
-                    [CheckErrorName::SOME_KEYS_INVALID, [
-                        Param::RULE => RuleName::NUMERIC,
-                        Param::VIOLATIONS => [
-                            [CheckErrorName::NOT_NUMERIC, []],
-                        ],
-                    ]],
+                    [
+                        CheckName::ALL_KEYS_ARE,
+                        [
+                            Param::RULE => RuleName::NUMERIC,
+                            Param::VIOLATED_RESTRICTIONS => [
+                                [CheckName::NUMERIC, []],
+                            ],
+                        ]
+                    ],
                 ],
             ],
             [
@@ -346,12 +349,15 @@ class ContainerTest extends Unit
                 fn () => Value::container()
                     ->allKeysAre(Value::numeric()->nonNegative()),
                 [
-                    [CheckErrorName::SOME_KEYS_INVALID, [
-                        Param::RULE => RuleName::NUMERIC,
-                        Param::VIOLATIONS => [
-                            [CheckErrorName::NOT_NON_NEGATIVE, []],
-                        ],
-                    ]],
+                    [
+                        CheckName::ALL_KEYS_ARE,
+                        [
+                            Param::RULE => RuleName::NUMERIC,
+                            Param::VIOLATED_RESTRICTIONS => [
+                                [CheckName::NON_NEGATIVE, []],
+                            ],
+                        ]
+                    ],
                 ],
             ],
             [
@@ -359,11 +365,12 @@ class ContainerTest extends Unit
                 fn () => Value::container()
                     ->allValuesAre(Value::integer()->even()),
                 [
-                    [CheckErrorName::SOME_VALUES_INVALID,
+                    [
+                        CheckName::ALL_VALUES_ARE,
                         [
                             Param::RULE => RuleName::INTEGER,
-                            Param::VIOLATIONS => [
-                                [CheckErrorName::NOT_EVEN, []],
+                            Param::VIOLATED_RESTRICTIONS => [
+                                [CheckName::EVEN, []],
                             ],
                         ],
                     ],

@@ -8,7 +8,7 @@ use Codeception\Test\Unit;
 use Smoren\Validator\Exceptions\ValidationError;
 use Smoren\Validator\Factories\Value;
 use Smoren\Validator\Interfaces\RuleInterface;
-use Smoren\Validator\Structs\CheckErrorName;
+use Smoren\Validator\Structs\CheckName;
 use Smoren\Validator\Structs\Param;
 
 class NumericTest extends Unit
@@ -119,7 +119,7 @@ class NumericTest extends Unit
                 $this->fail();
             } catch (ValidationError $e) {
                 $this->assertSame($value, $e->getValue());
-                $this->assertSame($errors, $e->getSummary());
+                $this->assertSame($errors, $e->getViolatedRestrictions());
             }
         }
         $this->assertTrue(true);
@@ -132,14 +132,14 @@ class NumericTest extends Unit
                 [null],
                 fn () => Value::numeric(),
                 [
-                    [CheckErrorName::NULL, []],
+                    [CheckName::NOT_NULL, []],
                 ],
             ],
             [
                 ['a', true, false, []],
                 fn () => Value::numeric(),
                 [
-                    [CheckErrorName::NOT_NUMERIC, []],
+                    [CheckName::NUMERIC, []],
                 ],
             ],
             [
@@ -147,7 +147,7 @@ class NumericTest extends Unit
                 fn () => Value::numeric()
                     ->falsy(),
                 [
-                    [CheckErrorName::NOT_FALSY, []],
+                    [CheckName::FALSY, []],
                 ],
             ],
             [
@@ -155,7 +155,7 @@ class NumericTest extends Unit
                 fn () => Value::numeric()
                     ->truthy(),
                 [
-                    [CheckErrorName::NOT_TRUTHY, []],
+                    [CheckName::TRUTHY, []],
                 ],
             ],
             [
@@ -163,7 +163,7 @@ class NumericTest extends Unit
                 fn () => Value::numeric()
                     ->number(),
                 [
-                    [CheckErrorName::NOT_NUMBER, []],
+                    [CheckName::NUMBER, []],
                 ],
             ],
             [
@@ -171,7 +171,7 @@ class NumericTest extends Unit
                 fn () => Value::numeric()
                     ->string(),
                 [
-                    [CheckErrorName::NOT_STRING, []],
+                    [CheckName::STRING, []],
                 ],
             ],
             [
@@ -179,7 +179,7 @@ class NumericTest extends Unit
                 fn () => Value::numeric()
                     ->nullable(),
                 [
-                    [CheckErrorName::NOT_NUMERIC, []],
+                    [CheckName::NUMERIC, []],
                 ],
             ],
             [
@@ -188,7 +188,7 @@ class NumericTest extends Unit
                     ->nullable()
                     ->positive(),
                 [
-                    [CheckErrorName::NOT_NUMERIC, []],
+                    [CheckName::NUMERIC, []],
                 ],
             ],
             [
@@ -196,7 +196,7 @@ class NumericTest extends Unit
                 fn () => Value::numeric()
                     ->positive(),
                 [
-                    [CheckErrorName::NOT_POSITIVE, []],
+                    [CheckName::POSITIVE, []],
                 ],
             ],
             [
@@ -204,7 +204,7 @@ class NumericTest extends Unit
                 fn () => Value::numeric()
                     ->negative(),
                 [
-                    [CheckErrorName::NOT_NEGATIVE, []],
+                    [CheckName::NEGATIVE, []],
                 ],
             ],
             [
@@ -212,7 +212,7 @@ class NumericTest extends Unit
                 fn () => Value::numeric()
                     ->nonPositive(),
                 [
-                    [CheckErrorName::NOT_NON_POSITIVE, []],
+                    [CheckName::NON_POSITIVE, []],
                 ],
             ],
             [
@@ -220,7 +220,7 @@ class NumericTest extends Unit
                 fn () => Value::numeric()
                     ->nonNegative(),
                 [
-                    [CheckErrorName::NOT_NON_NEGATIVE, []],
+                    [CheckName::NON_NEGATIVE, []],
                 ],
             ],
             [
@@ -228,7 +228,7 @@ class NumericTest extends Unit
                 fn () => Value::numeric()
                     ->greaterTran(5),
                 [
-                    [CheckErrorName::NOT_GREATER, [Param::EXPECTED => 5]],
+                    [CheckName::GREATER, [Param::EXPECTED => 5]],
                 ],
             ],
             [
@@ -236,7 +236,7 @@ class NumericTest extends Unit
                 fn () => Value::numeric()
                     ->greaterOrEqual(5),
                 [
-                    [CheckErrorName::NOT_GREATER_OR_EQUEAL, [Param::EXPECTED => 5]],
+                    [CheckName::GREATER_OR_EQUEAL, [Param::EXPECTED => 5]],
                 ],
             ],
             [
@@ -244,7 +244,7 @@ class NumericTest extends Unit
                 fn () => Value::numeric()
                     ->lessTran(5),
                 [
-                    [CheckErrorName::NOT_LESS, [Param::EXPECTED => 5]],
+                    [CheckName::LESS, [Param::EXPECTED => 5]],
                 ],
             ],
             [
@@ -252,7 +252,7 @@ class NumericTest extends Unit
                 fn () => Value::numeric()
                     ->lessOrEqual(5),
                 [
-                    [CheckErrorName::NOT_LESS_OR_EQUEAL, [Param::EXPECTED => 5]],
+                    [CheckName::LESS_OR_EQUEAL, [Param::EXPECTED => 5]],
                 ],
             ],
         ];

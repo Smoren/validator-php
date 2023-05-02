@@ -17,7 +17,7 @@ class ValidationError extends \DomainException
     /**
      * @var array<array{string, array<string, mixed>}>
      */
-    protected array $summary;
+    protected array $violatedRestrictions;
 
     /**
      * @param string $name
@@ -46,7 +46,7 @@ class ValidationError extends \DomainException
         $summary = [];
 
         foreach ($validationErrors as $error) {
-            foreach ($error->getSummary() as $item) {
+            foreach ($error->getViolatedRestrictions() as $item) {
                 $summary[] = $item;
             }
         }
@@ -63,7 +63,7 @@ class ValidationError extends \DomainException
         parent::__construct('Validation error');
         $this->name = $name;
         $this->value = $value;
-        $this->summary = $summary;
+        $this->violatedRestrictions = $summary;
     }
 
     /**
@@ -85,8 +85,8 @@ class ValidationError extends \DomainException
     /**
      * @return array<array{string, array<string, mixed>}>
      */
-    public function getSummary(): array
+    public function getViolatedRestrictions(): array
     {
-        return $this->summary;
+        return $this->violatedRestrictions;
     }
 }

@@ -11,7 +11,6 @@ use Smoren\Validator\Interfaces\RuleInterface;
 use Smoren\Validator\Interfaces\CheckInterface;
 use Smoren\Validator\Interfaces\ContainerRuleInterface;
 use Smoren\Validator\Interfaces\IntegerRuleInterface;
-use Smoren\Validator\Structs\CheckErrorName;
 use Smoren\Validator\Structs\CheckName;
 use Smoren\Validator\Structs\Param;
 
@@ -24,7 +23,7 @@ class ContainerRule extends Rule implements ContainerRuleInterface
     {
         parent::__construct($name);
         $this->check(
-            CheckBuilder::create(CheckName::CONTAINER, CheckErrorName::NOT_CONTAINER)
+            CheckBuilder::create(CheckName::CONTAINER)
                 ->withPredicate(fn ($value) => \is_array($value) || \is_object($value))
                 ->build(),
             true
@@ -49,7 +48,7 @@ class ContainerRule extends Rule implements ContainerRuleInterface
     public function indexedArray(): self
     {
         return $this->check(
-            CheckBuilder::create(CheckName::INDEXED_ARRAY, CheckErrorName::NOT_INDEXED_ARRAY)
+            CheckBuilder::create(CheckName::INDEXED_ARRAY)
                 ->withPredicate(fn ($value) => \array_values($value) === $value)
                 ->withDependOnChecks([$this->getArrayCheck()])
                 ->build()
@@ -64,7 +63,7 @@ class ContainerRule extends Rule implements ContainerRuleInterface
     public function associativeArray(): self
     {
         return $this->check(
-            CheckBuilder::create(CheckName::ASSOCIATIVE_ARRAY, CheckErrorName::NOT_ASSOCIATIVE_ARRAY)
+            CheckBuilder::create(CheckName::ASSOCIATIVE_ARRAY)
                 ->withPredicate(fn ($value) => \array_values($value) !== $value)
                 ->withDependOnChecks([$this->getArrayCheck()])
                 ->build()
@@ -79,7 +78,7 @@ class ContainerRule extends Rule implements ContainerRuleInterface
     public function arrayAccessible(): self
     {
         return $this->check(
-            CheckBuilder::create(CheckName::ARRAY_ACCESSIBLE, CheckErrorName::NOT_ARRAY_ACCESSIBLE)
+            CheckBuilder::create(CheckName::ARRAY_ACCESSIBLE)
                 ->withPredicate(fn ($value) => \is_array($value) || $value instanceof \ArrayAccess)
                 ->build()
         );
@@ -113,7 +112,7 @@ class ContainerRule extends Rule implements ContainerRuleInterface
     public function empty(): self
     {
         return $this->check(
-            CheckBuilder::create(CheckName::EMPTY, CheckErrorName::NOT_EMPTY)
+            CheckBuilder::create(CheckName::EMPTY)
                 ->withPredicate(fn ($value) => \count($value) === 0)
                 ->withDependOnChecks([$this->getCountableCheck()])
                 ->build()
@@ -128,7 +127,7 @@ class ContainerRule extends Rule implements ContainerRuleInterface
     public function notEmpty(): self
     {
         return $this->check(
-            CheckBuilder::create(CheckName::NOT_EMPTY, CheckErrorName::EMPTY)
+            CheckBuilder::create(CheckName::NOT_EMPTY)
                 ->withPredicate(fn ($value) => \count($value) > 0)
                 ->withDependOnChecks([$this->getCountableCheck()])
                 ->build()
@@ -143,7 +142,7 @@ class ContainerRule extends Rule implements ContainerRuleInterface
     public function object(): self
     {
         return $this->check(
-            CheckBuilder::create(CheckName::OBJECT, CheckErrorName::NOT_OBJECT)
+            CheckBuilder::create(CheckName::OBJECT)
                 ->withPredicate(fn ($value) => \is_object($value))
                 ->build()
         );
@@ -157,7 +156,7 @@ class ContainerRule extends Rule implements ContainerRuleInterface
     public function stdObject(): self
     {
         return $this->check(
-            CheckBuilder::create(CheckName::STD_OBJECT, CheckErrorName::NOT_STD_OBJECT)
+            CheckBuilder::create(CheckName::STD_OBJECT)
                 ->withPredicate(fn ($value) => $value instanceof \stdClass)
                 ->build()
         );
@@ -171,7 +170,7 @@ class ContainerRule extends Rule implements ContainerRuleInterface
     public function instanceOf(string $class): self
     {
         return $this->check(
-            CheckBuilder::create(CheckName::INSTANCE_OF, CheckErrorName::NOT_INSTANCE_OF)
+            CheckBuilder::create(CheckName::INSTANCE_OF)
                 ->withPredicate(fn ($value) => $value instanceof $class)
                 ->withCalculatedParams([Param::GIVEN_TYPE => fn ($value) => TypeHelper::getType($value)])
                 ->build()
@@ -186,7 +185,7 @@ class ContainerRule extends Rule implements ContainerRuleInterface
     public function lengthIs(IntegerRuleInterface $rule): self
     {
         return $this->check(
-            CheckBuilder::create(CheckName::LENGTH_IS, CheckErrorName::INVALID_LENGTH)
+            CheckBuilder::create(CheckName::LENGTH_IS)
                 ->withPredicate(static function ($value) use ($rule) {
                     /** @var \Countable $value */
                     $rule->validate(\count($value));
@@ -209,7 +208,7 @@ class ContainerRule extends Rule implements ContainerRuleInterface
         }
 
         return $this->check(
-            CheckBuilder::create(CheckName::HAS_ATTRIBUTE, CheckErrorName::INVALID_ATTRIBUTE)
+            CheckBuilder::create(CheckName::HAS_ATTRIBUTE)
                 ->withPredicate(static function ($value, string $name) use ($rule) {
                     $rule->validate(ContainerAccessHelper::getAttributeValue($value, $name));
                     return true;
@@ -228,7 +227,7 @@ class ContainerRule extends Rule implements ContainerRuleInterface
     public function hasOptionalAttribute(string $name, RuleInterface $rule): self
     {
         return $this->check(
-            CheckBuilder::create(CheckName::HAS_ATTRIBUTE, CheckErrorName::INVALID_ATTRIBUTE)
+            CheckBuilder::create(CheckName::HAS_ATTRIBUTE)
                 ->withPredicate(static function ($value) use ($name, $rule) {
                     if (!ContainerAccessHelper::hasAccessibleAttribute($value, $name)) {
                         return true;
@@ -249,7 +248,7 @@ class ContainerRule extends Rule implements ContainerRuleInterface
     public function allKeysAre(RuleInterface $rule): self
     {
         return $this->check(
-            CheckBuilder::create(CheckName::ALL_KEYS_ARE, CheckErrorName::SOME_KEYS_INVALID)
+            CheckBuilder::create(CheckName::ALL_KEYS_ARE)
                 ->withPredicate(static function ($value) use ($rule) {
                     foreach ($value as $k => $v) {
                         $rule->validate($k);
@@ -269,7 +268,7 @@ class ContainerRule extends Rule implements ContainerRuleInterface
     public function allValuesAre(RuleInterface $rule): self
     {
         return $this->check(
-            CheckBuilder::create(CheckName::ALL_VALUES_ARE, CheckErrorName::SOME_VALUES_INVALID)
+            CheckBuilder::create(CheckName::ALL_VALUES_ARE)
                 ->withPredicate(static function ($value) use ($rule) {
                     foreach ($value as $v) {
                         $rule->validate($v);
@@ -283,28 +282,28 @@ class ContainerRule extends Rule implements ContainerRuleInterface
 
     protected function getArrayCheck(): CheckInterface
     {
-        return CheckBuilder::create(CheckName::ARRAY, CheckErrorName::NOT_ARRAY)
+        return CheckBuilder::create(CheckName::ARRAY)
             ->withPredicate(fn ($value) => \is_array($value))
             ->build();
     }
 
     protected function getCountableCheck(): CheckInterface
     {
-        return CheckBuilder::create(CheckName::COUNTABLE, CheckErrorName::NOT_COUNTABLE)
+        return CheckBuilder::create(CheckName::COUNTABLE)
             ->withPredicate(fn ($value) => \is_countable($value))
             ->build();
     }
 
     protected function getIterableCheck(): CheckInterface
     {
-        return CheckBuilder::create(CheckName::ITERABLE, CheckErrorName::NOT_ITERABLE)
+        return CheckBuilder::create(CheckName::ITERABLE)
             ->withPredicate(fn ($value) => \is_iterable($value))
             ->build();
     }
 
     protected function getHasAttributeCheck(string $name): CheckInterface
     {
-        return CheckBuilder::create(CheckName::HAS_ATTRIBUTE, CheckErrorName::ATTRIBUTE_NOT_EXIST)
+        return CheckBuilder::create(CheckName::HAS_ATTRIBUTE)
             ->withPredicate(fn ($value) => ContainerAccessHelper::hasAccessibleAttribute($value, $name))
             ->withParams([Param::ATTRIBUTE => $name])
             ->build();

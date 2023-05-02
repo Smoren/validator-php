@@ -6,7 +6,6 @@ namespace Smoren\Validator\Rules;
 
 use Smoren\Validator\Factories\CheckBuilder;
 use Smoren\Validator\Interfaces\FloatRuleInterface;
-use Smoren\Validator\Structs\CheckErrorName;
 use Smoren\Validator\Structs\CheckName;
 
 class FloatRule extends NumericRule implements FloatRuleInterface
@@ -18,7 +17,7 @@ class FloatRule extends NumericRule implements FloatRuleInterface
     {
         Rule::__construct($name);
         $this->check(
-            CheckBuilder::create(CheckName::FLOAT, CheckErrorName::NOT_FLOAT)
+            CheckBuilder::create(CheckName::FLOAT)
                 ->withPredicate(fn ($value) => \is_float($value))
                 ->build(),
             true
@@ -33,7 +32,7 @@ class FloatRule extends NumericRule implements FloatRuleInterface
     public function fractional(): self
     {
         return $this->check(
-            CheckBuilder::create(CheckName::FRACTIONAL, CheckErrorName::NOT_FRACTIONAL)
+            CheckBuilder::create(CheckName::FRACTIONAL)
                 ->withPredicate(fn ($value) => \abs($value - \round($value)) >= \PHP_FLOAT_EPSILON)
                 ->build()
         );
@@ -47,7 +46,7 @@ class FloatRule extends NumericRule implements FloatRuleInterface
     public function nonFractional(): self
     {
         return $this->check(
-            CheckBuilder::create(CheckName::NOT_FRACTIONAL, CheckErrorName::FRACTIONAL)
+            CheckBuilder::create(CheckName::NON_FRACTIONAL)
                 ->withPredicate(fn ($value) => \abs($value - \round($value)) < \PHP_FLOAT_EPSILON)
                 ->build()
         );
@@ -61,7 +60,7 @@ class FloatRule extends NumericRule implements FloatRuleInterface
     public function finite(): self
     {
         return $this->check(
-            CheckBuilder::create(CheckName::FINITE, CheckErrorName::NOT_FINITE)
+            CheckBuilder::create(CheckName::FINITE)
                 ->withPredicate(fn ($value) => $value > -INF && $value < INF)
                 ->build()
         );
@@ -75,7 +74,7 @@ class FloatRule extends NumericRule implements FloatRuleInterface
     public function infinite(): self
     {
         return $this->check(
-            CheckBuilder::create(CheckName::INFINITE, CheckErrorName::NOT_INFINITE)
+            CheckBuilder::create(CheckName::INFINITE)
                 ->withPredicate(fn ($value) => $value === -INF || $value === INF)
                 ->build()
         );

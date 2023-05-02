@@ -8,7 +8,7 @@ use Codeception\Test\Unit;
 use Smoren\Validator\Exceptions\ValidationError;
 use Smoren\Validator\Factories\Value;
 use Smoren\Validator\Interfaces\RuleInterface;
-use Smoren\Validator\Structs\CheckErrorName;
+use Smoren\Validator\Structs\CheckName;
 use Smoren\Validator\Structs\Param;
 
 class IntegerTest extends Unit
@@ -153,7 +153,7 @@ class IntegerTest extends Unit
                 $this->fail();
             } catch (ValidationError $e) {
                 $this->assertSame($value, $e->getValue());
-                $this->assertSame($errors, $e->getSummary());
+                $this->assertSame($errors, $e->getViolatedRestrictions());
             }
         }
         $this->assertTrue(true);
@@ -166,14 +166,14 @@ class IntegerTest extends Unit
                 [null],
                 fn () => Value::integer(),
                 [
-                    [CheckErrorName::NULL, []],
+                    [CheckName::NOT_NULL, []],
                 ],
             ],
             [
                 ['1', 'a', true, false, []],
                 fn () => Value::integer(),
                 [
-                    [CheckErrorName::NOT_INTEGER, []],
+                    [CheckName::INTEGER, []],
                 ],
             ],
             [
@@ -181,7 +181,7 @@ class IntegerTest extends Unit
                 fn () => Value::integer()
                     ->nullable(),
                 [
-                    [CheckErrorName::NOT_INTEGER, []],
+                    [CheckName::INTEGER, []],
                 ],
             ],
             [
@@ -189,7 +189,7 @@ class IntegerTest extends Unit
                 fn () => Value::integer()
                     ->falsy(),
                 [
-                    [CheckErrorName::NOT_FALSY, []],
+                    [CheckName::FALSY, []],
                 ],
             ],
             [
@@ -197,7 +197,7 @@ class IntegerTest extends Unit
                 fn () => Value::integer()
                     ->truthy(),
                 [
-                    [CheckErrorName::NOT_TRUTHY, []],
+                    [CheckName::TRUTHY, []],
                 ],
             ],
             [
@@ -206,7 +206,7 @@ class IntegerTest extends Unit
                     ->nullable()
                     ->positive(),
                 [
-                    [CheckErrorName::NOT_INTEGER, []],
+                    [CheckName::INTEGER, []],
                 ],
             ],
             [
@@ -214,7 +214,7 @@ class IntegerTest extends Unit
                 fn () => Value::integer()
                     ->positive(),
                 [
-                    [CheckErrorName::NOT_POSITIVE, []],
+                    [CheckName::POSITIVE, []],
                 ],
             ],
             [
@@ -222,7 +222,7 @@ class IntegerTest extends Unit
                 fn () => Value::integer()
                     ->negative(),
                 [
-                    [CheckErrorName::NOT_NEGATIVE, []],
+                    [CheckName::NEGATIVE, []],
                 ],
             ],
             [
@@ -230,7 +230,7 @@ class IntegerTest extends Unit
                 fn () => Value::integer()
                     ->nonPositive(),
                 [
-                    [CheckErrorName::NOT_NON_POSITIVE, []],
+                    [CheckName::NON_POSITIVE, []],
                 ],
             ],
             [
@@ -238,7 +238,7 @@ class IntegerTest extends Unit
                 fn () => Value::integer()
                     ->nonNegative(),
                 [
-                    [CheckErrorName::NOT_NON_NEGATIVE, []],
+                    [CheckName::NON_NEGATIVE, []],
                 ],
             ],
             [
@@ -246,7 +246,7 @@ class IntegerTest extends Unit
                 fn () => Value::integer()
                     ->greaterTran(5),
                 [
-                    [CheckErrorName::NOT_GREATER, [Param::EXPECTED => 5]],
+                    [CheckName::GREATER, [Param::EXPECTED => 5]],
                 ],
             ],
             [
@@ -254,7 +254,7 @@ class IntegerTest extends Unit
                 fn () => Value::integer()
                     ->greaterOrEqual(5),
                 [
-                    [CheckErrorName::NOT_GREATER_OR_EQUEAL, [Param::EXPECTED => 5]],
+                    [CheckName::GREATER_OR_EQUEAL, [Param::EXPECTED => 5]],
                 ],
             ],
             [
@@ -262,7 +262,7 @@ class IntegerTest extends Unit
                 fn () => Value::integer()
                     ->lessTran(5),
                 [
-                    [CheckErrorName::NOT_LESS, [Param::EXPECTED => 5]],
+                    [CheckName::LESS, [Param::EXPECTED => 5]],
                 ],
             ],
             [
@@ -270,7 +270,7 @@ class IntegerTest extends Unit
                 fn () => Value::integer()
                     ->lessOrEqual(5),
                 [
-                    [CheckErrorName::NOT_LESS_OR_EQUEAL, [Param::EXPECTED => 5]],
+                    [CheckName::LESS_OR_EQUEAL, [Param::EXPECTED => 5]],
                 ],
             ],
             [
@@ -280,8 +280,8 @@ class IntegerTest extends Unit
                     ->even()
                     ->inInterval(5, 10),
                 [
-                    [CheckErrorName::NOT_EVEN, []],
-                    [CheckErrorName::NOT_IN_INTERVAL, ['start' => 5, 'end' => 10]],
+                    [CheckName::EVEN, []],
+                    [CheckName::IN_INTERVAL, ['start' => 5, 'end' => 10]],
                 ],
             ],
             [
@@ -291,9 +291,9 @@ class IntegerTest extends Unit
                     ->even()
                     ->inInterval(5, 10),
                 [
-                    [CheckErrorName::NOT_POSITIVE, []],
-                    [CheckErrorName::NOT_EVEN, []],
-                    [CheckErrorName::NOT_IN_INTERVAL, ['start' => 5, 'end' => 10]],
+                    [CheckName::POSITIVE, []],
+                    [CheckName::EVEN, []],
+                    [CheckName::IN_INTERVAL, ['start' => 5, 'end' => 10]],
                 ],
             ],
             [
@@ -304,8 +304,8 @@ class IntegerTest extends Unit
                     ->stopOnViolation()
                     ->inInterval(5, 10),
                 [
-                    [CheckErrorName::NOT_POSITIVE, []],
-                    [CheckErrorName::NOT_EVEN, []],
+                    [CheckName::POSITIVE, []],
+                    [CheckName::EVEN, []],
                 ],
             ],
             [
@@ -318,7 +318,7 @@ class IntegerTest extends Unit
                     ->stopOnViolation()
                     ->inInterval(5, 10),
                 [
-                    [CheckErrorName::NOT_POSITIVE, []],
+                    [CheckName::POSITIVE, []],
                 ],
             ],
             [
@@ -331,7 +331,7 @@ class IntegerTest extends Unit
                     ->stopOnViolation()
                     ->inInterval(5, 10),
                 [
-                    [CheckErrorName::NOT_EVEN, []],
+                    [CheckName::EVEN, []],
                 ],
             ],
             [
@@ -342,7 +342,7 @@ class IntegerTest extends Unit
                     ->inInterval(5, 10)
                     ->stopOnAnyPriorViolation(),
                 [
-                    [CheckErrorName::NOT_POSITIVE, []],
+                    [CheckName::POSITIVE, []],
                 ],
             ],
             [
@@ -352,7 +352,7 @@ class IntegerTest extends Unit
                     ->even()
                     ->inInterval(5, 10),
                 [
-                    [CheckErrorName::NOT_EVEN, []],
+                    [CheckName::EVEN, []],
                 ],
             ],
             [
@@ -362,7 +362,7 @@ class IntegerTest extends Unit
                     ->odd()
                     ->inInterval(5, 10),
                 [
-                    [CheckErrorName::NOT_ODD, []],
+                    [CheckName::ODD, []],
                 ],
             ],
             [
@@ -372,7 +372,7 @@ class IntegerTest extends Unit
                     ->odd()
                     ->between(5, 10),
                 [
-                    [CheckErrorName::NOT_ODD, []],
+                    [CheckName::ODD, []],
                 ],
             ],
             [
@@ -382,7 +382,7 @@ class IntegerTest extends Unit
                     ->odd()
                     ->between(5, 10),
                 [
-                    [CheckErrorName::NOT_BETWEEN, ['start' => 5, 'end' => 10]],
+                    [CheckName::BETWEEN, ['start' => 5, 'end' => 10]],
                 ],
             ],
             [
@@ -392,8 +392,8 @@ class IntegerTest extends Unit
                     ->odd()
                     ->between(5, 10),
                 [
-                    [CheckErrorName::NOT_ODD, []],
-                    [CheckErrorName::NOT_BETWEEN, ['start' => 5, 'end' => 10]],
+                    [CheckName::ODD, []],
+                    [CheckName::BETWEEN, ['start' => 5, 'end' => 10]],
                 ],
             ],
             [
@@ -404,8 +404,8 @@ class IntegerTest extends Unit
                     ->odd()
                     ->between(5, 10),
                 [
-                    [CheckErrorName::NOT_ODD, []],
-                    [CheckErrorName::NOT_BETWEEN, ['start' => 5, 'end' => 10]],
+                    [CheckName::ODD, []],
+                    [CheckName::BETWEEN, ['start' => 5, 'end' => 10]],
                 ],
             ],
             [
@@ -415,7 +415,7 @@ class IntegerTest extends Unit
                     ->odd()
                     ->between(5, 10),
                 [
-                    [CheckErrorName::NOT_ODD, []],
+                    [CheckName::ODD, []],
                 ],
             ],
         ];

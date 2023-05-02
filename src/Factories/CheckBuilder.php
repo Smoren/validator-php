@@ -12,10 +12,6 @@ class CheckBuilder
      */
     protected string $name;
     /**
-     * @var string
-     */
-    protected string $errorName;
-    /**
      * @var callable
      */
     protected $predicate;
@@ -34,12 +30,11 @@ class CheckBuilder
 
     /**
      * @param string $name
-     * @param string $errorName
      * @return self
      */
-    public static function create(string $name, string $errorName): self
+    public static function create(string $name): self
     {
-        return new self($name, $errorName);
+        return new self($name);
     }
 
     /**
@@ -49,7 +44,6 @@ class CheckBuilder
     {
         return new Check(
             $this->name,
-            $this->errorName,
             $this->predicate,
             $this->params,
             $this->calculatedParams,
@@ -99,12 +93,10 @@ class CheckBuilder
 
     /**
      * @param string $name
-     * @param string $errorName
      */
-    private function __construct(string $name, string $errorName)
+    private function __construct(string $name)
     {
         $this->name = $name;
-        $this->errorName = $errorName;
         $this->predicate = fn () => true;
     }
 }

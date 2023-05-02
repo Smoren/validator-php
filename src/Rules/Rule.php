@@ -13,7 +13,6 @@ use Smoren\Validator\Interfaces\CheckWrapperInterface;
 use Smoren\Validator\Interfaces\RuleInterface;
 use Smoren\Validator\Interfaces\UtilityCheckInterface;
 use Smoren\Validator\Interfaces\ValidationResultInterface;
-use Smoren\Validator\Structs\CheckErrorName;
 use Smoren\Validator\Structs\CheckName;
 use Smoren\Validator\Structs\CheckWrapper;
 use Smoren\Validator\Structs\Param;
@@ -61,7 +60,7 @@ class Rule extends BaseRule implements RuleInterface
     public function truthy(): self
     {
         return $this->check(
-            CheckBuilder::create(CheckName::TRUTHY, CheckErrorName::NOT_TRUTHY)
+            CheckBuilder::create(CheckName::TRUTHY)
                 ->withPredicate(fn ($value) => \boolval($value))
                 ->build()
         );
@@ -75,7 +74,7 @@ class Rule extends BaseRule implements RuleInterface
     public function falsy(): self
     {
         return $this->check(
-            CheckBuilder::create(CheckName::FALSY, CheckErrorName::NOT_FALSY)
+            CheckBuilder::create(CheckName::FALSY)
                 ->withPredicate(fn ($value) => !\boolval($value))
                 ->build()
         );
@@ -89,7 +88,7 @@ class Rule extends BaseRule implements RuleInterface
     public function equal($value): self
     {
         return $this->check(
-            CheckBuilder::create(CheckName::EQUEAL, CheckErrorName::NOT_EQUEAL)
+            CheckBuilder::create(CheckName::EQUEAL)
                 ->withPredicate(fn ($actual, $expected) => $actual == $expected)
                 ->withParams([Param::EXPECTED => $value])
                 ->build()
@@ -104,7 +103,7 @@ class Rule extends BaseRule implements RuleInterface
     public function same($value): self
     {
         return $this->check(
-            CheckBuilder::create(CheckName::SAME, CheckErrorName::NOT_SAME)
+            CheckBuilder::create(CheckName::SAME)
                 ->withPredicate(fn ($actual, $expected) => $actual === $expected)
                 ->withParams([Param::EXPECTED => $value])
                 ->build()
@@ -189,7 +188,7 @@ class Rule extends BaseRule implements RuleInterface
                 return new ValidationSuccessResult(true);
             }
 
-            throw new ValidationError($this->name, $value, [[CheckErrorName::NULL, []]]);
+            throw new ValidationError($this->name, $value, [[CheckName::NOT_NULL, []]]);
         }
 
         $errors = [];
