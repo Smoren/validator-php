@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Smoren\Validator\Rules;
 
-use Smoren\Validator\Interfaces\RuleInterface;
+use Smoren\Validator\Interfaces\MixedRuleInterface;
 use Smoren\Validator\Interfaces\ValidationResultInterface;
 use Smoren\Validator\Structs\ValidationSuccessResult;
 
-abstract class BaseRule implements RuleInterface
+abstract class BaseRule implements MixedRuleInterface
 {
     /**
      * @param mixed $value

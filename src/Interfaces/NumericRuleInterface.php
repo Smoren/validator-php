@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Smoren\Validator\Interfaces;
 
-interface NumericRuleInterface extends RuleInterface
+interface NumericRuleInterface extends MixedRuleInterface
 {
     /**
      * @return static

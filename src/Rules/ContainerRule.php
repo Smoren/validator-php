@@ -7,7 +7,7 @@ namespace Smoren\Validator\Rules;
 use Smoren\Validator\Factories\CheckBuilder;
 use Smoren\Validator\Helpers\ContainerAccessHelper;
 use Smoren\Validator\Helpers\TypeHelper;
-use Smoren\Validator\Interfaces\RuleInterface;
+use Smoren\Validator\Interfaces\MixedRuleInterface;
 use Smoren\Validator\Interfaces\CheckInterface;
 use Smoren\Validator\Interfaces\ContainerRuleInterface;
 use Smoren\Validator\Interfaces\IntegerRuleInterface;
@@ -201,7 +201,7 @@ class ContainerRule extends MixedRule implements ContainerRuleInterface
      *
      * @return static
      */
-    public function hasAttribute(string $name, ?RuleInterface $rule = null): self
+    public function hasAttribute(string $name, ?MixedRuleInterface $rule = null): self
     {
         if ($rule === null) {
             return $this->check($this->getHasAttributeCheck($name));
@@ -224,7 +224,7 @@ class ContainerRule extends MixedRule implements ContainerRuleInterface
      *
      * @return static
      */
-    public function hasOptionalAttribute(string $name, RuleInterface $rule): self
+    public function hasOptionalAttribute(string $name, MixedRuleInterface $rule): self
     {
         return $this->check(
             CheckBuilder::create(CheckName::HAS_ATTRIBUTE)
@@ -245,7 +245,7 @@ class ContainerRule extends MixedRule implements ContainerRuleInterface
      *
      * @return static
      */
-    public function allKeysAre(RuleInterface $rule): self
+    public function allKeysAre(MixedRuleInterface $rule): self
     {
         return $this->check(
             CheckBuilder::create(CheckName::ALL_KEYS_ARE)
@@ -265,7 +265,7 @@ class ContainerRule extends MixedRule implements ContainerRuleInterface
      *
      * @return static
      */
-    public function allValuesAre(RuleInterface $rule): self
+    public function allValuesAre(MixedRuleInterface $rule): self
     {
         return $this->check(
             CheckBuilder::create(CheckName::ALL_VALUES_ARE)

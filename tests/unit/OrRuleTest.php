@@ -7,7 +7,7 @@ namespace Smoren\Validator\Tests\Unit;
 use Codeception\Test\Unit;
 use Smoren\Validator\Exceptions\ValidationError;
 use Smoren\Validator\Factories\Value;
-use Smoren\Validator\Interfaces\RuleInterface;
+use Smoren\Validator\Interfaces\MixedRuleInterface;
 use Smoren\Validator\Structs\CheckName;
 
 class OrRuleTest extends Unit
@@ -15,7 +15,7 @@ class OrRuleTest extends Unit
     /**
      * @dataProvider dataProviderForSuccess
      * @param array $input
-     * @param callable(): RuleInterface $ruleFactory
+     * @param callable(): MixedRuleInterface $ruleFactory
      * @return void
      */
     public function testSuccess(array $input, callable $ruleFactory): void
@@ -61,7 +61,7 @@ class OrRuleTest extends Unit
     /**
      * @dataProvider dataProviderForFail
      * @param array $input
-     * @param callable(): RuleInterface $ruleFactory
+     * @param callable(): MixedRuleInterface $ruleFactory
      * @param array $errors
      * @return void
      */

@@ -6,7 +6,7 @@ namespace Smoren\Validator\Interfaces;
 
 use Smoren\Validator\Exceptions\ValidationError;
 
-interface RuleInterface
+interface MixedRuleInterface
 {
     /**
      * @param mixed $value

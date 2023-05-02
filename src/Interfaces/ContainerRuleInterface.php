@@ -2,7 +2,7 @@
 
 namespace Smoren\Validator\Interfaces;
 
-interface ContainerRuleInterface extends RuleInterface
+interface ContainerRuleInterface extends MixedRuleInterface
 {
     /**
      * @return static
@@ -70,31 +70,31 @@ interface ContainerRuleInterface extends RuleInterface
 
     /**
      * @param string $name
-     * @param RuleInterface|null $rule
+     * @param MixedRuleInterface|null $rule
      *
      * @return static
      */
-    public function hasAttribute(string $name, ?RuleInterface $rule = null): self;
+    public function hasAttribute(string $name, ?MixedRuleInterface $rule = null): self;
 
     /**
      * @param string $name
-     * @param RuleInterface $rule
+     * @param MixedRuleInterface $rule
      *
      * @return static
      */
-    public function hasOptionalAttribute(string $name, RuleInterface $rule): self;
+    public function hasOptionalAttribute(string $name, MixedRuleInterface $rule): self;
 
     /**
-     * @param RuleInterface $rule
+     * @param MixedRuleInterface $rule
      *
      * @return static
      */
-    public function allKeysAre(RuleInterface $rule): self;
+    public function allKeysAre(MixedRuleInterface $rule): self;
 
     /**
-     * @param RuleInterface $rule
+     * @param MixedRuleInterface $rule
      *
      * @return static
      */
-    public function allValuesAre(RuleInterface $rule): self;
+    public function allValuesAre(MixedRuleInterface $rule): self;
 }

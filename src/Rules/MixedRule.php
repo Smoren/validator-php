@@ -10,7 +10,7 @@ use Smoren\Validator\Exceptions\ValidationError;
 use Smoren\Validator\Factories\CheckBuilder;
 use Smoren\Validator\Interfaces\CheckInterface;
 use Smoren\Validator\Interfaces\CheckWrapperInterface;
-use Smoren\Validator\Interfaces\RuleInterface;
+use Smoren\Validator\Interfaces\MixedRuleInterface;
 use Smoren\Validator\Interfaces\UtilityCheckInterface;
 use Smoren\Validator\Interfaces\ValidationResultInterface;
 use Smoren\Validator\Structs\CheckName;
@@ -18,7 +18,7 @@ use Smoren\Validator\Structs\CheckWrapper;
 use Smoren\Validator\Structs\Param;
 use Smoren\Validator\Structs\ValidationSuccessResult;
 
-class MixedRule extends BaseRule implements RuleInterface
+class MixedRule extends BaseRule implements MixedRuleInterface
 {
     /**
      * @var string

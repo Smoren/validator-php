@@ -11,7 +11,7 @@ use Smoren\Validator\Interfaces\MixedRuleInterface;
 use Smoren\Validator\Structs\CheckName;
 use Smoren\Validator\Structs\Param;
 
-class BoolTest extends Unit
+class MixedTest extends Unit
 {
     /**
      * @dataProvider dataProviderForSuccess
@@ -32,65 +32,60 @@ class BoolTest extends Unit
     {
         return [
             [
-                [true, false],
-                fn () => Value::bool(),
+                [true, false, 1, 1.0, 'asd', [], (object)[]],
+                fn () => Value::mixed(),
             ],
             [
-                [null, true, false],
-                fn () => Value::bool()
+                [null, true, false, 1, 1.0, 'asd', [], (object)[]],
+                fn () => Value::mixed()
                     ->nullable(),
             ],
             [
-                [true],
-                fn () => Value::bool()
+                [true, 1, 1.0, 235, -100.3, '1', '1.2', '-123', '-12.5', '0.0', [1, 2, 3], (object)[]],
+                fn () => Value::mixed()
                     ->truthy(),
             ],
             [
-                [null, true],
-                fn () => Value::bool()
+                [null, true, 1, 1.0, 235, -100.3, '1', '1.2', '-123', '-12.5', '0.0', [1, 2, 3], (object)[]],
+                fn () => Value::mixed()
                     ->nullable()
                     ->truthy(),
             ],
             [
-                [false],
-                fn () => Value::bool()
+                [false, 0, -0, 0.0, -0.0, '', '0', []],
+                fn () => Value::mixed()
                     ->falsy(),
             ],
             [
-                [null, false],
-                fn () => Value::bool()
+                [null, false, 0, -0, 0.0, -0.0, '', '0', []],
+                fn () => Value::mixed()
                     ->nullable()
                     ->falsy(),
             ],
             [
-                [true],
-                fn () => Value::bool()
-                    ->equal(true),
-            ],
-            [
-                [false],
-                fn () => Value::bool()
-                    ->equal(false),
-            ],
-            [
-                [true],
-                fn () => Value::bool()
+                [true, 1, 1.0, '1'],
+                fn () => Value::mixed()
                     ->equal(1),
             ],
             [
-                [false],
-                fn () => Value::bool()
+                [false, 0, 0.0, '0'],
+                fn () => Value::mixed()
                     ->equal(0),
             ],
             [
                 [true],
-                fn () => Value::bool()
+                fn () => Value::mixed()
                     ->same(true),
             ],
             [
-                [false],
-                fn () => Value::bool()
-                    ->same(false),
+                [12],
+                fn () => Value::mixed()
+                    ->same(12),
+            ],
+            [
+                [0.0],
+                fn () => Value::mixed()
+                    ->same(0.0),
             ],
         ];
     }
@@ -122,83 +117,66 @@ class BoolTest extends Unit
         return [
             [
                 [null],
-                fn () => Value::bool(),
+                fn () => Value::mixed(),
                 [
                     [CheckName::NOT_NULL, []],
-                ],
+                ]
             ],
             [
-                ['1', 'a', 1, 1.2, []],
-                fn () => Value::bool(),
-                [
-                    [CheckName::BOOL, []],
-                ],
-            ],
-            [
-                [false],
-                fn () => Value::bool()
+                [false, 0, -0, 0.0, -0.0, '', '0', []],
+                fn () => Value::mixed()
                     ->truthy(),
                 [
                     [CheckName::TRUTHY, []],
-                ],
+                ]
             ],
             [
-                [false],
-                fn () => Value::bool()
-                    ->nullable()
-                    ->truthy(),
-                [
-                    [CheckName::TRUTHY, []],
-                ],
-            ],
-            [
-                [true],
-                fn () => Value::bool()
+                [true, 1, 1.0, 235, -100.3, '1', '1.2', '-123', '-12.5', '0.0', [1, 2, 3], (object)[]],
+                fn () => Value::mixed()
                     ->falsy(),
                 [
                     [CheckName::FALSY, []],
-                ],
+                ]
             ],
             [
-                [true],
-                fn () => Value::bool()
-                    ->nullable()
-                    ->falsy(),
-                [
-                    [CheckName::FALSY, []],
-                ],
-            ],
-            [
-                [true],
-                fn () => Value::bool()
-                    ->equal(0),
-                [
-                    [CheckName::EQUAL, [Param::EXPECTED => 0]],
-                ],
-            ],
-            [
-                [false],
-                fn () => Value::bool()
+                [false, 0, 0.0, '0'],
+                fn () => Value::mixed()
                     ->equal(1),
                 [
                     [CheckName::EQUAL, [Param::EXPECTED => 1]],
-                ],
+                ]
             ],
             [
-                [true],
-                fn () => Value::bool()
-                    ->same(1),
+                [true, 1, 1.0, '1'],
+                fn () => Value::mixed()
+                    ->equal(0),
                 [
-                    [CheckName::SAME, [Param::EXPECTED => 1]],
-                ],
+                    [CheckName::EQUAL, [Param::EXPECTED => 0]],
+                ]
             ],
             [
-                [false],
-                fn () => Value::bool()
+                [1],
+                fn () => Value::mixed()
+                    ->same(true),
+                [
+                    [CheckName::SAME, [Param::EXPECTED => true]],
+                ]
+            ],
+            [
+                [12],
+                fn () => Value::mixed()
+                    ->same(12.0),
+                [
+                    [CheckName::SAME, [Param::EXPECTED => 12.0]],
+                ]
+            ],
+            [
+                [0.0],
+                fn () => Value::mixed()
                     ->same(0),
                 [
                     [CheckName::SAME, [Param::EXPECTED => 0]],
-                ],
+                ]
             ],
         ];
     }

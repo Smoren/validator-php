@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Smoren\Validator\Interfaces;
 
-interface StringRuleInterface extends RuleInterface
+interface StringRuleInterface extends MixedRuleInterface
 {
     /**
      * @return static

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Smoren\Validator\Factories;
 
 use Smoren\Validator\Interfaces\BoolRuleInterface;
-use Smoren\Validator\Interfaces\RuleInterface;
+use Smoren\Validator\Interfaces\MixedRuleInterface;
 use Smoren\Validator\Interfaces\CompositeRuleInterface;
 use Smoren\Validator\Interfaces\ContainerRuleInterface;
 use Smoren\Validator\Interfaces\FloatRuleInterface;
@@ -16,6 +16,7 @@ use Smoren\Validator\Rules\BoolRule;
 use Smoren\Validator\Rules\ContainerRule;
 use Smoren\Validator\Rules\FloatRule;
 use Smoren\Validator\Rules\IntegerRule;
+use Smoren\Validator\Rules\MixedRule;
 use Smoren\Validator\Rules\NumericRule;
 use Smoren\Validator\Rules\StringRule;
 use Smoren\Validator\Rules\OrRule;
@@ -84,7 +85,17 @@ class Value
     }
 
     /**
-     * @param array<RuleInterface> $rules
+     * @param string $name
+     *
+     * @return MixedRuleInterface
+     */
+    public static function mixed(string $name = RuleName::CONTAINER): MixedRuleInterface
+    {
+        return new MixedRule($name);
+    }
+
+    /**
+     * @param array<MixedRuleInterface> $rules
      * @param string $name
      *
      * @return CompositeRuleInterface
@@ -95,7 +106,7 @@ class Value
     }
 
     /**
-     * @param array<RuleInterface> $rules
+     * @param array<MixedRuleInterface> $rules
      * @param string $name
      *
      * @return CompositeRuleInterface
