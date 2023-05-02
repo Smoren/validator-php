@@ -105,5 +105,6 @@ class CheckBuilder
     {
         $this->name = $name;
         $this->errorName = $errorName;
+        $this->predicate = fn () => true;
     }
 }
