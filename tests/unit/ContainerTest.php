@@ -10,6 +10,7 @@ use Smoren\Validator\Factories\Value;
 use Smoren\Validator\Interfaces\RuleInterface;
 use Smoren\Validator\Structs\CheckErrorName;
 use Smoren\Validator\Structs\Param;
+use Smoren\Validator\Tests\Unit\Fixture\ArrayAccessListFixture;
 
 class ContainerTest extends Unit
 {
@@ -54,6 +55,31 @@ class ContainerTest extends Unit
                 [(object)[1, 2, 3], (object)[1, 2, 3, 4, 5], (object)[1]],
                 fn () => Value::container()
                     ->object(),
+            ],
+            [
+                [[], [1, 2, 3], new ArrayAccessListFixture([]), new ArrayAccessListFixture([1, 2, 3])],
+                fn () => Value::container()
+                    ->arrayAccessible(),
+            ],
+            [
+                [[], [1, 2, 3], new ArrayAccessListFixture([]), new ArrayAccessListFixture([1, 2, 3])],
+                fn () => Value::container()
+                    ->countable(),
+            ],
+            [
+                [[], [1, 2, 3], new ArrayAccessListFixture([]), new ArrayAccessListFixture([1, 2, 3])],
+                fn () => Value::container()
+                    ->iterable(),
+            ],
+            [
+                [(object)[], (object)[1, 2, 3]],
+                fn () => Value::container()
+                    ->stdObject(),
+            ],
+            [
+                [new ArrayAccessListFixture([]), new ArrayAccessListFixture([1, 2, 3])],
+                fn () => Value::container()
+                    ->instanceOf(ArrayAccessListFixture::class),
             ],
             [
                 [[]],
@@ -179,6 +205,46 @@ class ContainerTest extends Unit
                     ->object(),
                 [
                     [CheckErrorName::NOT_OBJECT, []],
+                ],
+            ],
+            [
+                [(object)[], (object)[1, 2, 3]],
+                fn () => Value::container()
+                    ->arrayAccessible(),
+                [
+                    [CheckErrorName::NOT_ARRAY_ACCESSIBLE, []],
+                ],
+            ],
+            [
+                [(object)[], (object)[1, 2, 3]],
+                fn () => Value::container()
+                    ->countable(),
+                [
+                    [CheckErrorName::NOT_COUNTABLE, []],
+                ],
+            ],
+            [
+                [(object)[], (object)[1, 2, 3]],
+                fn () => Value::container()
+                    ->iterable(),
+                [
+                    [CheckErrorName::NOT_ITERABLE, []],
+                ],
+            ],
+            [
+                [[], [1, 2, 3], new ArrayAccessListFixture([]), new ArrayAccessListFixture([1, 2, 3])],
+                fn () => Value::container()
+                    ->stdObject(),
+                [
+                    [CheckErrorName::NOT_STD_OBJECT, []],
+                ],
+            ],
+            [
+                [[], [1, 2, 3], (object)[], (object)[1, 2, 3]],
+                fn () => Value::container()
+                    ->instanceOf(ArrayAccessListFixture::class),
+                [
+                    [CheckErrorName::NOT_INSTANCE_OF, []],
                 ],
             ],
             [
