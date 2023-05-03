@@ -131,7 +131,7 @@ class BooleanTest extends Unit
                 ['1', 'a', 1, 1.2, []],
                 fn () => Value::boolean(),
                 [
-                    [CheckName::BOOL, []],
+                    [CheckName::BOOLEAN, []],
                 ],
             ],
             [

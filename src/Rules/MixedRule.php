@@ -8,6 +8,7 @@ use Smoren\Validator\Checks\RetrospectiveCheck;
 use Smoren\Validator\Exceptions\CheckError;
 use Smoren\Validator\Exceptions\ValidationError;
 use Smoren\Validator\Factories\CheckBuilder;
+use Smoren\Validator\Factories\Checks\MixedCheckFactory;
 use Smoren\Validator\Interfaces\CheckInterface;
 use Smoren\Validator\Interfaces\CheckWrapperInterface;
 use Smoren\Validator\Interfaces\MixedRuleInterface;
@@ -15,7 +16,6 @@ use Smoren\Validator\Interfaces\UtilityCheckInterface;
 use Smoren\Validator\Interfaces\ValidationResultInterface;
 use Smoren\Validator\Structs\CheckName;
 use Smoren\Validator\Structs\CheckWrapper;
-use Smoren\Validator\Structs\Param;
 use Smoren\Validator\Structs\ValidationSuccessResult;
 
 class MixedRule extends BaseRule implements MixedRuleInterface
@@ -59,11 +59,7 @@ class MixedRule extends BaseRule implements MixedRuleInterface
      */
     public function truthy(): self
     {
-        return $this->check(
-            CheckBuilder::create(CheckName::TRUTHY)
-                ->withPredicate(fn ($value) => \boolval($value))
-                ->build()
-        );
+        return $this->check(MixedCheckFactory::getTruthyCheck());
     }
 
     /**
@@ -73,11 +69,7 @@ class MixedRule extends BaseRule implements MixedRuleInterface
      */
     public function falsy(): self
     {
-        return $this->check(
-            CheckBuilder::create(CheckName::FALSY)
-                ->withPredicate(fn ($value) => !\boolval($value))
-                ->build()
-        );
+        return $this->check(MixedCheckFactory::getFalsyCheck());
     }
 
     /**
@@ -87,12 +79,7 @@ class MixedRule extends BaseRule implements MixedRuleInterface
      */
     public function equal($value): self
     {
-        return $this->check(
-            CheckBuilder::create(CheckName::EQUAL)
-                ->withPredicate(fn ($actual, $expected) => $actual == $expected)
-                ->withParams([Param::EXPECTED => $value])
-                ->build()
-        );
+        return $this->check(MixedCheckFactory::getEqualCheck($value));
     }
 
     /**
@@ -102,12 +89,7 @@ class MixedRule extends BaseRule implements MixedRuleInterface
      */
     public function same($value): self
     {
-        return $this->check(
-            CheckBuilder::create(CheckName::SAME)
-                ->withPredicate(fn ($actual, $expected) => $actual === $expected)
-                ->withParams([Param::EXPECTED => $value])
-                ->build()
-        );
+        return $this->check(MixedCheckFactory::getSameCheck($value));
     }
 
     /**

@@ -5,7 +5,7 @@ namespace Smoren\Validator\Structs;
 class CheckName
 {
     public const NOT_NULL = 'not_null';
-    public const BOOL = 'bool';
+    public const BOOLEAN = 'bool';
     public const TRUTHY = 'truthy';
     public const FALSY = 'falsy';
     public const EQUAL = 'equal';
