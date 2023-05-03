@@ -35,9 +35,9 @@ class ContainerRule extends MixedRule implements ContainerRuleInterface
      *
      * @return static
      */
-    public function array(): self
+    public function array(bool $stopOnViolation = true): self
     {
-        return $this->check($this->getArrayCheck());
+        return $this->check($this->getArrayCheck(), $stopOnViolation);
     }
 
     /**
@@ -45,13 +45,14 @@ class ContainerRule extends MixedRule implements ContainerRuleInterface
      *
      * @return static
      */
-    public function indexedArray(): self
+    public function indexedArray(bool $stopOnViolation = true): self
     {
         return $this->check(
             CheckBuilder::create(CheckName::INDEXED_ARRAY)
                 ->withPredicate(fn ($value) => \array_values($value) === $value)
                 ->withDependOnChecks([$this->getArrayCheck()])
-                ->build()
+                ->build(),
+            $stopOnViolation
         );
     }
 
@@ -60,13 +61,14 @@ class ContainerRule extends MixedRule implements ContainerRuleInterface
      *
      * @return static
      */
-    public function associativeArray(): self
+    public function associativeArray(bool $stopOnViolation = true): self
     {
         return $this->check(
             CheckBuilder::create(CheckName::ASSOCIATIVE_ARRAY)
                 ->withPredicate(fn ($value) => \array_values($value) !== $value)
                 ->withDependOnChecks([$this->getArrayCheck()])
-                ->build()
+                ->build(),
+            $stopOnViolation
         );
     }
 
@@ -75,12 +77,13 @@ class ContainerRule extends MixedRule implements ContainerRuleInterface
      *
      * @return static
      */
-    public function arrayAccessible(): self
+    public function arrayAccessible(bool $stopOnViolation = true): self
     {
         return $this->check(
             CheckBuilder::create(CheckName::ARRAY_ACCESSIBLE)
                 ->withPredicate(fn ($value) => \is_array($value) || $value instanceof \ArrayAccess)
-                ->build()
+                ->build(),
+            $stopOnViolation
         );
     }
 
@@ -89,9 +92,9 @@ class ContainerRule extends MixedRule implements ContainerRuleInterface
      *
      * @return static
      */
-    public function iterable(): self
+    public function iterable(bool $stopOnViolation = true): self
     {
-        return $this->check($this->getIterableCheck());
+        return $this->check($this->getIterableCheck(), $stopOnViolation);
     }
 
     /**
@@ -99,9 +102,55 @@ class ContainerRule extends MixedRule implements ContainerRuleInterface
      *
      * @return static
      */
-    public function countable(): self
+    public function countable(bool $stopOnViolation = true): self
     {
-        return $this->check($this->getCountableCheck());
+        return $this->check($this->getCountableCheck(), $stopOnViolation);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return static
+     */
+    public function object(bool $stopOnViolation = true): self
+    {
+        return $this->check(
+            CheckBuilder::create(CheckName::OBJECT)
+                ->withPredicate(fn ($value) => \is_object($value))
+                ->build(),
+            $stopOnViolation
+        );
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return static
+     */
+    public function stdObject(bool $stopOnViolation = true): self
+    {
+        return $this->check(
+            CheckBuilder::create(CheckName::STD_OBJECT)
+                ->withPredicate(fn ($value) => $value instanceof \stdClass)
+                ->build(),
+            $stopOnViolation
+        );
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return static
+     */
+    public function instanceOf(string $class, bool $stopOnViolation = true): self
+    {
+        return $this->check(
+            CheckBuilder::create(CheckName::INSTANCE_OF)
+                ->withPredicate(fn ($value) => $value instanceof $class)
+                ->withCalculatedParams([Param::GIVEN_TYPE => fn ($value) => TypeHelper::getType($value)])
+                ->build(),
+            $stopOnViolation
+        );
     }
 
     /**
@@ -130,49 +179,6 @@ class ContainerRule extends MixedRule implements ContainerRuleInterface
             CheckBuilder::create(CheckName::NOT_EMPTY)
                 ->withPredicate(fn ($value) => \count($value) > 0)
                 ->withDependOnChecks([$this->getCountableCheck()])
-                ->build()
-        );
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @return static
-     */
-    public function object(): self
-    {
-        return $this->check(
-            CheckBuilder::create(CheckName::OBJECT)
-                ->withPredicate(fn ($value) => \is_object($value))
-                ->build()
-        );
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @return static
-     */
-    public function stdObject(): self
-    {
-        return $this->check(
-            CheckBuilder::create(CheckName::STD_OBJECT)
-                ->withPredicate(fn ($value) => $value instanceof \stdClass)
-                ->build()
-        );
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @return static
-     */
-    public function instanceOf(string $class): self
-    {
-        return $this->check(
-            CheckBuilder::create(CheckName::INSTANCE_OF)
-                ->withPredicate(fn ($value) => $value instanceof $class)
-                ->withCalculatedParams([Param::GIVEN_TYPE => fn ($value) => TypeHelper::getType($value)])
                 ->build()
         );
     }

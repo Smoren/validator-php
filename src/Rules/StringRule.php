@@ -23,12 +23,13 @@ class StringRule extends MixedRule implements StringRuleInterface
         );
     }
 
-    public function numeric(): StringRuleInterface
+    public function numeric(bool $stopOnViolation = true): StringRuleInterface
     {
         return $this->check(
             CheckBuilder::create(CheckName::NUMERIC)
                 ->withPredicate(fn ($value) => \is_numeric($value))
-                ->build()
+                ->build(),
+            $stopOnViolation
         );
     }
 

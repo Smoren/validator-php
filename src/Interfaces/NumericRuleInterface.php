@@ -7,14 +7,18 @@ namespace Smoren\Validator\Interfaces;
 interface NumericRuleInterface extends MixedRuleInterface
 {
     /**
+     * @param bool $stopOnViolation
+     *
      * @return static
      */
-    public function number(): self;
+    public function number(bool $stopOnViolation = true): self;
 
     /**
+     * @param bool $stopOnViolation
+     *
      * @return static
      */
-    public function string(): self;
+    public function string(bool $stopOnViolation = true): self;
 
     /**
      * @return static

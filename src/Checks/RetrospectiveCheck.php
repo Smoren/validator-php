@@ -15,7 +15,7 @@ class RetrospectiveCheck implements UtilityCheckInterface
     /**
      * {@inheritDoc}
      */
-    public function execute($value, array $previousErrors): void
+    public function execute($value, array $previousErrors, bool $preventDuplicate = false): void
     {
         if (\count($previousErrors)) {
             throw new CheckError('retrospective', $value, $previousErrors);

@@ -18,6 +18,7 @@ use Smoren\Validator\Factories\Value;
 use Smoren\Validator\Exceptions\ValidationError;
 
 $rule = Value::container()
+    ->array()
     ->hasAttribute('id', Value::integer()->positive())
     ->hasAttribute('probability', Value::float()->between(0, 1))
     ->hasAttribute('vectors', Value::container()->array()->allValuesAre(
@@ -25,7 +26,7 @@ $rule = Value::container()
             ->array()
             ->lengthIs(Value::integer()->equal(2))
             ->allValuesAre(Value::integer())
-    ))
+    ));
 
 $validInput = [
     'id' => 13,

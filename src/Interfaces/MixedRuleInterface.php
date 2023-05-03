@@ -60,11 +60,11 @@ interface MixedRuleInterface
 
     /**
      * @param CheckInterface $check
-     * @param bool $isInterrupting
+     * @param bool $stopOnViolation
      *
      * @return static
      */
-    public function check(CheckInterface $check, bool $isInterrupting = false): self;
+    public function check(CheckInterface $check, bool $stopOnViolation = false): self;
 
     /**
      * @return static

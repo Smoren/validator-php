@@ -115,9 +115,9 @@ class MixedRule extends BaseRule implements MixedRuleInterface
      *
      * @return static
      */
-    public function check(CheckInterface $check, bool $isInterrupting = false): self
+    public function check(CheckInterface $check, bool $stopOnViolation = false): self
     {
-        $this->checks[] = new CheckWrapper($check, $isInterrupting);
+        $this->checks[] = new CheckWrapper($check, $stopOnViolation);
         return $this;
     }
 

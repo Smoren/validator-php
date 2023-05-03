@@ -31,12 +31,13 @@ class NumericRule extends MixedRule implements NumericRuleInterface
      *
      * @return static
      */
-    public function number(): self
+    public function number(bool $stopOnViolation = true): self
     {
         return $this->check(
             CheckBuilder::create(CheckName::NUMBER)
                 ->withPredicate(fn ($value) => \is_int($value) || \is_float($value))
-                ->build()
+                ->build(),
+            $stopOnViolation
         );
     }
 
@@ -45,12 +46,13 @@ class NumericRule extends MixedRule implements NumericRuleInterface
      *
      * @return static
      */
-    public function string(): self
+    public function string(bool $stopOnViolation = true): self
     {
         return $this->check(
             CheckBuilder::create(CheckName::STRING)
                 ->withPredicate(fn ($value) => \is_string($value))
-                ->build()
+                ->build(),
+            $stopOnViolation
         );
     }
 

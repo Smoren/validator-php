@@ -5,24 +5,68 @@ namespace Smoren\Validator\Interfaces;
 interface ContainerRuleInterface extends MixedRuleInterface
 {
     /**
+     * @param bool $stopOnViolation
+     *
      * @return static
      */
-    public function array(): self;
+    public function array(bool $stopOnViolation = true): self;
 
     /**
+     * @param bool $stopOnViolation
+     *
      * @return static
      */
-    public function indexedArray(): self;
+    public function indexedArray(bool $stopOnViolation = true): self;
 
     /**
+     * @param bool $stopOnViolation
+     *
      * @return static
      */
-    public function iterable(): self;
+    public function iterable(bool $stopOnViolation = true): self;
 
     /**
+     * @param bool $stopOnViolation
+     *
      * @return static
      */
-    public function countable(): self;
+    public function countable(bool $stopOnViolation = true): self;
+
+    /**
+     * @param bool $stopOnViolation
+     *
+     * @return static
+     */
+    public function associativeArray(bool $stopOnViolation = true): self;
+
+    /**
+     * @param bool $stopOnViolation
+     *
+     * @return static
+     */
+    public function arrayAccessible(bool $stopOnViolation = true): self;
+
+    /**
+     * @param bool $stopOnViolation
+     *
+     * @return static
+     */
+    public function object(bool $stopOnViolation = true): self;
+
+    /**
+     * @param bool $stopOnViolation
+     *
+     * @return static
+     */
+    public function stdObject(bool $stopOnViolation = true): self;
+
+    /**
+     * @param string $class
+     * @param bool $stopOnViolation
+     *
+     * @return static
+     */
+    public function instanceOf(string $class, bool $stopOnViolation = true): self;
 
     /**
      * @return static
@@ -33,33 +77,6 @@ interface ContainerRuleInterface extends MixedRuleInterface
      * @return static
      */
     public function notEmpty(): self;
-
-    /**
-     * @return static
-     */
-    public function associativeArray(): self;
-
-    /**
-     * @return static
-     */
-    public function arrayAccessible(): self;
-
-    /**
-     * @return static
-     */
-    public function object(): self;
-
-    /**
-     * @return static
-     */
-    public function stdObject(): self;
-
-    /**
-     * @param class-string $class
-     *
-     * @return static
-     */
-    public function instanceOf(string $class): self;
 
     /**
      * @param IntegerRuleInterface $rule

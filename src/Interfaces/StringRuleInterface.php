@@ -7,9 +7,11 @@ namespace Smoren\Validator\Interfaces;
 interface StringRuleInterface extends MixedRuleInterface
 {
     /**
+     * @param bool $stopOnViolation
+     *
      * @return static
      */
-    public function numeric(): self;
+    public function numeric(bool $stopOnViolation = true): self;
 
     /**
      * @return static

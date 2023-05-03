@@ -149,6 +149,7 @@ class ContainerTest extends Unit
                     ],
                 ],
                 fn () => Value::container()
+                    ->array()
                     ->hasAttribute('id', Value::integer()->positive())
                     ->hasAttribute('probability', Value::float()->between(0, 1))
                     ->hasAttribute('vectors', Value::container()->array()->allValuesAre(
@@ -157,7 +158,44 @@ class ContainerTest extends Unit
                             ->lengthIs(Value::integer()->equal(2))
                             ->allValuesAre(Value::integer())
                     ))
-            ]
+            ],
+            [
+                [
+                    (object)[
+                        'id' => 13,
+                        'probability' => 0.92,
+                        'vectors' => [[1, 2], [3, 4], [5, 6]],
+                    ],
+                ],
+                fn () => Value::container()
+                    ->stdObject()
+                    ->hasAttribute('id', Value::integer()->positive())
+                    ->hasAttribute('probability', Value::float()->between(0, 1))
+                    ->hasAttribute('vectors', Value::container()->array()->allValuesAre(
+                        Value::container()
+                            ->array()
+                            ->lengthIs(Value::integer()->equal(2))
+                            ->allValuesAre(Value::integer())
+                    ))
+            ],
+            [
+                [
+                    new class () {
+                        public $id = 13;
+                        public $probability = 0.92;
+                        public $vectors = [[1, 2], [3, 4], [5, 6]];
+                    },
+                ],
+                fn () => Value::container()
+                    ->hasAttribute('id', Value::integer()->positive())
+                    ->hasAttribute('probability', Value::float()->between(0, 1))
+                    ->hasAttribute('vectors', Value::container()->array()->allValuesAre(
+                        Value::container()
+                            ->array()
+                            ->lengthIs(Value::integer()->equal(2))
+                            ->allValuesAre(Value::integer())
+                    ))
+            ],
         ];
     }
 
@@ -453,6 +491,7 @@ class ContainerTest extends Unit
                     ],
                 ],
                 fn () => Value::container()
+                    ->array()
                     ->hasAttribute('id', Value::integer()->positive())
                     ->hasAttribute('probability', Value::float()->between(0, 1))
                     ->hasAttribute('vectors', Value::container()->array()->allValuesAre(
@@ -519,6 +558,7 @@ class ContainerTest extends Unit
                     ],
                 ],
                 fn () => Value::container()
+                    ->array()
                     ->hasAttribute('id', Value::integer()->positive())
                     ->hasAttribute('probability', Value::float()->between(0, 1)->equal(0.5))
                     ->hasAttribute('vectors', Value::container()->array()->allValuesAre(
@@ -575,6 +615,69 @@ class ContainerTest extends Unit
                             ],
                         ]
                     ],
+                ],
+            ],
+            [
+                [
+                    (object)[[
+                        'id' => '13',
+                        'probability' => 1.92,
+                        'vectors' => [[1, 2.1], [3, 4], [5, 6]],
+                    ]],
+                ],
+                fn () => Value::container()
+                    ->array()
+                    ->hasAttribute('id', Value::integer()->positive())
+                    ->hasAttribute('probability', Value::float()->between(0, 1)->equal(0.5))
+                    ->hasAttribute('vectors', Value::container()->array()->allValuesAre(
+                        Value::container()
+                            ->array()
+                            ->lengthIs(Value::integer()->equal(2))
+                            ->allValuesAre(Value::integer())
+                    )),
+                [
+                    [CheckName::ARRAY, []],
+                ],
+            ],
+            [
+                [
+                    (object)[
+                        'id' => 13,
+                        'probability' => '1.92',
+                        'vectors' => [[1, 2], [3, 4], [5, 6]],
+                    ],
+                ],
+                fn () => Value::container()
+                    ->array(false)
+                    ->hasAttribute('id', Value::integer()->positive())
+                    ->hasAttribute('probability', Value::float()->between(0, 1))
+                    ->hasAttribute('vectors', Value::container()->array()->allValuesAre(
+                        Value::container()
+                            ->array()
+                            ->lengthIs(Value::integer()->equal(2))
+                            ->allValuesAre(Value::integer())
+                    )),
+                [
+                    [CheckName::ARRAY, []],
+                    [
+                        CheckName::ATTRIBUTE_IS,
+                        [
+                            Param::ATTRIBUTE => 'probability',
+                            Param::RULE => RuleName::FLOAT,
+                            Param::VIOLATED_RESTRICTIONS => [
+                                [CheckName::FLOAT, []],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            [
+                [(object)[1, 2, 3]],
+                fn () => Value::container()
+                    ->allKeysAre(Value::numeric())
+                    ->allValuesAre(Value::integer()),
+                [
+                    [CheckName::ITERABLE, []]
                 ],
             ],
         ];
