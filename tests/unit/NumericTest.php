@@ -25,7 +25,7 @@ class NumericTest extends Unit
         foreach ($input as $value) {
             $rule->validate($value);
         }
-        $this->assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 
     public function dataProviderForSuccess(): array
@@ -93,7 +93,7 @@ class NumericTest extends Unit
             [
                 [6, 7, '8', 10, '150'],
                 fn () => Value::numeric()
-                    ->greaterTran(5),
+                    ->greaterThan(5),
             ],
             [
                 [5, 6, 7, '8', 10, '150'],
@@ -103,7 +103,7 @@ class NumericTest extends Unit
             [
                 [4, 3, 2, '1', 0, '-100'],
                 fn () => Value::numeric()
-                    ->lessTran(5),
+                    ->lessThan(5),
             ],
             [
                 [5, 4, 3, 2, '1', 0, '-100'],
@@ -196,7 +196,7 @@ class NumericTest extends Unit
                 $this->assertSame($errors, $e->getViolatedRestrictions());
             }
         }
-        $this->assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 
     public function dataProviderForFail(): array
@@ -316,7 +316,7 @@ class NumericTest extends Unit
             [
                 [5, 4, 3, 2, 1, 0, -100],
                 fn () => Value::numeric()
-                    ->greaterTran(5),
+                    ->greaterThan(5),
                 [
                     [CheckName::GREATER, [Param::EXPECTED => 5]],
                 ],
@@ -332,7 +332,7 @@ class NumericTest extends Unit
             [
                 [5, 6, 7, 8, 10, 150],
                 fn () => Value::numeric()
-                    ->lessTran(5),
+                    ->lessThan(5),
                 [
                     [CheckName::LESS, [Param::EXPECTED => 5]],
                 ],

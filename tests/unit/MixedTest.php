@@ -25,7 +25,7 @@ class MixedTest extends Unit
         foreach ($input as $value) {
             $rule->validate($value);
         }
-        $this->assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 
     public function dataProviderForSuccess(): array
@@ -109,7 +109,7 @@ class MixedTest extends Unit
                 $this->assertSame($errors, $e->getViolatedRestrictions());
             }
         }
-        $this->assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 
     public function dataProviderForFail(): array

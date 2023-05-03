@@ -26,7 +26,7 @@ class StringTest extends Unit
         foreach ($input as $value) {
             $rule->validate($value);
         }
-        $this->assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 
     public function dataProviderForSuccess(): array
@@ -79,7 +79,7 @@ class StringTest extends Unit
             [
                 ['abcabc', '123abc', 'abc'],
                 fn () => Value::string()
-                    ->lengthIs(Value::integer()->lessTran(7)),
+                    ->lengthIs(Value::integer()->lessThan(7)),
             ],
         ];
     }
@@ -103,7 +103,7 @@ class StringTest extends Unit
                 $this->assertSame($errors, $e->getViolatedRestrictions());
             }
         }
-        $this->assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 
     public function dataProviderForFail(): array
@@ -182,7 +182,7 @@ class StringTest extends Unit
             [
                 ['abcabcabc', '123123123123', 'aaaaaaaaaaaaaaaaa'],
                 fn () => Value::string()
-                    ->lengthIs(Value::integer()->lessTran(7)),
+                    ->lengthIs(Value::integer()->lessThan(7)),
                 [
                     [CheckName::LENGTH_IS, [
                         Param::RULE => RuleName::INTEGER,

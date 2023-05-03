@@ -59,7 +59,7 @@ interface NumericRuleInterface extends MixedRuleInterface
      *
      * @return static
      */
-    public function greaterTran($number): self;
+    public function greaterThan($number): self;
 
     /**
      * @param numeric $number
@@ -73,7 +73,7 @@ interface NumericRuleInterface extends MixedRuleInterface
      *
      * @return static
      */
-    public function lessTran($number): self;
+    public function lessThan($number): self;
 
     /**
      * @param numeric $number

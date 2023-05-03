@@ -25,7 +25,7 @@ class FloatTest extends Unit
         foreach ($input as $value) {
             $rule->validate($value);
         }
-        $this->assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 
     public function dataProviderForSuccess(): array
@@ -73,7 +73,7 @@ class FloatTest extends Unit
             [
                 [5.001, 6.0, 7.1, 8.2, 10.3, 150.777],
                 fn () => Value::float()
-                    ->greaterTran(5),
+                    ->greaterThan(5),
             ],
             [
                 [5.0, 6.0, 7.2, 8.1, 10.0, 150.333],
@@ -83,7 +83,7 @@ class FloatTest extends Unit
             [
                 [4.99, 3.99, 2.99, 1.99, 0.99, -100.99],
                 fn () => Value::float()
-                    ->lessTran(5),
+                    ->lessThan(5),
             ],
             [
                 [5.0, 4.99, 3.22, 2.1, 1.0, 0.0, -100.9],
@@ -132,7 +132,7 @@ class FloatTest extends Unit
                 $this->assertSame($errors, $e->getViolatedRestrictions());
             }
         }
-        $this->assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 
     public function dataProviderForFail(): array
@@ -220,7 +220,7 @@ class FloatTest extends Unit
             [
                 [5.0, 4.0, 3.5, 2.5, 1.5, 0.0, -100.0],
                 fn () => Value::float()
-                    ->greaterTran(5),
+                    ->greaterThan(5),
                 [
                     [CheckName::GREATER, [Param::EXPECTED => 5]],
                 ],
@@ -236,7 +236,7 @@ class FloatTest extends Unit
             [
                 [5.0, 6.0, 7.0, 8.1, 10.1, 150.1],
                 fn () => Value::float()
-                    ->lessTran(5),
+                    ->lessThan(5),
                 [
                     [CheckName::LESS, [Param::EXPECTED => 5]],
                 ],

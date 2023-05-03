@@ -25,7 +25,7 @@ class IntegerTest extends Unit
         foreach ($input as $value) {
             $rule->validate($value);
         }
-        $this->assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 
     public function dataProviderForSuccess(): array
@@ -73,7 +73,7 @@ class IntegerTest extends Unit
             [
                 [6, 7, 8, 10, 150],
                 fn () => Value::integer()
-                    ->greaterTran(5),
+                    ->greaterThan(5),
             ],
             [
                 [5, 6, 7, 8, 10, 150],
@@ -83,7 +83,7 @@ class IntegerTest extends Unit
             [
                 [4, 3, 2, 1, 0, -100],
                 fn () => Value::integer()
-                    ->lessTran(5),
+                    ->lessThan(5),
             ],
             [
                 [5, 4, 3, 2, 1, 0, -100],
@@ -156,7 +156,7 @@ class IntegerTest extends Unit
                 $this->assertSame($errors, $e->getViolatedRestrictions());
             }
         }
-        $this->assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 
     public function dataProviderForFail(): array
@@ -244,7 +244,7 @@ class IntegerTest extends Unit
             [
                 [5, 4, 3, 2, 1, 0, -100],
                 fn () => Value::integer()
-                    ->greaterTran(5),
+                    ->greaterThan(5),
                 [
                     [CheckName::GREATER, [Param::EXPECTED => 5]],
                 ],
@@ -260,7 +260,7 @@ class IntegerTest extends Unit
             [
                 [5, 6, 7, 8, 10, 150],
                 fn () => Value::integer()
-                    ->lessTran(5),
+                    ->lessThan(5),
                 [
                     [CheckName::LESS, [Param::EXPECTED => 5]],
                 ],

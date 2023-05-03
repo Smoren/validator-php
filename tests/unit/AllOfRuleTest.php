@@ -25,7 +25,7 @@ class AllOfRuleTest extends Unit
         foreach ($input as $value) {
             $rule->validate($value);
         }
-        $this->assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 
     public function dataProviderForSuccess(): array
@@ -38,15 +38,15 @@ class AllOfRuleTest extends Unit
             [
                 [1, 2, 3, -1, -2, -3, 1.0, 1.1, 2.71, 3.14],
                 fn () => Value::allOf([
-                    Value::numeric()->greaterTran(-100),
-                    Value::numeric()->lessTran(100),
+                    Value::numeric()->greaterThan(-100),
+                    Value::numeric()->lessThan(100),
                 ]),
             ],
             [
                 [null, 1, 2, 3, -1, -2, -3, 1.0, 1.1, 2.71, 3.14],
                 fn () => Value::allOf([
-                    Value::numeric()->greaterTran(-100),
-                    Value::numeric()->lessTran(100),
+                    Value::numeric()->greaterThan(-100),
+                    Value::numeric()->lessThan(100),
                 ])->nullable(),
             ],
         ];
@@ -71,7 +71,7 @@ class AllOfRuleTest extends Unit
                 $this->assertSame($errors, $e->getViolatedRestrictions());
             }
         }
-        $this->assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 
     public function dataProviderForFail(): array
@@ -87,8 +87,8 @@ class AllOfRuleTest extends Unit
             [
                 [-100, -100.0, -100.1, -150],
                 fn () => Value::allOf([
-                    Value::numeric()->greaterTran(-100),
-                    Value::numeric()->lessTran(100),
+                    Value::numeric()->greaterThan(-100),
+                    Value::numeric()->lessThan(100),
                 ]),
                 [
                     [CheckName::GREATER, [Param::EXPECTED => -100]]
@@ -97,8 +97,8 @@ class AllOfRuleTest extends Unit
             [
                 [100, 100.0, 100.1, 150],
                 fn () => Value::allOf([
-                    Value::numeric()->greaterTran(-100),
-                    Value::numeric()->lessTran(100),
+                    Value::numeric()->greaterThan(-100),
+                    Value::numeric()->lessThan(100),
                 ]),
                 [
                     [CheckName::LESS, [Param::EXPECTED => 100]]
@@ -107,8 +107,8 @@ class AllOfRuleTest extends Unit
             [
                 [100, 100.0, 100.1, 150],
                 fn () => Value::allOf([
-                    Value::numeric()->greaterTran(-100),
-                    Value::numeric()->lessTran(100),
+                    Value::numeric()->greaterThan(-100),
+                    Value::numeric()->lessThan(100),
                 ])->nullable(),
                 [
                     [CheckName::LESS, [Param::EXPECTED => 100]]

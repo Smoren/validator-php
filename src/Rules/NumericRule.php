@@ -175,7 +175,7 @@ class NumericRule extends MixedRule implements NumericRuleInterface
      *
      * @return static
      */
-    public function greaterTran($number): NumericRuleInterface
+    public function greaterThan($number): NumericRuleInterface
     {
         return $this->check(
             CheckBuilder::create(CheckName::GREATER)
@@ -205,7 +205,7 @@ class NumericRule extends MixedRule implements NumericRuleInterface
      *
      * @return static
      */
-    public function lessTran($number): NumericRuleInterface
+    public function lessThan($number): NumericRuleInterface
     {
         return $this->check(
             CheckBuilder::create(CheckName::LESS)
