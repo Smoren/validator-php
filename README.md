@@ -64,7 +64,7 @@ try {
             'attribute' => 'probability',
             'rule' => 'float',
             'violated_restrictions' => [
-                ['in_segment', [
+                ['between', [
                     'start' => 0,
                     'end' => 1
                 ]]
