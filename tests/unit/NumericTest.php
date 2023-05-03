@@ -170,9 +170,19 @@ class NumericTest extends Unit
                     ->finite(),
             ],
             [
-                [INF, -INF],
+                [\INF, -\INF],
                 fn () => Value::numeric()
                     ->infinite(),
+            ],
+            [
+                [\NAN],
+                fn () => Value::numeric()
+                    ->nan(),
+            ],
+            [
+                [0, 1, -1, 0.0, 1.0, -0.1, '0', '1', '0.1', '-0.1', '1.23', \INF, -\INF],
+                fn () => Value::numeric()
+                    ->notNan(),
             ],
         ];
     }
@@ -192,7 +202,9 @@ class NumericTest extends Unit
                 $rule->validate($value);
                 $this->fail();
             } catch (ValidationError $e) {
-                $this->assertSame($value, $e->getValue());
+                if (!\is_nan(\floatval($value))) {
+                    $this->assertSame($value, $e->getValue());
+                }
                 $this->assertSame($errors, $e->getViolatedRestrictions());
             }
         }
@@ -520,6 +532,22 @@ class NumericTest extends Unit
                     ->infinite(),
                 [
                     [CheckName::INFINITE, []],
+                ],
+            ],
+            [
+                [0, 1, -1, 0.0, 1.0, -0.1, '0', '1', '0.1', '-0.1', '1.23', \INF, -\INF],
+                fn () => Value::numeric()
+                    ->nan(),
+                [
+                    [CheckName::NAN, []],
+                ],
+            ],
+            [
+                [\NAN],
+                fn () => Value::numeric()
+                    ->notNan(),
+                [
+                    [CheckName::NOT_NAN, []],
                 ],
             ],
         ];

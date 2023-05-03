@@ -127,4 +127,14 @@ interface NumericRuleInterface extends MixedRuleInterface
      * @return static
      */
     public function infinite(): self;
+
+    /**
+     * @return static
+     */
+    public function nan(): self;
+
+    /**
+     * @return static
+     */
+    public function notNan(): self;
 }

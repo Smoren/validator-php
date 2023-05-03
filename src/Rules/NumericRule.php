@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Smoren\Validator\Rules;
 
 use Smoren\Validator\Factories\CheckBuilder;
+use Smoren\Validator\Interfaces\CheckInterface;
 use Smoren\Validator\Interfaces\NumericRuleInterface;
 use Smoren\Validator\Structs\CheckName;
 use Smoren\Validator\Structs\Param;
@@ -19,9 +20,7 @@ class NumericRule extends MixedRule implements NumericRuleInterface
         parent::__construct($name);
 
         $this->check(
-            CheckBuilder::create(CheckName::NUMERIC)
-                ->withPredicate(fn ($value) => \is_numeric($value))
-                ->build(),
+            $this->getNumericCheck(),
             true
         );
     }
@@ -34,9 +33,7 @@ class NumericRule extends MixedRule implements NumericRuleInterface
     public function number(bool $stopOnViolation = true): self
     {
         return $this->check(
-            CheckBuilder::create(CheckName::NUMBER)
-                ->withPredicate(fn ($value) => \is_int($value) || \is_float($value))
-                ->build(),
+            $this->getNumberCheck(),
             $stopOnViolation
         );
     }
@@ -49,9 +46,7 @@ class NumericRule extends MixedRule implements NumericRuleInterface
     public function string(bool $stopOnViolation = true): self
     {
         return $this->check(
-            CheckBuilder::create(CheckName::STRING)
-                ->withPredicate(fn ($value) => \is_string($value))
-                ->build(),
+            $this->getStringCheck(),
             $stopOnViolation
         );
     }
@@ -64,9 +59,7 @@ class NumericRule extends MixedRule implements NumericRuleInterface
     public function integer(bool $stopOnViolation = true): self
     {
         return $this->check(
-            CheckBuilder::create(CheckName::INTEGER)
-                ->withPredicate(fn ($value) => \is_int($value))
-                ->build(),
+            $this->getIntegerCheck(),
             $stopOnViolation
         );
     }
@@ -79,9 +72,7 @@ class NumericRule extends MixedRule implements NumericRuleInterface
     public function float(bool $stopOnViolation = true): self
     {
         return $this->check(
-            CheckBuilder::create(CheckName::FLOAT)
-                ->withPredicate(fn ($value) => \is_float($value))
-                ->build(),
+            $this->getFloatCheck(),
             $stopOnViolation
         );
     }
@@ -340,5 +331,70 @@ class NumericRule extends MixedRule implements NumericRuleInterface
                 ->withPredicate(fn ($value) => $value % 2 !== 0)
                 ->build()
         );
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return static
+     */
+    public function nan(): self
+    {
+        return $this->check(
+            CheckBuilder::create(CheckName::NAN)
+                ->withPredicate(fn ($value) => \is_nan(\floatval($value)))
+                ->withDependOnChecks([$this->getNumericCheck()])
+                ->build()
+        );
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return static
+     */
+    public function notNan(): self
+    {
+        return $this->check(
+            CheckBuilder::create(CheckName::NOT_NAN)
+                ->withPredicate(fn ($value) => !\is_nan(\floatval($value)))
+                ->withDependOnChecks([$this->getNumericCheck()])
+                ->build()
+        );
+    }
+
+    protected function getNumericCheck(): CheckInterface
+    {
+        return CheckBuilder::create(CheckName::NUMERIC)
+            ->withPredicate(fn ($value) => \is_numeric($value))
+            ->build();
+    }
+
+    protected function getNumberCheck(): CheckInterface
+    {
+        return CheckBuilder::create(CheckName::NUMBER)
+            ->withPredicate(fn ($value) => \is_int($value) || \is_float($value))
+            ->build();
+    }
+
+    protected function getStringCheck(): CheckInterface
+    {
+        return CheckBuilder::create(CheckName::STRING)
+            ->withPredicate(fn ($value) => \is_string($value))
+            ->build();
+    }
+
+    protected function getIntegerCheck(): CheckInterface
+    {
+        return CheckBuilder::create(CheckName::INTEGER)
+            ->withPredicate(fn ($value) => \is_int($value))
+            ->build();
+    }
+
+    protected function getFloatCheck(): CheckInterface
+    {
+        return CheckBuilder::create(CheckName::FLOAT)
+            ->withPredicate(fn ($value) => \is_float($value))
+            ->build();
     }
 }

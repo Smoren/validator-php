@@ -34,6 +34,8 @@ class CheckName
     public const FRACTIONAL = 'fractional';
     public const INFINITE = 'infinite';
     public const FINITE = 'finite';
+    public const NAN = 'nan';
+    public const NOT_NAN = 'not_nan';
 
     public const CONTAINER = 'container';
     public const ARRAY = 'array';
