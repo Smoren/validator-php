@@ -7,7 +7,6 @@ namespace Smoren\Validator\Rules;
 use Smoren\Validator\Checks\RetrospectiveCheck;
 use Smoren\Validator\Exceptions\CheckError;
 use Smoren\Validator\Exceptions\ValidationError;
-use Smoren\Validator\Factories\CheckBuilder;
 use Smoren\Validator\Factories\Checks\MixedCheckFactory;
 use Smoren\Validator\Interfaces\CheckInterface;
 use Smoren\Validator\Interfaces\CheckWrapperInterface;

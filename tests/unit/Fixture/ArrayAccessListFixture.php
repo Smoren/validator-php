@@ -1,8 +1,8 @@
 <?php
 
-namespace Smoren\Validator\Tests\Unit\Fixture;
+declare(strict_types=1);
 
-use Traversable;
+namespace Smoren\Validator\Tests\Unit\Fixture;
 
 /**
  * @implements \ArrayAccess<mixed>

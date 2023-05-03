@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smoren\Validator\Factories\Checks;
 
 use Smoren\Validator\Factories\CheckBuilder;
