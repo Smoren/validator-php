@@ -99,6 +99,22 @@ interface NumericRuleInterface extends MixedRuleInterface
     public function inOpenInterval($start, $end): self;
 
     /**
+     * @param numeric $start
+     * @param numeric $end
+     *
+     * @return static
+     */
+    public function inLeftHalfOpenInterval($start, $end): self;
+
+    /**
+     * @param numeric $start
+     * @param numeric $end
+     *
+     * @return static
+     */
+    public function inRightHalfOpenInterval($start, $end): self;
+
+    /**
      * @return static
      */
     public function even(): self;

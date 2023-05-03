@@ -160,6 +160,32 @@ class NumericCheckFactory
             ->build();
     }
 
+    /**
+     * @param numeric $start
+     * @param numeric $end
+     * @return CheckInterface
+     */
+    public static function getInLeftOpenIntervalCheck($start, $end): CheckInterface
+    {
+        return CheckBuilder::create(CheckName::IN_LEFT_HALF_OPEN_INTERVAL)
+            ->withPredicate(fn($value, $start, $end) => $value > $start && $value <= $end)
+            ->withParams(['start' => $start, 'end' => $end])
+            ->build();
+    }
+
+    /**
+     * @param numeric $start
+     * @param numeric $end
+     * @return CheckInterface
+     */
+    public static function getInRightOpenIntervalCheck($start, $end): CheckInterface
+    {
+        return CheckBuilder::create(CheckName::IN_RIGHT_HALF_OPEN_INTERVAL)
+            ->withPredicate(fn($value, $start, $end) => $value >= $start && $value < $end)
+            ->withParams(['start' => $start, 'end' => $end])
+            ->build();
+    }
+
     public static function getFractionalCheck(): CheckInterface
     {
         return CheckBuilder::create(CheckName::FRACTIONAL)

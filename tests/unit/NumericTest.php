@@ -155,6 +155,26 @@ class NumericTest extends Unit
                     ->between(5, 10),
             ],
             [
+                [5, 5.0, '5', '5.0', 6, 6.0, '7', 8.0, '9', 10, 10.0, '10', '10.0'],
+                fn () => Value::numeric()
+                    ->between(5, 10),
+            ],
+            [
+                [6, 6.0, '7', 8.0, '9', 9.0, 9],
+                fn () => Value::numeric()
+                    ->inOpenInterval(5, 10),
+            ],
+            [
+                [6, 6.0, '7', 8.0, '9', 10, 10.0, '10', '10.0'],
+                fn () => Value::numeric()
+                    ->inLeftHalfOpenInterval(5, 10),
+            ],
+            [
+                [5, 5.0, '5', '5.0', 6, 6.0, '7', 8.0, '9', 9.0, 9],
+                fn () => Value::numeric()
+                    ->inRightHalfOpenInterval(5, 10),
+            ],
+            [
                 [1.000000001, 2.1, '3.1', '-1.001', -2.1, -3.3],
                 fn () => Value::numeric()
                     ->fractional(),
@@ -500,6 +520,38 @@ class NumericTest extends Unit
                     ->between(5, 10),
                 [
                     [CheckName::ODD, []],
+                ],
+            ],
+            [
+                [-100, 1, 4, '4', 4.99, '4.99', 10.001, '10.1', 11, 150],
+                fn () => Value::numeric()
+                    ->between(5, 10),
+                [
+                    [CheckName::BETWEEN, ['start' => 5, 'end' => 10]],
+                ],
+            ],
+            [
+                [-100, 2, 4.99, 5, 5.0, '5', '5.0', 10, 10.0, '10', '10.0', 10.1, 11, 150],
+                fn () => Value::numeric()
+                    ->inOpenInterval(5, 10),
+                [
+                    [CheckName::IN_OPEN_INTERVAL, ['start' => 5, 'end' => 10]],
+                ],
+            ],
+            [
+                [-3, 4, 4.0, 5, 5.0, '5', '5.0', 10.1, '10.1', '11.2', 11.5, 100],
+                fn () => Value::numeric()
+                    ->inLeftHalfOpenInterval(5, 10),
+                [
+                    [CheckName::IN_LEFT_HALF_OPEN_INTERVAL, ['start' => 5, 'end' => 10]],
+                ],
+            ],
+            [
+                [-3, 4, 4.0, 4.9, '4.99', 10, 10.0, '10', '10.0', 11, 100],
+                fn () => Value::numeric()
+                    ->inRightHalfOpenInterval(5, 10),
+                [
+                    [CheckName::IN_RIGHT_HALF_OPEN_INTERVAL, ['start' => 5, 'end' => 10]],
                 ],
             ],
             [
