@@ -152,9 +152,9 @@ class NumericCheckFactory
      * @param numeric $end
      * @return CheckInterface
      */
-    public static function getInIntervalCheck($start, $end): CheckInterface
+    public static function getInOpenIntervalCheck($start, $end): CheckInterface
     {
-        return CheckBuilder::create(CheckName::IN_INTERVAL)
+        return CheckBuilder::create(CheckName::IN_OPEN_INTERVAL)
             ->withPredicate(fn($value, $start, $end) => $value > $start && $value < $end)
             ->withParams(['start' => $start, 'end' => $end])
             ->build();

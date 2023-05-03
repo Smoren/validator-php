@@ -115,14 +115,14 @@ class NumericTest extends Unit
                 fn () => Value::numeric()
                     ->positive()
                     ->even()
-                    ->inInterval(5, 10),
+                    ->inOpenInterval(5, 10),
             ],
             [
                 ['7', 9],
                 fn () => Value::numeric()
                     ->positive()
                     ->odd()
-                    ->inInterval(5, 10),
+                    ->inOpenInterval(5, 10),
             ],
             [
                 [null, '7', '9', 7.0],
@@ -130,7 +130,7 @@ class NumericTest extends Unit
                     ->nullable()
                     ->positive()
                     ->odd()
-                    ->inInterval(5, 10),
+                    ->inOpenInterval(5, 10),
             ],
             [
                 [6, '8', '10', 8.0],
@@ -362,10 +362,10 @@ class NumericTest extends Unit
                 fn () => Value::numeric()
                     ->positive()
                     ->even()
-                    ->inInterval(5, 10),
+                    ->inOpenInterval(5, 10),
                 [
                     [CheckName::EVEN, []],
-                    [CheckName::IN_INTERVAL, ['start' => 5, 'end' => 10]],
+                    [CheckName::IN_OPEN_INTERVAL, ['start' => 5, 'end' => 10]],
                 ],
             ],
             [
@@ -373,11 +373,11 @@ class NumericTest extends Unit
                 fn () => Value::numeric()
                     ->positive()
                     ->even()
-                    ->inInterval(5, 10),
+                    ->inOpenInterval(5, 10),
                 [
                     [CheckName::POSITIVE, []],
                     [CheckName::EVEN, []],
-                    [CheckName::IN_INTERVAL, ['start' => 5, 'end' => 10]],
+                    [CheckName::IN_OPEN_INTERVAL, ['start' => 5, 'end' => 10]],
                 ],
             ],
             [
@@ -386,7 +386,7 @@ class NumericTest extends Unit
                     ->positive()
                     ->even()
                     ->stopOnViolation()
-                    ->inInterval(5, 10),
+                    ->inOpenInterval(5, 10),
                 [
                     [CheckName::POSITIVE, []],
                     [CheckName::EVEN, []],
@@ -400,7 +400,7 @@ class NumericTest extends Unit
                     ->nonNegative()
                     ->even()
                     ->stopOnViolation()
-                    ->inInterval(5, 10),
+                    ->inOpenInterval(5, 10),
                 [
                     [CheckName::POSITIVE, []],
                 ],
@@ -413,7 +413,7 @@ class NumericTest extends Unit
                     ->nonNegative()
                     ->even()
                     ->stopOnViolation()
-                    ->inInterval(5, 10),
+                    ->inOpenInterval(5, 10),
                 [
                     [CheckName::EVEN, []],
                 ],
@@ -423,7 +423,7 @@ class NumericTest extends Unit
                 fn () => Value::numeric()
                     ->positive()
                     ->even()
-                    ->inInterval(5, 10)
+                    ->inOpenInterval(5, 10)
                     ->stopOnAnyPriorViolation(),
                 [
                     [CheckName::POSITIVE, []],
@@ -434,7 +434,7 @@ class NumericTest extends Unit
                 fn () => Value::numeric()
                     ->positive()
                     ->even()
-                    ->inInterval(5, 10),
+                    ->inOpenInterval(5, 10),
                 [
                     [CheckName::EVEN, []],
                 ],
@@ -444,7 +444,7 @@ class NumericTest extends Unit
                 fn () => Value::numeric()
                     ->positive()
                     ->odd()
-                    ->inInterval(5, 10),
+                    ->inOpenInterval(5, 10),
                 [
                     [CheckName::ODD, []],
                 ],

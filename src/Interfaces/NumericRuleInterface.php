@@ -96,7 +96,7 @@ interface NumericRuleInterface extends MixedRuleInterface
      *
      * @return static
      */
-    public function inInterval($start, $end): self;
+    public function inOpenInterval($start, $end): self;
 
     /**
      * @return static

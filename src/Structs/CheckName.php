@@ -23,7 +23,7 @@ class CheckName
     public const LESS = 'less';
     public const LESS_OR_EQUEAL = 'less_or_equal';
     public const BETWEEN = 'between';
-    public const IN_INTERVAL = 'in_interval';
+    public const IN_OPEN_INTERVAL = 'in_interval';
 
     public const INTEGER = 'integer';
     public const EVEN = 'even';

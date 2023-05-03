@@ -172,9 +172,9 @@ class NumericRule extends MixedRule implements NumericRuleInterface
     /**
      * {@inheritDoc}
      */
-    public function inInterval($start, $end): self
+    public function inOpenInterval($start, $end): self
     {
-        return $this->check(NumericCheckFactory::getInIntervalCheck($start, $end));
+        return $this->check(NumericCheckFactory::getInOpenIntervalCheck($start, $end));
     }
 
     /**
