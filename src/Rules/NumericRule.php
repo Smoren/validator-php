@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace Smoren\Validator\Rules;
 
-use Smoren\Validator\Factories\CheckBuilder;
-use Smoren\Validator\Interfaces\CheckInterface;
+use Smoren\Validator\Factories\Checks\NumericCheckFactory;
 use Smoren\Validator\Interfaces\NumericRuleInterface;
-use Smoren\Validator\Structs\CheckName;
-use Smoren\Validator\Structs\Param;
 
 class NumericRule extends MixedRule implements NumericRuleInterface
 {
@@ -19,10 +16,7 @@ class NumericRule extends MixedRule implements NumericRuleInterface
     {
         parent::__construct($name);
 
-        $this->check(
-            $this->getNumericCheck(),
-            true
-        );
+        $this->check(NumericCheckFactory::getNumericCheck(), true);
     }
 
     /**
@@ -32,10 +26,7 @@ class NumericRule extends MixedRule implements NumericRuleInterface
      */
     public function number(bool $stopOnViolation = true): self
     {
-        return $this->check(
-            $this->getNumberCheck(),
-            $stopOnViolation
-        );
+        return $this->check(NumericCheckFactory::getNumberCheck(), $stopOnViolation);
     }
 
     /**
@@ -45,10 +36,7 @@ class NumericRule extends MixedRule implements NumericRuleInterface
      */
     public function string(bool $stopOnViolation = true): self
     {
-        return $this->check(
-            $this->getStringCheck(),
-            $stopOnViolation
-        );
+        return $this->check(NumericCheckFactory::getStringCheck(), $stopOnViolation);
     }
 
     /**
@@ -58,10 +46,7 @@ class NumericRule extends MixedRule implements NumericRuleInterface
      */
     public function integer(bool $stopOnViolation = true): self
     {
-        return $this->check(
-            $this->getIntegerCheck(),
-            $stopOnViolation
-        );
+        return $this->check(NumericCheckFactory::getIntegerCheck(), $stopOnViolation);
     }
 
     /**
@@ -71,10 +56,7 @@ class NumericRule extends MixedRule implements NumericRuleInterface
      */
     public function float(bool $stopOnViolation = true): self
     {
-        return $this->check(
-            $this->getFloatCheck(),
-            $stopOnViolation
-        );
+        return $this->check(NumericCheckFactory::getFloatCheck(), $stopOnViolation);
     }
 
     /**
@@ -84,11 +66,7 @@ class NumericRule extends MixedRule implements NumericRuleInterface
      */
     public function truthy(): self
     {
-        return $this->check(
-            CheckBuilder::create(CheckName::TRUTHY)
-                ->withPredicate(fn ($value) => \boolval(floatval($value)))
-                ->build()
-        );
+        return $this->check(NumericCheckFactory::getTruthyCheck());
     }
 
     /**
@@ -98,11 +76,7 @@ class NumericRule extends MixedRule implements NumericRuleInterface
      */
     public function falsy(): self
     {
-        return $this->check(
-            CheckBuilder::create(CheckName::FALSY)
-                ->withPredicate(fn ($value) => !\boolval(floatval($value)))
-                ->build()
-        );
+        return $this->check(NumericCheckFactory::getFalsyCheck());
     }
 
     /**
@@ -112,11 +86,7 @@ class NumericRule extends MixedRule implements NumericRuleInterface
      */
     public function positive(): self
     {
-        return $this->check(
-            CheckBuilder::create(CheckName::POSITIVE)
-                ->withPredicate(fn ($value) => $value > 0)
-                ->build()
-        );
+        return $this->check(NumericCheckFactory::getPositiveCheck());
     }
 
     /**
@@ -126,11 +96,7 @@ class NumericRule extends MixedRule implements NumericRuleInterface
      */
     public function nonPositive(): self
     {
-        return $this->check(
-            CheckBuilder::create(CheckName::NON_POSITIVE)
-                ->withPredicate(fn ($value) => $value <= 0)
-                ->build()
-        );
+        return $this->check(NumericCheckFactory::getNonPositiveCheck());
     }
 
     /**
@@ -140,11 +106,7 @@ class NumericRule extends MixedRule implements NumericRuleInterface
      */
     public function nonNegative(): self
     {
-        return $this->check(
-            CheckBuilder::create(CheckName::NON_NEGATIVE)
-                ->withPredicate(fn ($value) => $value >= 0)
-                ->build()
-        );
+        return $this->check(NumericCheckFactory::getNonNegativeCheck());
     }
 
     /**
@@ -154,11 +116,7 @@ class NumericRule extends MixedRule implements NumericRuleInterface
      */
     public function negative(): self
     {
-        return $this->check(
-            CheckBuilder::create(CheckName::NEGATIVE)
-                ->withPredicate(fn ($value) => $value < 0)
-                ->build()
-        );
+        return $this->check(NumericCheckFactory::getNegativeCheck());
     }
 
     /**
@@ -168,12 +126,7 @@ class NumericRule extends MixedRule implements NumericRuleInterface
      */
     public function greaterThan($number): NumericRuleInterface
     {
-        return $this->check(
-            CheckBuilder::create(CheckName::GREATER)
-                ->withPredicate(fn ($value, $number) => $value > $number)
-                ->withParams([Param::EXPECTED => $number])
-                ->build()
-        );
+        return $this->check(NumericCheckFactory::getGreaterThanCheck($number));
     }
 
     /**
@@ -183,12 +136,7 @@ class NumericRule extends MixedRule implements NumericRuleInterface
      */
     public function greaterOrEqual($number): NumericRuleInterface
     {
-        return $this->check(
-            CheckBuilder::create(CheckName::GREATER_OR_EQUEAL)
-                ->withPredicate(fn ($value, $number) => $value >= $number)
-                ->withParams([Param::EXPECTED => $number])
-                ->build()
-        );
+        return $this->check(NumericCheckFactory::getGreaterOrEqualCheck($number));
     }
 
     /**
@@ -198,12 +146,7 @@ class NumericRule extends MixedRule implements NumericRuleInterface
      */
     public function lessThan($number): NumericRuleInterface
     {
-        return $this->check(
-            CheckBuilder::create(CheckName::LESS)
-                ->withPredicate(fn ($value, $number) => $value < $number)
-                ->withParams([Param::EXPECTED => $number])
-                ->build()
-        );
+        return $this->check(NumericCheckFactory::getLessThanCheck($number));
     }
 
     /**
@@ -213,12 +156,7 @@ class NumericRule extends MixedRule implements NumericRuleInterface
      */
     public function lessOrEqual($number): NumericRuleInterface
     {
-        return $this->check(
-            CheckBuilder::create(CheckName::LESS_OR_EQUEAL)
-                ->withPredicate(fn ($value, $number) => $value <= $number)
-                ->withParams([Param::EXPECTED => $number])
-                ->build()
-        );
+        return $this->check(NumericCheckFactory::getLessOrEqualCheck($number));
     }
 
     /**
@@ -228,12 +166,7 @@ class NumericRule extends MixedRule implements NumericRuleInterface
      */
     public function between($start, $end): self
     {
-        return $this->check(
-            CheckBuilder::create(CheckName::BETWEEN)
-                ->withPredicate(fn ($value, $start, $end) => $value >= $start && $value <= $end)
-                ->withParams(['start' => $start, 'end' => $end])
-                ->build()
-        );
+        return $this->check(NumericCheckFactory::getBetweenCheck($start, $end));
     }
 
     /**
@@ -241,12 +174,7 @@ class NumericRule extends MixedRule implements NumericRuleInterface
      */
     public function inInterval($start, $end): self
     {
-        return $this->check(
-            CheckBuilder::create(CheckName::IN_INTERVAL)
-                ->withPredicate(fn ($value, $start, $end) => $value > $start && $value < $end)
-                ->withParams(['start' => $start, 'end' => $end])
-                ->build()
-        );
+        return $this->check(NumericCheckFactory::getInIntervalCheck($start, $end));
     }
 
     /**
@@ -256,11 +184,7 @@ class NumericRule extends MixedRule implements NumericRuleInterface
      */
     public function fractional(): self
     {
-        return $this->check(
-            CheckBuilder::create(CheckName::FRACTIONAL)
-                ->withPredicate(fn ($value) => \abs($value - \round(\floatval($value))) >= \PHP_FLOAT_EPSILON)
-                ->build()
-        );
+        return $this->check(NumericCheckFactory::getFractionalCheck());
     }
 
     /**
@@ -270,11 +194,7 @@ class NumericRule extends MixedRule implements NumericRuleInterface
      */
     public function nonFractional(): self
     {
-        return $this->check(
-            CheckBuilder::create(CheckName::NON_FRACTIONAL)
-                ->withPredicate(fn ($value) => \abs($value - \round(\floatval($value))) < \PHP_FLOAT_EPSILON)
-                ->build()
-        );
+        return $this->check(NumericCheckFactory::getNonFractionalCheck());
     }
 
     /**
@@ -284,11 +204,7 @@ class NumericRule extends MixedRule implements NumericRuleInterface
      */
     public function finite(): self
     {
-        return $this->check(
-            CheckBuilder::create(CheckName::FINITE)
-                ->withPredicate(fn ($value) => $value > -INF && $value < INF)
-                ->build()
-        );
+        return $this->check(NumericCheckFactory::getFiniteCheck());
     }
 
     /**
@@ -298,11 +214,7 @@ class NumericRule extends MixedRule implements NumericRuleInterface
      */
     public function infinite(): self
     {
-        return $this->check(
-            CheckBuilder::create(CheckName::INFINITE)
-                ->withPredicate(fn ($value) => $value === -INF || $value === INF)
-                ->build()
-        );
+        return $this->check(NumericCheckFactory::getInfiniteCheck());
     }
 
     /**
@@ -312,11 +224,7 @@ class NumericRule extends MixedRule implements NumericRuleInterface
      */
     public function even(): self
     {
-        return $this->check(
-            CheckBuilder::create(CheckName::EVEN)
-                ->withPredicate(fn ($value) => $value % 2 === 0)
-                ->build()
-        );
+        return $this->check(NumericCheckFactory::getEvenCheck());
     }
 
     /**
@@ -326,11 +234,7 @@ class NumericRule extends MixedRule implements NumericRuleInterface
      */
     public function odd(): self
     {
-        return $this->check(
-            CheckBuilder::create(CheckName::ODD)
-                ->withPredicate(fn ($value) => $value % 2 !== 0)
-                ->build()
-        );
+        return $this->check(NumericCheckFactory::getOddCheck());
     }
 
     /**
@@ -340,12 +244,7 @@ class NumericRule extends MixedRule implements NumericRuleInterface
      */
     public function nan(): self
     {
-        return $this->check(
-            CheckBuilder::create(CheckName::NAN)
-                ->withPredicate(fn ($value) => \is_nan(\floatval($value)))
-                ->withDependOnChecks([$this->getNumericCheck()])
-                ->build()
-        );
+        return $this->check(NumericCheckFactory::getNanCheck());
     }
 
     /**
@@ -355,46 +254,6 @@ class NumericRule extends MixedRule implements NumericRuleInterface
      */
     public function notNan(): self
     {
-        return $this->check(
-            CheckBuilder::create(CheckName::NOT_NAN)
-                ->withPredicate(fn ($value) => !\is_nan(\floatval($value)))
-                ->withDependOnChecks([$this->getNumericCheck()])
-                ->build()
-        );
-    }
-
-    protected function getNumericCheck(): CheckInterface
-    {
-        return CheckBuilder::create(CheckName::NUMERIC)
-            ->withPredicate(fn ($value) => \is_numeric($value))
-            ->build();
-    }
-
-    protected function getNumberCheck(): CheckInterface
-    {
-        return CheckBuilder::create(CheckName::NUMBER)
-            ->withPredicate(fn ($value) => \is_int($value) || \is_float($value))
-            ->build();
-    }
-
-    protected function getStringCheck(): CheckInterface
-    {
-        return CheckBuilder::create(CheckName::STRING)
-            ->withPredicate(fn ($value) => \is_string($value))
-            ->build();
-    }
-
-    protected function getIntegerCheck(): CheckInterface
-    {
-        return CheckBuilder::create(CheckName::INTEGER)
-            ->withPredicate(fn ($value) => \is_int($value))
-            ->build();
-    }
-
-    protected function getFloatCheck(): CheckInterface
-    {
-        return CheckBuilder::create(CheckName::FLOAT)
-            ->withPredicate(fn ($value) => \is_float($value))
-            ->build();
+        return $this->check(NumericCheckFactory::getNotNanCheck());
     }
 }
