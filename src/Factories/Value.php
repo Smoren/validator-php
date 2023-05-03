@@ -9,7 +9,7 @@ use Smoren\Validator\Interfaces\MixedRuleInterface;
 use Smoren\Validator\Interfaces\CompositeRuleInterface;
 use Smoren\Validator\Interfaces\ContainerRuleInterface;
 use Smoren\Validator\Interfaces\FloatRuleInterface;
-use Smoren\Validator\Interfaces\IntegerRuleInterface;
+use Smoren\Validator\Interfaces\NumericRuleInterface;
 use Smoren\Validator\Interfaces\StringRuleInterface;
 use Smoren\Validator\Rules\AndRule;
 use Smoren\Validator\Rules\BoolRule;
@@ -37,9 +37,9 @@ class Value
     /**
      * @param string $name
      *
-     * @return IntegerRuleInterface
+     * @return NumericRuleInterface
      */
-    public static function integer(string $name = RuleName::INTEGER): IntegerRuleInterface
+    public static function integer(string $name = RuleName::INTEGER): NumericRuleInterface
     {
         return new IntegerRule($name);
     }

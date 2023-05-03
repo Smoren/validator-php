@@ -61,6 +61,36 @@ class NumericRule extends MixedRule implements NumericRuleInterface
      *
      * @return static
      */
+    public function integer(bool $stopOnViolation = true): self
+    {
+        return $this->check(
+            CheckBuilder::create(CheckName::INTEGER)
+                ->withPredicate(fn ($value) => \is_int($value))
+                ->build(),
+            $stopOnViolation
+        );
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return static
+     */
+    public function float(bool $stopOnViolation = true): self
+    {
+        return $this->check(
+            CheckBuilder::create(CheckName::FLOAT)
+                ->withPredicate(fn ($value) => \is_float($value))
+                ->build(),
+            $stopOnViolation
+        );
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return static
+     */
     public function truthy(): self
     {
         return $this->check(
@@ -224,6 +254,90 @@ class NumericRule extends MixedRule implements NumericRuleInterface
             CheckBuilder::create(CheckName::IN_INTERVAL)
                 ->withPredicate(fn ($value, $start, $end) => $value > $start && $value < $end)
                 ->withParams(['start' => $start, 'end' => $end])
+                ->build()
+        );
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return static
+     */
+    public function fractional(): self
+    {
+        return $this->check(
+            CheckBuilder::create(CheckName::FRACTIONAL)
+                ->withPredicate(fn ($value) => \abs($value - \round($value)) >= \PHP_FLOAT_EPSILON)
+                ->build()
+        );
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return static
+     */
+    public function nonFractional(): self
+    {
+        return $this->check(
+            CheckBuilder::create(CheckName::NON_FRACTIONAL)
+                ->withPredicate(fn ($value) => \abs($value - \round($value)) < \PHP_FLOAT_EPSILON)
+                ->build()
+        );
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return static
+     */
+    public function finite(): self
+    {
+        return $this->check(
+            CheckBuilder::create(CheckName::FINITE)
+                ->withPredicate(fn ($value) => $value > -INF && $value < INF)
+                ->build()
+        );
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return static
+     */
+    public function infinite(): self
+    {
+        return $this->check(
+            CheckBuilder::create(CheckName::INFINITE)
+                ->withPredicate(fn ($value) => $value === -INF || $value === INF)
+                ->build()
+        );
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return static
+     */
+    public function even(): self
+    {
+        return $this->check(
+            CheckBuilder::create(CheckName::EVEN)
+                ->withPredicate(fn ($value) => $value % 2 === 0)
+                ->build()
+        );
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return static
+     */
+    public function odd(): self
+    {
+        return $this->check(
+            CheckBuilder::create(CheckName::ODD)
+                ->withPredicate(fn ($value) => $value % 2 !== 0)
                 ->build()
         );
     }

@@ -680,6 +680,15 @@ class ContainerTest extends Unit
                     [CheckName::ITERABLE, []]
                 ],
             ],
+            [
+                ['', true, false, 'abc', 123, 1.0, 0],
+                fn () => Value::container()
+                    ->allKeysAre(Value::numeric())
+                    ->allValuesAre(Value::integer()),
+                [
+                    [CheckName::CONTAINER, []]
+                ],
+            ],
         ];
     }
 }

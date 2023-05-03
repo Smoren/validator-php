@@ -21,6 +21,20 @@ interface NumericRuleInterface extends MixedRuleInterface
     public function string(bool $stopOnViolation = true): self;
 
     /**
+     * @param bool $stopOnViolation
+     *
+     * @return static
+     */
+    public function integer(bool $stopOnViolation = true): self;
+
+    /**
+     * @param bool $stopOnViolation
+     *
+     * @return static
+     */
+    public function float(bool $stopOnViolation = true): self;
+
+    /**
      * @return static
      */
     public function positive(): self;
@@ -83,4 +97,34 @@ interface NumericRuleInterface extends MixedRuleInterface
      * @return static
      */
     public function inInterval($start, $end): self;
+
+    /**
+     * @return static
+     */
+    public function even(): self;
+
+    /**
+     * @return static
+     */
+    public function odd(): self;
+
+    /**
+     * @return static
+     */
+    public function fractional(): self;
+
+    /**
+     * @return static
+     */
+    public function nonFractional(): self;
+
+    /**
+     * @return static
+     */
+    public function finite(): self;
+
+    /**
+     * @return static
+     */
+    public function infinite(): self;
 }

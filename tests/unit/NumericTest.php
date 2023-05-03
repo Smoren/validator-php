@@ -110,6 +110,70 @@ class NumericTest extends Unit
                 fn () => Value::numeric()
                     ->lessOrEqual(5),
             ],
+            [
+                [6, '8'],
+                fn () => Value::numeric()
+                    ->positive()
+                    ->even()
+                    ->inInterval(5, 10),
+            ],
+            [
+                ['7', 9],
+                fn () => Value::numeric()
+                    ->positive()
+                    ->odd()
+                    ->inInterval(5, 10),
+            ],
+            [
+                [null, '7', '9', 7.0],
+                fn () => Value::numeric()
+                    ->nullable()
+                    ->positive()
+                    ->odd()
+                    ->inInterval(5, 10),
+            ],
+            [
+                [6, '8', '10', 8.0],
+                fn () => Value::numeric()
+                    ->positive()
+                    ->even()
+                    ->between(5, 10),
+            ],
+            [
+                [5, '7', '9', 7.0],
+                fn () => Value::numeric()
+                    ->positive()
+                    ->odd()
+                    ->between(5, 10),
+            ],
+            [
+                [5, '7', '9', 5.0, null],
+                fn () => Value::numeric()
+                    ->positive()
+                    ->nullable()
+                    ->odd()
+                    ->between(5, 10),
+            ],
+            [
+                [1.000000001, 2.1, '3.1', '-1.001', -2.1, -3.3],
+                fn () => Value::numeric()
+                    ->fractional(),
+            ],
+            [
+                [1.0, 2.0, 3, '-1.0', -2.0, '-3.0'],
+                fn () => Value::numeric()
+                    ->nonFractional(),
+            ],
+            [
+                [1.0, '2.0', 3, '-1.0', -2.0, -3.0, '999999999.0', -999999999.0],
+                fn () => Value::numeric()
+                    ->finite(),
+            ],
+            [
+                [INF, -INF],
+                fn () => Value::numeric()
+                    ->infinite(),
+            ],
         ];
     }
 
@@ -279,6 +343,183 @@ class NumericTest extends Unit
                     ->lessOrEqual(5),
                 [
                     [CheckName::LESS_OR_EQUEAL, [Param::EXPECTED => 5]],
+                ],
+            ],
+            [
+                [1, 3, '11', 11.0, 13],
+                fn () => Value::numeric()
+                    ->positive()
+                    ->even()
+                    ->inInterval(5, 10),
+                [
+                    [CheckName::EVEN, []],
+                    [CheckName::IN_INTERVAL, ['start' => 5, 'end' => 10]],
+                ],
+            ],
+            [
+                [-1, -3, '-11', -11.0, -13],
+                fn () => Value::numeric()
+                    ->positive()
+                    ->even()
+                    ->inInterval(5, 10),
+                [
+                    [CheckName::POSITIVE, []],
+                    [CheckName::EVEN, []],
+                    [CheckName::IN_INTERVAL, ['start' => 5, 'end' => 10]],
+                ],
+            ],
+            [
+                [-1, -3, '-11', -11.0, -13],
+                fn () => Value::numeric()
+                    ->positive()
+                    ->even()
+                    ->stopOnViolation()
+                    ->inInterval(5, 10),
+                [
+                    [CheckName::POSITIVE, []],
+                    [CheckName::EVEN, []],
+                ],
+            ],
+            [
+                [-1, -3, '-11', -11.0, -13],
+                fn () => Value::numeric()
+                    ->positive()
+                    ->stopOnViolation()
+                    ->nonNegative()
+                    ->even()
+                    ->stopOnViolation()
+                    ->inInterval(5, 10),
+                [
+                    [CheckName::POSITIVE, []],
+                ],
+            ],
+            [
+                [1, 3, 5.0, '7', 9],
+                fn () => Value::numeric()
+                    ->positive()
+                    ->stopOnViolation()
+                    ->nonNegative()
+                    ->even()
+                    ->stopOnViolation()
+                    ->inInterval(5, 10),
+                [
+                    [CheckName::EVEN, []],
+                ],
+            ],
+            [
+                [-1, '-3', -11, -13.0],
+                fn () => Value::numeric()
+                    ->positive()
+                    ->even()
+                    ->inInterval(5, 10)
+                    ->stopOnAnyPriorViolation(),
+                [
+                    [CheckName::POSITIVE, []],
+                ],
+            ],
+            [
+                [7, '9'],
+                fn () => Value::numeric()
+                    ->positive()
+                    ->even()
+                    ->inInterval(5, 10),
+                [
+                    [CheckName::EVEN, []],
+                ],
+            ],
+            [
+                ['6', 8],
+                fn () => Value::numeric()
+                    ->positive()
+                    ->odd()
+                    ->inInterval(5, 10),
+                [
+                    [CheckName::ODD, []],
+                ],
+            ],
+            [
+                [6, '8'],
+                fn () => Value::numeric()
+                    ->positive()
+                    ->odd()
+                    ->between(5, 10),
+                [
+                    [CheckName::ODD, []],
+                ],
+            ],
+            [
+                [1, 3, '11', 11.0, 13],
+                fn () => Value::numeric()
+                    ->positive()
+                    ->odd()
+                    ->between(5, 10),
+                [
+                    [CheckName::BETWEEN, ['start' => 5, 'end' => 10]],
+                ],
+            ],
+            [
+                [2, 4, '12', 12.0, 14],
+                fn () => Value::numeric()
+                    ->positive()
+                    ->odd()
+                    ->between(5, 10),
+                [
+                    [CheckName::ODD, []],
+                    [CheckName::BETWEEN, ['start' => 5, 'end' => 10]],
+                ],
+            ],
+            [
+                [2, 4, '12', 12.0, 14],
+                fn () => Value::numeric()
+                    ->positive()
+                    ->stopOnAnyPriorViolation()
+                    ->odd()
+                    ->between(5, 10),
+                [
+                    [CheckName::ODD, []],
+                    [CheckName::BETWEEN, ['start' => 5, 'end' => 10]],
+                ],
+            ],
+            [
+                [6, '8', 8.0, 10],
+                fn () => Value::numeric()
+                    ->positive()
+                    ->odd()
+                    ->between(5, 10),
+                [
+                    [CheckName::ODD, []],
+                ],
+            ],
+            [
+                [1.0, 2, '3.0', '-1.0', -2.0, -3.0],
+                fn () => Value::numeric()
+                    ->fractional(),
+                [
+                    [CheckName::FRACTIONAL, []],
+                ],
+            ],
+            [
+                [1.000000001, '2.1', 3.1, '-1.001', -2.1, -3.3],
+                fn () => Value::numeric()
+                    ->nonFractional(),
+                [
+                    [CheckName::NON_FRACTIONAL, []],
+                ],
+            ],
+            [
+                [INF, -INF],
+                fn () => Value::numeric()
+                    ->finite(),
+                [
+                    [CheckName::FINITE, []],
+                ],
+            ],
+            [
+                [1.0, '2.0', 3, -1.0, '-2.0', -3.0, '999999999.0', -999999999.0],
+                fn () => Value::numeric()
+                    ->infinite(),
+                [
+                    [CheckName::INFINITE, []],
                 ],
             ],
         ];
