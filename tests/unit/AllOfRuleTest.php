@@ -11,7 +11,7 @@ use Smoren\Validator\Interfaces\MixedRuleInterface;
 use Smoren\Validator\Structs\CheckName;
 use Smoren\Validator\Structs\Param;
 
-class AndRuleTest extends Unit
+class AllOfRuleTest extends Unit
 {
     /**
      * @dataProvider dataProviderForSuccess
@@ -33,18 +33,18 @@ class AndRuleTest extends Unit
         return [
             [
                 [1, 2, 3, -1, -2, -3, 1.0, 1.1, 2.71, 3.14],
-                fn () => Value::and([]),
+                fn () => Value::allOf([]),
             ],
             [
                 [1, 2, 3, -1, -2, -3, 1.0, 1.1, 2.71, 3.14],
-                fn () => Value::and([
+                fn () => Value::allOf([
                     Value::numeric()->greaterTran(-100),
                     Value::numeric()->lessTran(100),
                 ]),
             ],
             [
                 [null, 1, 2, 3, -1, -2, -3, 1.0, 1.1, 2.71, 3.14],
-                fn () => Value::and([
+                fn () => Value::allOf([
                     Value::numeric()->greaterTran(-100),
                     Value::numeric()->lessTran(100),
                 ])->nullable(),
@@ -79,14 +79,14 @@ class AndRuleTest extends Unit
         return [
             [
                 [null],
-                fn () => Value::and([]),
+                fn () => Value::allOf([]),
                 [
                     [CheckName::NOT_NULL, []],
                 ],
             ],
             [
                 [-100, -100.0, -100.1, -150],
-                fn () => Value::and([
+                fn () => Value::allOf([
                     Value::numeric()->greaterTran(-100),
                     Value::numeric()->lessTran(100),
                 ]),
@@ -96,7 +96,7 @@ class AndRuleTest extends Unit
             ],
             [
                 [100, 100.0, 100.1, 150],
-                fn () => Value::and([
+                fn () => Value::allOf([
                     Value::numeric()->greaterTran(-100),
                     Value::numeric()->lessTran(100),
                 ]),
@@ -106,7 +106,7 @@ class AndRuleTest extends Unit
             ],
             [
                 [100, 100.0, 100.1, 150],
-                fn () => Value::and([
+                fn () => Value::allOf([
                     Value::numeric()->greaterTran(-100),
                     Value::numeric()->lessTran(100),
                 ])->nullable(),

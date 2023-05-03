@@ -10,7 +10,7 @@ use Smoren\Validator\Factories\Value;
 use Smoren\Validator\Interfaces\MixedRuleInterface;
 use Smoren\Validator\Structs\CheckName;
 
-class OrRuleTest extends Unit
+class AnyOfRuleTest extends Unit
 {
     /**
      * @dataProvider dataProviderForSuccess
@@ -32,25 +32,25 @@ class OrRuleTest extends Unit
         return [
             [
                 [1, 2, 3, -1, -2, -3, 1.0, 1.1, 2.71, 3.14],
-                fn () => Value::or([]),
+                fn () => Value::anyOf([]),
             ],
             [
                 [1, 2, 3, -1, -2, -3, 1.0, 1.1, 2.71, 3.14],
-                fn () => Value::or([
+                fn () => Value::anyOf([
                     Value::integer(),
                     Value::float(),
                 ]),
             ],
             [
                 [null, 1, 2, 3, -1, -2, -3, 1.0, 1.1, 2.71, 3.14],
-                fn () => Value::or([
+                fn () => Value::anyOf([
                     Value::integer(),
                     Value::float(),
                 ])->nullable(),
             ],
             [
                 [null, 1, 2, 3, -1, -2, -3, 1.0, 2.0, 3.0],
-                fn () => Value::or([
+                fn () => Value::anyOf([
                     Value::integer(),
                     Value::float()->nonFractional(),
                 ])->nullable(),
@@ -85,14 +85,14 @@ class OrRuleTest extends Unit
         return [
             [
                 [null],
-                fn () => Value::or([]),
+                fn () => Value::anyOf([]),
                 [
                     [CheckName::NOT_NULL, []],
                 ],
             ],
             [
                 ['1', '2.2', 'a', true, false, [], (object)[1, 2, 3]],
-                fn () => Value::or([
+                fn () => Value::anyOf([
                     Value::integer(),
                     Value::float(),
                 ]),
@@ -103,7 +103,7 @@ class OrRuleTest extends Unit
             ],
             [
                 [null],
-                fn () => Value::or([
+                fn () => Value::anyOf([
                     Value::integer(),
                     Value::float(),
                 ]),
@@ -113,7 +113,7 @@ class OrRuleTest extends Unit
             ],
             [
                 [1.1, 2.1, 3.1],
-                fn () => Value::or([
+                fn () => Value::anyOf([
                     Value::integer()->positive(),
                     Value::float()->positive()->nonFractional(),
                 ])->nullable(),
@@ -124,7 +124,7 @@ class OrRuleTest extends Unit
             ],
             [
                 [-1.1, -2.1, -3.1],
-                fn () => Value::or([
+                fn () => Value::anyOf([
                     Value::integer()->positive(),
                     Value::float()->positive()->nonFractional(),
                 ])->nullable(),

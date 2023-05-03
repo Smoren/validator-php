@@ -11,7 +11,7 @@ use Smoren\Validator\Interfaces\ContainerRuleInterface;
 use Smoren\Validator\Interfaces\FloatRuleInterface;
 use Smoren\Validator\Interfaces\NumericRuleInterface;
 use Smoren\Validator\Interfaces\StringRuleInterface;
-use Smoren\Validator\Rules\AndRule;
+use Smoren\Validator\Rules\AllOfRule;
 use Smoren\Validator\Rules\BoolRule;
 use Smoren\Validator\Rules\ContainerRule;
 use Smoren\Validator\Rules\FloatRule;
@@ -19,7 +19,7 @@ use Smoren\Validator\Rules\IntegerRule;
 use Smoren\Validator\Rules\MixedRule;
 use Smoren\Validator\Rules\NumericRule;
 use Smoren\Validator\Rules\StringRule;
-use Smoren\Validator\Rules\OrRule;
+use Smoren\Validator\Rules\AnyOfRule;
 use Smoren\Validator\Structs\RuleName;
 
 class Value
@@ -100,9 +100,9 @@ class Value
      *
      * @return CompositeRuleInterface
      */
-    public static function or(array $rules, string $name = RuleName::OR): CompositeRuleInterface
+    public static function anyOf(array $rules, string $name = RuleName::OR): CompositeRuleInterface
     {
-        return new OrRule($rules, $name);
+        return new AnyOfRule($rules, $name);
     }
 
     /**
@@ -111,8 +111,8 @@ class Value
      *
      * @return CompositeRuleInterface
      */
-    public static function and(array $rules, string $name = RuleName::AND): CompositeRuleInterface
+    public static function allOf(array $rules, string $name = RuleName::AND): CompositeRuleInterface
     {
-        return new AndRule($rules, $name);
+        return new AllOfRule($rules, $name);
     }
 }
