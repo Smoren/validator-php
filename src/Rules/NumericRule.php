@@ -267,7 +267,7 @@ class NumericRule extends MixedRule implements NumericRuleInterface
     {
         return $this->check(
             CheckBuilder::create(CheckName::FRACTIONAL)
-                ->withPredicate(fn ($value) => \abs($value - \round($value)) >= \PHP_FLOAT_EPSILON)
+                ->withPredicate(fn ($value) => \abs($value - \round(\floatval($value))) >= \PHP_FLOAT_EPSILON)
                 ->build()
         );
     }
@@ -281,7 +281,7 @@ class NumericRule extends MixedRule implements NumericRuleInterface
     {
         return $this->check(
             CheckBuilder::create(CheckName::NON_FRACTIONAL)
-                ->withPredicate(fn ($value) => \abs($value - \round($value)) < \PHP_FLOAT_EPSILON)
+                ->withPredicate(fn ($value) => \abs($value - \round(\floatval($value))) < \PHP_FLOAT_EPSILON)
                 ->build()
         );
     }
