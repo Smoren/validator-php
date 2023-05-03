@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Smoren\Validator\Factories;
 
 use Smoren\Validator\Interfaces\BooleanRuleInterface;
+use Smoren\Validator\Interfaces\IntegerRuleInterface;
 use Smoren\Validator\Interfaces\MixedRuleInterface;
 use Smoren\Validator\Interfaces\CompositeRuleInterface;
 use Smoren\Validator\Interfaces\ContainerRuleInterface;
@@ -27,9 +28,9 @@ class Value
     /**
      * @param string $name
      *
-     * @return NumericRule
+     * @return NumericRuleInterface
      */
-    public static function numeric(string $name = RuleName::NUMERIC): NumericRule
+    public static function numeric(string $name = RuleName::NUMERIC): NumericRuleInterface
     {
         return new NumericRule($name);
     }
@@ -37,9 +38,9 @@ class Value
     /**
      * @param string $name
      *
-     * @return NumericRuleInterface
+     * @return IntegerRuleInterface
      */
-    public static function integer(string $name = RuleName::INTEGER): NumericRuleInterface
+    public static function integer(string $name = RuleName::INTEGER): IntegerRuleInterface
     {
         return new IntegerRule($name);
     }
