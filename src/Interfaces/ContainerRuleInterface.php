@@ -102,6 +102,14 @@ interface ContainerRuleInterface extends MixedRuleInterface
     public function hasOptionalAttribute(string $name, MixedRuleInterface $rule): self;
 
     /**
+     * @param int $index
+     * @param MixedRuleInterface|null $rule
+     *
+     * @return static
+     */
+    public function hasIndex(int $index, ?MixedRuleInterface $rule = null): self;
+
+    /**
      * @param MixedRuleInterface $rule
      *
      * @return static

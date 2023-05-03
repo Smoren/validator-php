@@ -169,6 +169,20 @@ class ContainerRule extends MixedRule implements ContainerRuleInterface
      *
      * @return static
      */
+    public function hasIndex(int $index, ?MixedRuleInterface $rule = null): self
+    {
+        if ($rule === null) {
+            return $this->check(ContainerCheckFactory::getHasIndexCheck($index));
+        }
+
+        return $this->check(ContainerCheckFactory::getValueByIndexCheck($index, $rule));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return static
+     */
     public function allKeysAre(MixedRuleInterface $rule): self
     {
         return $this->check(ContainerCheckFactory::getAllKeysAreCheck($rule));

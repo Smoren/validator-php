@@ -125,7 +125,7 @@ class ContainerCheckFactory
     public static function getHasOptionalAttributeCheck(string $name, MixedRuleInterface $rule): CheckInterface
     {
         return CheckBuilder::create(CheckName::HAS_ATTRIBUTE)
-            ->withPredicate(static function ($value) use ($name, $rule) {
+            ->withPredicate(static function ($value, string $name) use ($rule) {
                 if (!ContainerAccessHelper::hasAccessibleAttribute($value, $name)) {
                     return true;
                 }
@@ -145,6 +145,27 @@ class ContainerCheckFactory
             })
             ->withParams([Param::ATTRIBUTE => $name])
             ->withDependOnChecks([ContainerCheckFactory::getHasAttributeCheck($name)])
+            ->build();
+    }
+
+    public static function getHasIndexCheck(int $index): CheckInterface
+    {
+        return CheckBuilder::create(CheckName::HAS_INDEX)
+            ->withPredicate(fn ($value, $index) => isset($value[$index]))
+            ->withParams([Param::INDEX => $index])
+            ->withDependOnChecks([ContainerCheckFactory::getArrayAccessibleCheck()])
+            ->build();
+    }
+
+    public static function getValueByIndexCheck(int $index, MixedRuleInterface $rule): CheckInterface
+    {
+        return CheckBuilder::create(CheckName::VALUE_BY_INDEX)
+            ->withPredicate(static function ($value, int $index) use ($rule) {
+                $rule->validate($value[$index]);
+                return true;
+            })
+            ->withParams([Param::INDEX => $index])
+            ->withDependOnChecks([ContainerCheckFactory::getHasIndexCheck($index)])
             ->build();
     }
 

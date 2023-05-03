@@ -126,6 +126,16 @@ class ContainerTest extends Unit
                     ->hasAttribute('public', Value::string()),
             ],
             [
+                [[1, 2, 3], [1, 2], [1 => 3], [1 => '1.1', 2 => '2.1']],
+                fn () => Value::container()
+                    ->hasIndex(1),
+            ],
+            [
+                [[1, 2, 3], [1, 2], [1 => 3], [1 => '1.1', 2 => '2.1']],
+                fn () => Value::container()
+                    ->hasIndex(1, Value::numeric()->positive()),
+            ],
+            [
                 [['a' => 1, 'b' => 2], ['a' => 2, 'd', 'b' => null], [], ['b' => 123]],
                 fn () => Value::container()
                     ->hasOptionalAttribute('a', Value::integer()),
@@ -429,6 +439,39 @@ class ContainerTest extends Unit
                             Param::RULE => RuleName::INTEGER,
                             Param::VIOLATED_RESTRICTIONS => [
                                 [CheckName::INTEGER, []],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            [
+                [[1], [], [0 => 3, 2 => 5], [3 => '2.1']],
+                fn () => Value::container()
+                    ->hasIndex(1),
+                [
+                    [CheckName::HAS_INDEX, [Param::INDEX => 1]],
+                ],
+            ],
+            [
+                [[1], [], [0 => 3, 2 => 5], [3 => '2.1']],
+                fn () => Value::container()
+                    ->hasIndex(1, Value::numeric()->positive()),
+                [
+                    [CheckName::HAS_INDEX, [Param::INDEX => 1]],
+                ],
+            ],
+            [
+                [[1, 'a', 3], [1, 'b'], [1 => 'c'], [1 => 'd', 2 => '2.1']],
+                fn () => Value::container()
+                    ->hasIndex(1, Value::numeric()->positive()),
+                [
+                    [
+                        CheckName::VALUE_BY_INDEX,
+                        [
+                            Param::INDEX => 1,
+                            Param::RULE => RuleName::NUMERIC,
+                            Param::VIOLATED_RESTRICTIONS => [
+                                [CheckName::NUMERIC, []],
                             ],
                         ],
                     ],

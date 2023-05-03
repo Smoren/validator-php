@@ -54,6 +54,8 @@ class CheckName
     public const LENGTH_IS = 'length_is';
     public const HAS_ATTRIBUTE = 'has_attribute';
     public const ATTRIBUTE_IS = 'attribute_is';
+    public const HAS_INDEX = 'has_index';
+    public const VALUE_BY_INDEX = 'value_by_index';
     public const ALL_KEYS_ARE = 'all_keys_are';
     public const ALL_VALUES_ARE = 'all_values_are';
 
