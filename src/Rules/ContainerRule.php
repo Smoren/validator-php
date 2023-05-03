@@ -4,15 +4,10 @@ declare(strict_types=1);
 
 namespace Smoren\Validator\Rules;
 
-use Smoren\Validator\Factories\CheckBuilder;
 use Smoren\Validator\Factories\Checks\ContainerCheckFactory;
-use Smoren\Validator\Helpers\ContainerAccessHelper;
-use Smoren\Validator\Helpers\TypeHelper;
 use Smoren\Validator\Interfaces\MixedRuleInterface;
 use Smoren\Validator\Interfaces\ContainerRuleInterface;
 use Smoren\Validator\Interfaces\IntegerRuleInterface;
-use Smoren\Validator\Structs\CheckName;
-use Smoren\Validator\Structs\Param;
 
 class ContainerRule extends MixedRule implements ContainerRuleInterface
 {
