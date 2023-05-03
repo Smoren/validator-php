@@ -126,12 +126,12 @@ class ContainerTest extends Unit
                     ->hasAttribute('public', Value::string()),
             ],
             [
-                [[1, 2, 3], [1, 2], [1 => 3], [1 => '1.1', 2 => '2.1']],
+                [[1, 2, 3], [1, 2], [1 => 3], [1 => '1.1', 2 => '2.1'], new ArrayAccessListFixture([1, 2, 3])],
                 fn () => Value::container()
                     ->hasIndex(1),
             ],
             [
-                [[1, 2, 3], [1, 2], [1 => 3], [1 => '1.1', 2 => '2.1']],
+                [[1, 2, 3], [1, 2], [1 => 3], [1 => '1.1', 2 => '2.1'], new ArrayAccessListFixture([1, 2, 3])],
                 fn () => Value::container()
                     ->hasIndex(1, Value::numeric()->positive()),
             ],
@@ -445,7 +445,7 @@ class ContainerTest extends Unit
                 ],
             ],
             [
-                [[1], [], [0 => 3, 2 => 5], [3 => '2.1']],
+                [[1], [], [0 => 3, 2 => 5], [3 => '2.1'], new ArrayAccessListFixture([1])],
                 fn () => Value::container()
                     ->hasIndex(1),
                 [
@@ -453,7 +453,7 @@ class ContainerTest extends Unit
                 ],
             ],
             [
-                [[1], [], [0 => 3, 2 => 5], [3 => '2.1']],
+                [[1], [], [0 => 3, 2 => 5], [3 => '2.1'], new ArrayAccessListFixture([1])],
                 fn () => Value::container()
                     ->hasIndex(1, Value::numeric()->positive()),
                 [
@@ -461,7 +461,7 @@ class ContainerTest extends Unit
                 ],
             ],
             [
-                [[1, 'a', 3], [1, 'b'], [1 => 'c'], [1 => 'd', 2 => '2.1']],
+                [[1, 'a', 3], [1, 'b'], [1 => 'c'], [1 => 'd', 2 => '2.1'], new ArrayAccessListFixture([1, 'e'])],
                 fn () => Value::container()
                     ->hasIndex(1, Value::numeric()->positive()),
                 [
