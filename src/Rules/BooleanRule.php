@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Smoren\Validator\Rules;
 
 use Smoren\Validator\Factories\CheckBuilder;
-use Smoren\Validator\Interfaces\BoolRuleInterface;
+use Smoren\Validator\Interfaces\BooleanRuleInterface;
 use Smoren\Validator\Structs\CheckName;
 
-class BoolRule extends MixedRule implements BoolRuleInterface
+class BooleanRule extends MixedRule implements BooleanRuleInterface
 {
     /**
      * @param string $name

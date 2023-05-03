@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Smoren\Validator\Factories;
 
-use Smoren\Validator\Interfaces\BoolRuleInterface;
+use Smoren\Validator\Interfaces\BooleanRuleInterface;
 use Smoren\Validator\Interfaces\MixedRuleInterface;
 use Smoren\Validator\Interfaces\CompositeRuleInterface;
 use Smoren\Validator\Interfaces\ContainerRuleInterface;
@@ -12,7 +12,7 @@ use Smoren\Validator\Interfaces\FloatRuleInterface;
 use Smoren\Validator\Interfaces\NumericRuleInterface;
 use Smoren\Validator\Interfaces\StringRuleInterface;
 use Smoren\Validator\Rules\AllOfRule;
-use Smoren\Validator\Rules\BoolRule;
+use Smoren\Validator\Rules\BooleanRule;
 use Smoren\Validator\Rules\ContainerRule;
 use Smoren\Validator\Rules\FloatRule;
 use Smoren\Validator\Rules\IntegerRule;
@@ -57,11 +57,11 @@ class Value
     /**
      * @param string $name
      *
-     * @return BoolRuleInterface
+     * @return BooleanRuleInterface
      */
-    public static function bool(string $name = RuleName::BOOL): BoolRuleInterface
+    public static function boolean(string $name = RuleName::BOOLEAN): BooleanRuleInterface
     {
-        return new BoolRule($name);
+        return new BooleanRule($name);
     }
 
     /**

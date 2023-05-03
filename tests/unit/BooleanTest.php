@@ -11,7 +11,7 @@ use Smoren\Validator\Interfaces\MixedRuleInterface;
 use Smoren\Validator\Structs\CheckName;
 use Smoren\Validator\Structs\Param;
 
-class BoolTest extends Unit
+class BooleanTest extends Unit
 {
     /**
      * @dataProvider dataProviderForSuccess
@@ -33,63 +33,63 @@ class BoolTest extends Unit
         return [
             [
                 [true, false],
-                fn () => Value::bool(),
+                fn () => Value::boolean(),
             ],
             [
                 [null, true, false],
-                fn () => Value::bool()
+                fn () => Value::boolean()
                     ->nullable(),
             ],
             [
                 [true],
-                fn () => Value::bool()
+                fn () => Value::boolean()
                     ->truthy(),
             ],
             [
                 [null, true],
-                fn () => Value::bool()
+                fn () => Value::boolean()
                     ->nullable()
                     ->truthy(),
             ],
             [
                 [false],
-                fn () => Value::bool()
+                fn () => Value::boolean()
                     ->falsy(),
             ],
             [
                 [null, false],
-                fn () => Value::bool()
+                fn () => Value::boolean()
                     ->nullable()
                     ->falsy(),
             ],
             [
                 [true],
-                fn () => Value::bool()
+                fn () => Value::boolean()
                     ->equal(true),
             ],
             [
                 [false],
-                fn () => Value::bool()
+                fn () => Value::boolean()
                     ->equal(false),
             ],
             [
                 [true],
-                fn () => Value::bool()
+                fn () => Value::boolean()
                     ->equal(1),
             ],
             [
                 [false],
-                fn () => Value::bool()
+                fn () => Value::boolean()
                     ->equal(0),
             ],
             [
                 [true],
-                fn () => Value::bool()
+                fn () => Value::boolean()
                     ->same(true),
             ],
             [
                 [false],
-                fn () => Value::bool()
+                fn () => Value::boolean()
                     ->same(false),
             ],
         ];
@@ -122,21 +122,21 @@ class BoolTest extends Unit
         return [
             [
                 [null],
-                fn () => Value::bool(),
+                fn () => Value::boolean(),
                 [
                     [CheckName::NOT_NULL, []],
                 ],
             ],
             [
                 ['1', 'a', 1, 1.2, []],
-                fn () => Value::bool(),
+                fn () => Value::boolean(),
                 [
                     [CheckName::BOOL, []],
                 ],
             ],
             [
                 [false],
-                fn () => Value::bool()
+                fn () => Value::boolean()
                     ->truthy(),
                 [
                     [CheckName::TRUTHY, []],
@@ -144,7 +144,7 @@ class BoolTest extends Unit
             ],
             [
                 [false],
-                fn () => Value::bool()
+                fn () => Value::boolean()
                     ->nullable()
                     ->truthy(),
                 [
@@ -153,7 +153,7 @@ class BoolTest extends Unit
             ],
             [
                 [true],
-                fn () => Value::bool()
+                fn () => Value::boolean()
                     ->falsy(),
                 [
                     [CheckName::FALSY, []],
@@ -161,7 +161,7 @@ class BoolTest extends Unit
             ],
             [
                 [true],
-                fn () => Value::bool()
+                fn () => Value::boolean()
                     ->nullable()
                     ->falsy(),
                 [
@@ -170,7 +170,7 @@ class BoolTest extends Unit
             ],
             [
                 [true],
-                fn () => Value::bool()
+                fn () => Value::boolean()
                     ->equal(0),
                 [
                     [CheckName::EQUAL, [Param::EXPECTED => 0]],
@@ -178,7 +178,7 @@ class BoolTest extends Unit
             ],
             [
                 [false],
-                fn () => Value::bool()
+                fn () => Value::boolean()
                     ->equal(1),
                 [
                     [CheckName::EQUAL, [Param::EXPECTED => 1]],
@@ -186,7 +186,7 @@ class BoolTest extends Unit
             ],
             [
                 [true],
-                fn () => Value::bool()
+                fn () => Value::boolean()
                     ->same(1),
                 [
                     [CheckName::SAME, [Param::EXPECTED => 1]],
@@ -194,7 +194,7 @@ class BoolTest extends Unit
             ],
             [
                 [false],
-                fn () => Value::bool()
+                fn () => Value::boolean()
                     ->same(0),
                 [
                     [CheckName::SAME, [Param::EXPECTED => 0]],
