@@ -131,7 +131,6 @@ interface ContainerRuleInterface extends MixedRuleInterface
      */
     public function empty(): self;
 
-
     /**
      * Checks if container is not empty (length > 0).
      *
