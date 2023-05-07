@@ -24,9 +24,9 @@ class NumericRule extends MixedRule implements NumericRuleInterface
      *
      * @return static
      */
-    public function number(bool $stopOnViolation = true): self
+    public function number(): self
     {
-        return $this->check(NumericCheckFactory::getNumberCheck(), $stopOnViolation);
+        return $this->check(NumericCheckFactory::getNumberCheck(), true);
     }
 
     /**
@@ -34,9 +34,9 @@ class NumericRule extends MixedRule implements NumericRuleInterface
      *
      * @return static
      */
-    public function string(bool $stopOnViolation = true): self
+    public function string(): self
     {
-        return $this->check(NumericCheckFactory::getStringCheck(), $stopOnViolation);
+        return $this->check(NumericCheckFactory::getStringCheck(), true);
     }
 
     /**
@@ -44,9 +44,9 @@ class NumericRule extends MixedRule implements NumericRuleInterface
      *
      * @return static
      */
-    public function integer(bool $stopOnViolation = true): self
+    public function integer(): self
     {
-        return $this->check(NumericCheckFactory::getIntegerCheck(), $stopOnViolation);
+        return $this->check(NumericCheckFactory::getIntegerCheck(), true);
     }
 
     /**
@@ -54,9 +54,9 @@ class NumericRule extends MixedRule implements NumericRuleInterface
      *
      * @return static
      */
-    public function float(bool $stopOnViolation = true): self
+    public function float(): self
     {
-        return $this->check(NumericCheckFactory::getFloatCheck(), $stopOnViolation);
+        return $this->check(NumericCheckFactory::getFloatCheck(), true);
     }
 
     /**

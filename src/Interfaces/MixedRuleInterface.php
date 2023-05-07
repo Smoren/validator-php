@@ -74,5 +74,15 @@ interface MixedRuleInterface
     /**
      * @return static
      */
+    public function dontStopOnViolation(): self;
+
+    /**
+     * @return static
+     */
     public function stopOnAnyPriorViolation(): self;
+
+    /**
+     * @return static
+     */
+    public function dontStopOnAllPriorViolations(): self;
 }

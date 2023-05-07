@@ -434,7 +434,7 @@ class ContainerTest extends Unit
                     ->hasOptionalAttribute('a', Value::integer()),
                 [
                     [
-                        CheckName::HAS_ATTRIBUTE, [
+                        CheckName::ATTRIBUTE_IS, [
                             Param::ATTRIBUTE => 'a',
                             Param::RULE => RuleName::INTEGER,
                             Param::VIOLATED_RESTRICTIONS => [
@@ -466,7 +466,7 @@ class ContainerTest extends Unit
                     ->hasIndex(1, Value::numeric()->positive()),
                 [
                     [
-                        CheckName::VALUE_BY_INDEX,
+                        CheckName::VALUE_BY_INDEX_IS,
                         [
                             Param::INDEX => 1,
                             Param::RULE => RuleName::NUMERIC,
@@ -691,7 +691,6 @@ class ContainerTest extends Unit
                     ],
                 ],
                 fn () => Value::container()
-                    ->array(false)
                     ->hasAttribute('id', Value::integer()->positive())
                     ->hasAttribute('probability', Value::float()->between(0, 1))
                     ->hasAttribute('vectors', Value::container()->array()->allValuesAre(
@@ -701,7 +700,6 @@ class ContainerTest extends Unit
                             ->allValuesAre(Value::integer())
                     )),
                 [
-                    [CheckName::ARRAY, []],
                     [
                         CheckName::ATTRIBUTE_IS,
                         [

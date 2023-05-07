@@ -19,9 +19,9 @@ class StringRule extends MixedRule implements StringRuleInterface
         $this->check(StringCheckFactory::getStringCheck(), true);
     }
 
-    public function numeric(bool $stopOnViolation = true): StringRuleInterface
+    public function numeric(): StringRuleInterface
     {
-        return $this->check(StringCheckFactory::getNumericCheck(), $stopOnViolation);
+        return $this->check(StringCheckFactory::getNumericCheck(), true);
     }
 
     public function empty(): StringRuleInterface

@@ -25,9 +25,9 @@ class ContainerRule extends MixedRule implements ContainerRuleInterface
      *
      * @return static
      */
-    public function array(bool $stopOnViolation = true): self
+    public function array(): self
     {
-        return $this->check(ContainerCheckFactory::getArrayCheck(), $stopOnViolation);
+        return $this->check(ContainerCheckFactory::getArrayCheck(), true);
     }
 
     /**
@@ -35,9 +35,9 @@ class ContainerRule extends MixedRule implements ContainerRuleInterface
      *
      * @return static
      */
-    public function indexedArray(bool $stopOnViolation = true): self
+    public function indexedArray(): self
     {
-        return $this->check(ContainerCheckFactory::getIndexedArrayCheck(), $stopOnViolation);
+        return $this->check(ContainerCheckFactory::getIndexedArrayCheck(), true);
     }
 
     /**
@@ -45,9 +45,9 @@ class ContainerRule extends MixedRule implements ContainerRuleInterface
      *
      * @return static
      */
-    public function associativeArray(bool $stopOnViolation = true): self
+    public function associativeArray(): self
     {
-        return $this->check(ContainerCheckFactory::getAssociativeArrayCheck(), $stopOnViolation);
+        return $this->check(ContainerCheckFactory::getAssociativeArrayCheck(), true);
     }
 
     /**
@@ -55,9 +55,9 @@ class ContainerRule extends MixedRule implements ContainerRuleInterface
      *
      * @return static
      */
-    public function arrayAccessible(bool $stopOnViolation = true): self
+    public function arrayAccessible(): self
     {
-        return $this->check(ContainerCheckFactory::getArrayAccessibleCheck(), $stopOnViolation);
+        return $this->check(ContainerCheckFactory::getArrayAccessibleCheck(), true);
     }
 
     /**
@@ -65,9 +65,9 @@ class ContainerRule extends MixedRule implements ContainerRuleInterface
      *
      * @return static
      */
-    public function iterable(bool $stopOnViolation = true): self
+    public function iterable(): self
     {
-        return $this->check(ContainerCheckFactory::getIterableCheck(), $stopOnViolation);
+        return $this->check(ContainerCheckFactory::getIterableCheck(), true);
     }
 
     /**
@@ -75,9 +75,9 @@ class ContainerRule extends MixedRule implements ContainerRuleInterface
      *
      * @return static
      */
-    public function countable(bool $stopOnViolation = true): self
+    public function countable(): self
     {
-        return $this->check(ContainerCheckFactory::getCountableCheck(), $stopOnViolation);
+        return $this->check(ContainerCheckFactory::getCountableCheck(), true);
     }
 
     /**
@@ -85,9 +85,9 @@ class ContainerRule extends MixedRule implements ContainerRuleInterface
      *
      * @return static
      */
-    public function object(bool $stopOnViolation = true): self
+    public function object(): self
     {
-        return $this->check(ContainerCheckFactory::getObjectCheck(), $stopOnViolation);
+        return $this->check(ContainerCheckFactory::getObjectCheck(), true);
     }
 
     /**
@@ -95,9 +95,9 @@ class ContainerRule extends MixedRule implements ContainerRuleInterface
      *
      * @return static
      */
-    public function stdObject(bool $stopOnViolation = true): self
+    public function stdObject(): self
     {
-        return $this->check(ContainerCheckFactory::getStdObjectCheck(), $stopOnViolation);
+        return $this->check(ContainerCheckFactory::getStdObjectCheck(), true);
     }
 
     /**
@@ -105,9 +105,9 @@ class ContainerRule extends MixedRule implements ContainerRuleInterface
      *
      * @return static
      */
-    public function instanceOf(string $class, bool $stopOnViolation = true): self
+    public function instanceOf(string $class): self
     {
-        return $this->check(ContainerCheckFactory::getInstanceOfCheck($class), $stopOnViolation);
+        return $this->check(ContainerCheckFactory::getInstanceOfCheck($class), true);
     }
 
     /**

@@ -117,10 +117,37 @@ class MixedRule extends BaseRule implements MixedRuleInterface
      *
      * @return static
      */
+    public function dontStopOnViolation(): self
+    {
+        if (\count($this->checks) > 0) {
+            $this->checks[\count($this->checks) - 1]->setInterrupting(false);
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return static
+     */
     public function stopOnAnyPriorViolation(): self
     {
         foreach ($this->checks as $check) {
             $check->setInterrupting();
+        }
+        return $this;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return static
+     */
+    public function dontStopOnAllPriorViolations(): self
+    {
+        foreach ($this->checks as $check) {
+            $check->setInterrupting(false);
         }
         return $this;
     }
