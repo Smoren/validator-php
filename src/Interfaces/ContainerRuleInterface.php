@@ -11,7 +11,7 @@ interface ContainerRuleInterface extends MixedRuleInterface
     /**
      * Checks if value is array.
      *
-     * This rule stops next checks on violation by default.
+     * This check stops next checks on violation by default.
      *
      * Names of rules that can be violated:
      * - @see CheckName::ARRAY
@@ -23,7 +23,7 @@ interface ContainerRuleInterface extends MixedRuleInterface
     /**
      * Checks if value is indexed array (all indexes ∈ [0, N-1], where N is array length).
      *
-     * This rule stops next checks on violation by default.
+     * This check stops next checks on violation by default.
      *
      * Names of rules that can be violated:
      * - @see CheckName::INDEXED_ARRAY
@@ -36,7 +36,7 @@ interface ContainerRuleInterface extends MixedRuleInterface
     /**
      * Checks if value is associative array (not indexed).
      *
-     * This rule stops next checks on violation by default.
+     * This check stops next checks on violation by default.
      *
      * Names of rules that can be violated:
      * - @see CheckName::ASSOCIATIVE_ARRAY
@@ -49,7 +49,7 @@ interface ContainerRuleInterface extends MixedRuleInterface
     /**
      * Checks if value is iterable.
      *
-     * This rule stops next checks on violation by default.
+     * This check stops next checks on violation by default.
      *
      * Names of rules that can be violated:
      * - @see CheckName::ITERABLE
@@ -61,7 +61,7 @@ interface ContainerRuleInterface extends MixedRuleInterface
     /**
      * Checks if value is countable.
      *
-     * This rule stops next checks on violation by default.
+     * This check stops next checks on violation by default.
      *
      * Names of rules that can be violated:
      * - @see CheckName::COUNTABLE
@@ -73,7 +73,7 @@ interface ContainerRuleInterface extends MixedRuleInterface
     /**
      * Checks if value is array or ArrayAccess instance.
      *
-     * This rule stops next checks on violation by default.
+     * This check stops next checks on violation by default.
      *
      * Names of rules that can be violated:
      * - @see CheckName::ARRAY_ACCESSIBLE
@@ -85,7 +85,7 @@ interface ContainerRuleInterface extends MixedRuleInterface
     /**
      * Checks if value is object.
      *
-     * This rule stops next checks on violation by default.
+     * This check stops next checks on violation by default.
      *
      * Names of rules that can be violated:
      * - @see CheckName::OBJECT
@@ -97,7 +97,7 @@ interface ContainerRuleInterface extends MixedRuleInterface
     /**
      * Checks if value is instance of stdClass.
      *
-     * This rule stops next checks on violation by default.
+     * This check stops next checks on violation by default.
      *
      * Names of rules that can be violated:
      * - @see CheckName::STD_OBJECT
@@ -111,7 +111,7 @@ interface ContainerRuleInterface extends MixedRuleInterface
      *
      * @param class-string $class
      *
-     * This rule stops next checks on violation by default.
+     * This check stops next checks on violation by default.
      *
      * Names of rules that can be violated:
      * - @see CheckName::OBJECT
