@@ -691,6 +691,8 @@ class ContainerTest extends Unit
                     ],
                 ],
                 fn () => Value::container()
+                    ->array()
+                    ->dontStopOnViolation()
                     ->hasAttribute('id', Value::integer()->positive())
                     ->hasAttribute('probability', Value::float()->between(0, 1))
                     ->hasAttribute('vectors', Value::container()->array()->allValuesAre(
@@ -700,6 +702,7 @@ class ContainerTest extends Unit
                             ->allValuesAre(Value::integer())
                     )),
                 [
+                    [CheckName::ARRAY, []],
                     [
                         CheckName::ATTRIBUTE_IS,
                         [
