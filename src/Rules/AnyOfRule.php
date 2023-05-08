@@ -4,38 +4,19 @@ declare(strict_types=1);
 
 namespace Smoren\Validator\Rules;
 
-use Smoren\Validator\Exceptions\ValidationError;
-use Smoren\Validator\Interfaces\ValidationResultInterface;
-use Smoren\Validator\Structs\ValidationSuccessResult;
+use Smoren\Validator\Checks\AnyOfCheck;
+use Smoren\Validator\Interfaces\CompositeRuleInterface;
+use Smoren\Validator\Interfaces\MixedRuleInterface;
 
-class AnyOfRule extends CompositeRule
+class AnyOfRule extends MixedRule implements CompositeRuleInterface
 {
     /**
-     * {@inheritDoc}
+     * @param string $name
+     * @param array<MixedRuleInterface> $rules
      */
-    protected function execute($value): ValidationResultInterface
+    public function __construct(string $name, array $rules)
     {
-        $result = parent::execute($value);
-        if ($result->preventNextChecks()) {
-            return $result;
-        }
-
-        $result = new ValidationSuccessResult(false);
-
-        $errors = [];
-        foreach ($this->rules as $rule) {
-            try {
-                $rule->validate($value);
-                return $result;
-            } catch (ValidationError $e) {
-                $errors[] = $e;
-            }
-        }
-
-        if (\count($errors) === 0) {
-            return $result;
-        }
-
-        throw ValidationError::fromValidationErrors($this->name, $value, $errors);
+        parent::__construct($name);
+        $this->check(new AnyOfCheck($rules));
     }
 }

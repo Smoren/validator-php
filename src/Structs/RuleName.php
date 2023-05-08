@@ -13,6 +13,6 @@ class RuleName
     public const BOOLEAN = 'bool';
     public const STRING = 'string';
     public const CONTAINER = 'container';
-    public const OR = 'or';
-    public const AND = 'and';
+    public const ANY_OF = 'or';
+    public const ALL_OF = 'and';
 }

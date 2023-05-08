@@ -101,9 +101,9 @@ class Value
      *
      * @return CompositeRuleInterface
      */
-    public static function anyOf(array $rules, string $name = RuleName::OR): CompositeRuleInterface
+    public static function anyOf(array $rules, string $name = RuleName::ANY_OF): CompositeRuleInterface
     {
-        return new AnyOfRule($rules, $name);
+        return new AnyOfRule($name, $rules);
     }
 
     /**
@@ -112,8 +112,8 @@ class Value
      *
      * @return CompositeRuleInterface
      */
-    public static function allOf(array $rules, string $name = RuleName::AND): CompositeRuleInterface
+    public static function allOf(array $rules, string $name = RuleName::ALL_OF): CompositeRuleInterface
     {
-        return new AllOfRule($rules, $name);
+        return new AllOfRule($name, $rules);
     }
 }
