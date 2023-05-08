@@ -159,7 +159,7 @@ class ContainerCheckFactory
             ->build();
     }
 
-    public static function getValueByIndexCheck(int $index, MixedRuleInterface $rule): CheckInterface
+    public static function getValueByIndexIsCheck(int $index, MixedRuleInterface $rule): CheckInterface
     {
         return CheckBuilder::create(CheckName::VALUE_BY_INDEX_IS)
             ->withPredicate(static function ($value, int $index) use ($rule) {

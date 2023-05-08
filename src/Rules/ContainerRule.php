@@ -175,7 +175,7 @@ class ContainerRule extends MixedRule implements ContainerRuleInterface
             return $this->check(ContainerCheckFactory::getHasIndexCheck($index));
         }
 
-        return $this->check(ContainerCheckFactory::getValueByIndexCheck($index, $rule));
+        return $this->check(ContainerCheckFactory::getValueByIndexIsCheck($index, $rule));
     }
 
     /**
