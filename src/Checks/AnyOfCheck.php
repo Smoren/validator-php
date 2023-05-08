@@ -12,8 +12,6 @@ class AnyOfCheck extends CompositeCheck implements CheckInterface
 {
     /**
      * {@inheritDoc}
-     *
-     * @throws ValidationError
      */
     public function execute($value, array $previousErrors, bool $preventDuplicate = false): void
     {

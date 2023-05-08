@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Smoren\Validator\Interfaces;
 
 use Smoren\Validator\Exceptions\CheckError;
+use Smoren\Validator\Exceptions\ValidationError;
 
 interface CheckInterface
 {
@@ -16,6 +17,7 @@ interface CheckInterface
      * @return void
      *
      * @throws CheckError if check fails
+     * @throws ValidationError if nested rules fail
      */
     public function execute($value, array $previousErrors, bool $preventDuplicate = false): void;
 }
