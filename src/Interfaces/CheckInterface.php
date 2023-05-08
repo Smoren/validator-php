@@ -11,6 +11,7 @@ interface CheckInterface
     /**
      * @param mixed $value
      * @param array<CheckError> $previousErrors
+     * @param bool $preventDuplicate
      *
      * @return void
      *
