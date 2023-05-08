@@ -56,14 +56,14 @@ class ValidationError extends \DomainException
 
     /**
      * @param mixed $value
-     * @param array<array{string, array<string, mixed>}> $summary
+     * @param array<array{string, array<string, mixed>}> $violatedRestrictions
      */
-    public function __construct(string $name, $value, array $summary)
+    public function __construct(string $name, $value, array $violatedRestrictions)
     {
         parent::__construct('Validation error');
         $this->name = $name;
         $this->value = $value;
-        $this->violatedRestrictions = $summary;
+        $this->violatedRestrictions = $violatedRestrictions;
     }
 
     /**

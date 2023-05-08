@@ -59,7 +59,9 @@ class CheckName
     public const HAS_INDEX = 'has_index';
     public const VALUE_BY_INDEX_IS = 'value_by_index_is';
     public const ALL_KEYS_ARE = 'all_keys_are';
+    public const ANY_KEY_IS = 'any_keys_are';
     public const ALL_VALUES_ARE = 'all_values_are';
+    public const ANY_VALUE_IS = 'any_values_are';
 
     public const MATCH = 'match';
     public const HAS_SUBSTRING = 'has_substring';

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Smoren\Validator\Factories\Checks;
 
+use Smoren\Validator\Exceptions\ValidationError;
 use Smoren\Validator\Factories\CheckBuilder;
 use Smoren\Validator\Helpers\ContainerAccessHelper;
 use Smoren\Validator\Helpers\TypeHelper;
@@ -184,6 +185,32 @@ class ContainerCheckFactory
             ->build();
     }
 
+    public static function getAnyKeyIsCheck(MixedRuleInterface $rule): CheckInterface
+    {
+        return CheckBuilder::create(CheckName::ANY_KEY_IS)
+            ->withPredicate(static function ($value) use ($rule) {
+                $errorMap = [];
+                foreach ($value as $k => $v) {
+                    try {
+                        $rule->validate($k);
+                        return true;
+                    } catch (ValidationError $e) {
+                        foreach ($e->getViolatedRestrictions() as $restriction) {
+                            $errorMap[serialize($restriction)] = $restriction;
+                        }
+                    }
+                }
+
+                if (\count($errorMap) === 0) {
+                    return true;
+                }
+
+                throw new ValidationError($rule->getName(), $value, \array_values($errorMap));
+            })
+            ->withDependOnChecks([ContainerCheckFactory::getIterableCheck()])
+            ->build();
+    }
+
     public static function getAllValuesAreCheck(MixedRuleInterface $rule): CheckInterface
     {
         return CheckBuilder::create(CheckName::ALL_VALUES_ARE)
@@ -192,6 +219,32 @@ class ContainerCheckFactory
                     $rule->validate($v);
                 }
                 return true;
+            })
+            ->withDependOnChecks([ContainerCheckFactory::getIterableCheck()])
+            ->build();
+    }
+
+    public static function getAnyValueIsCheck(MixedRuleInterface $rule): CheckInterface
+    {
+        return CheckBuilder::create(CheckName::ANY_VALUE_IS)
+            ->withPredicate(static function ($value) use ($rule) {
+                $errorMap = [];
+                foreach ($value as $v) {
+                    try {
+                        $rule->validate($v);
+                        return true;
+                    } catch (ValidationError $e) {
+                        foreach ($e->getViolatedRestrictions() as $restriction) {
+                            $errorMap[serialize($restriction)] = $restriction;
+                        }
+                    }
+                }
+
+                if (\count($errorMap) === 0) {
+                    return true;
+                }
+
+                throw new ValidationError($rule->getName(), $value, \array_values($errorMap));
             })
             ->withDependOnChecks([ContainerCheckFactory::getIterableCheck()])
             ->build();
