@@ -210,17 +210,17 @@ interface ContainerRuleInterface extends MixedRuleInterface
     public function allKeysAre(MixedRuleInterface $rule): self;
 
     /**
-     * Checks if any key in the container matches the given rule.
+     * Checks if some key in the container matches the given rule.
      *
      * @param MixedRuleInterface $rule
      *
      * Names of rules that can be violated:
-     * - @see CheckName::ANY_KEY_IS
+     * - @see CheckName::SOME_KEY_IS
      * - @see CheckName::ITERABLE
      *
      * @return static
      */
-    public function anyKeyIs(MixedRuleInterface $rule): self;
+    public function someKeyIs(MixedRuleInterface $rule): self;
 
     /**
      * Checks if all values of the container match the given rule.
@@ -236,15 +236,15 @@ interface ContainerRuleInterface extends MixedRuleInterface
     public function allValuesAre(MixedRuleInterface $rule): self;
 
     /**
-     * Checks if any value in the container matches the given rule.
+     * Checks if some value in the container matches the given rule.
      *
      * @param MixedRuleInterface $rule
      *
      * Names of rules that can be violated:
-     * - @see CheckName::ANY_VALUE_IS
+     * - @see CheckName::SOME_VALUE_IS
      * - @see CheckName::ITERABLE
      *
      * @return static
      */
-    public function anyValueIs(MixedRuleInterface $rule): self;
+    public function someValueIs(MixedRuleInterface $rule): self;
 }

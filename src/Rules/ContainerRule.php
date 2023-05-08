@@ -193,9 +193,9 @@ class ContainerRule extends MixedRule implements ContainerRuleInterface
      *
      * @return static
      */
-    public function anyKeyIs(MixedRuleInterface $rule): self
+    public function someKeyIs(MixedRuleInterface $rule): self
     {
-        return $this->check(ContainerCheckFactory::getAnyKeyIsCheck($rule));
+        return $this->check(ContainerCheckFactory::getSomeKeyIsCheck($rule));
     }
 
     /**
@@ -213,8 +213,8 @@ class ContainerRule extends MixedRule implements ContainerRuleInterface
      *
      * @return static
      */
-    public function anyValueIs(MixedRuleInterface $rule): self
+    public function someValueIs(MixedRuleInterface $rule): self
     {
-        return $this->check(ContainerCheckFactory::getAnyValueIsCheck($rule));
+        return $this->check(ContainerCheckFactory::getSomeValueIsCheck($rule));
     }
 }

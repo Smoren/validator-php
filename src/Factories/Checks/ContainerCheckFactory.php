@@ -185,9 +185,9 @@ class ContainerCheckFactory
             ->build();
     }
 
-    public static function getAnyKeyIsCheck(MixedRuleInterface $rule): CheckInterface
+    public static function getSomeKeyIsCheck(MixedRuleInterface $rule): CheckInterface
     {
-        return CheckBuilder::create(CheckName::ANY_KEY_IS)
+        return CheckBuilder::create(CheckName::SOME_KEY_IS)
             ->withPredicate(static function ($value) use ($rule) {
                 $errorMap = [];
                 foreach ($value as $k => $v) {
@@ -224,9 +224,9 @@ class ContainerCheckFactory
             ->build();
     }
 
-    public static function getAnyValueIsCheck(MixedRuleInterface $rule): CheckInterface
+    public static function getSomeValueIsCheck(MixedRuleInterface $rule): CheckInterface
     {
-        return CheckBuilder::create(CheckName::ANY_VALUE_IS)
+        return CheckBuilder::create(CheckName::SOME_VALUE_IS)
             ->withPredicate(static function ($value) use ($rule) {
                 $errorMap = [];
                 foreach ($value as $v) {

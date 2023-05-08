@@ -206,6 +206,16 @@ class ContainerTest extends Unit
                             ->allValuesAre(Value::integer())
                     ))
             ],
+            [
+                [[1, 2, 3], ['a' => 1, 'b' => 2, 55 => 'a'], [1 => 2, 'a' => 5, 22 => true]],
+                fn () => Value::container()
+                    ->someKeyIs(Value::numeric())
+            ],
+            [
+                [['a', 2, 'b'], ['a', true, '3'], [1.1, 'b', 'c'], [1, 2, []], [1, 2.2, '3']],
+                fn () => Value::container()
+                    ->someValueIs(Value::numeric())
+            ],
         ];
     }
 
@@ -725,6 +735,15 @@ class ContainerTest extends Unit
                 ],
             ],
             [
+                [(object)[1, 2, 3]],
+                fn () => Value::container()
+                    ->allKeysAre(Value::numeric())
+                    ->allValuesAre(Value::integer()),
+                [
+                    [CheckName::ITERABLE, []]
+                ],
+            ],
+            [
                 ['', true, false, 'abc', 123, 1.0, 0],
                 fn () => Value::container()
                     ->allKeysAre(Value::numeric())
@@ -732,6 +751,73 @@ class ContainerTest extends Unit
                 [
                     [CheckName::CONTAINER, []]
                 ],
+            ],
+            [
+                [['a' => 1, 'b' => 2, 'c' => 'a']],
+                fn () => Value::container()
+                    ->someKeyIs(Value::numeric()),
+                [
+                    [
+                        CheckName::SOME_KEY_IS,
+                        [
+                            Param::RULE => RuleName::NUMERIC,
+                            Param::VIOLATED_RESTRICTIONS => [
+                                [CheckName::NUMERIC, []],
+                            ],
+                        ],
+                    ],
+                ]
+            ],
+            [
+                [['a' => 1, 'b' => 2, 'c' => 'a', -1 => 'b', 22 => 42]],
+                fn () => Value::container()
+                    ->someKeyIs(Value::numeric()->positive()->between(0, 5)),
+                [
+                    [
+                        CheckName::SOME_KEY_IS,
+                        [
+                            Param::RULE => RuleName::NUMERIC,
+                            Param::VIOLATED_RESTRICTIONS => [
+                                [CheckName::NUMERIC, []],
+                                [CheckName::POSITIVE, []],
+                                [CheckName::BETWEEN, ['start' => 0, 'end' => 5]],
+                            ],
+                        ],
+                    ],
+                ]
+            ],
+            [
+                [['a', true, []]],
+                fn () => Value::container()
+                    ->someValueIs(Value::numeric()),
+                [
+                    [
+                        CheckName::SOME_VALUE_IS,
+                        [
+                            Param::RULE => RuleName::NUMERIC,
+                            Param::VIOLATED_RESTRICTIONS => [
+                                [CheckName::NUMERIC, []],
+                            ],
+                        ],
+                    ],
+                ]
+            ],
+            [
+                [['a', true, [], -1, -3, -5]],
+                fn () => Value::container()
+                    ->someValueIs(Value::numeric()->positive()),
+                [
+                    [
+                        CheckName::SOME_VALUE_IS,
+                        [
+                            Param::RULE => RuleName::NUMERIC,
+                            Param::VIOLATED_RESTRICTIONS => [
+                                [CheckName::NUMERIC, []],
+                                [CheckName::POSITIVE, []],
+                            ],
+                        ],
+                    ],
+                ]
             ],
         ];
     }
