@@ -9,9 +9,9 @@ use Smoren\Validator\Structs\CheckName;
 interface ContainerRuleInterface extends MixedRuleInterface
 {
     /**
-     * Checks if value is array.
+     * Checks if the value is an array.
      *
-     * This check stops next checks on violation by default.
+     * Subsequent checks do not run by default when any violation of this check occurs.
      *
      * Names of rules that can be violated:
      * - @see CheckName::ARRAY
@@ -21,9 +21,9 @@ interface ContainerRuleInterface extends MixedRuleInterface
     public function array(): self;
 
     /**
-     * Checks if value is indexed array (all indexes ∈ [0, N-1], where N is array length).
+     * Checks if the value is an indexed array (all indexes ∈ [0, N-1], where N is array length).
      *
-     * This check stops next checks on violation by default.
+     * Subsequent checks do not run by default when any violation of this check occurs.
      *
      * Names of rules that can be violated:
      * - @see CheckName::INDEXED_ARRAY
@@ -34,9 +34,9 @@ interface ContainerRuleInterface extends MixedRuleInterface
     public function indexedArray(): self;
 
     /**
-     * Checks if value is associative array (not indexed).
+     * Checks if the value is ab associative array (not indexed).
      *
-     * This check stops next checks on violation by default.
+     * Subsequent checks do not run by default when any violation of this check occurs.
      *
      * Names of rules that can be violated:
      * - @see CheckName::ASSOCIATIVE_ARRAY
@@ -47,9 +47,9 @@ interface ContainerRuleInterface extends MixedRuleInterface
     public function associativeArray(): self;
 
     /**
-     * Checks if value is iterable.
+     * Checks if the value is iterable.
      *
-     * This check stops next checks on violation by default.
+     * Subsequent checks do not run by default when any violation of this check occurs.
      *
      * Names of rules that can be violated:
      * - @see CheckName::ITERABLE
@@ -59,9 +59,9 @@ interface ContainerRuleInterface extends MixedRuleInterface
     public function iterable(): self;
 
     /**
-     * Checks if value is countable.
+     * Checks if the value is countable.
      *
-     * This check stops next checks on violation by default.
+     * Subsequent checks do not run by default when any violation of this check occurs.
      *
      * Names of rules that can be violated:
      * - @see CheckName::COUNTABLE
@@ -71,9 +71,9 @@ interface ContainerRuleInterface extends MixedRuleInterface
     public function countable(): self;
 
     /**
-     * Checks if value is array or ArrayAccess instance.
+     * Checks if the value is an array or an ArrayAccess instance.
      *
-     * This check stops next checks on violation by default.
+     * Subsequent checks do not run by default when any violation of this check occurs.
      *
      * Names of rules that can be violated:
      * - @see CheckName::ARRAY_ACCESSIBLE
@@ -83,9 +83,9 @@ interface ContainerRuleInterface extends MixedRuleInterface
     public function arrayAccessible(): self;
 
     /**
-     * Checks if value is object.
+     * Checks if the value is an object.
      *
-     * This check stops next checks on violation by default.
+     * Subsequent checks do not run by default when any violation of this check occurs.
      *
      * Names of rules that can be violated:
      * - @see CheckName::OBJECT
@@ -95,9 +95,9 @@ interface ContainerRuleInterface extends MixedRuleInterface
     public function object(): self;
 
     /**
-     * Checks if value is instance of stdClass.
+     * Checks if the value is an instance of stdClass.
      *
-     * This check stops next checks on violation by default.
+     * Subsequent checks do not run by default when any violation of this check occurs.
      *
      * Names of rules that can be violated:
      * - @see CheckName::STD_OBJECT
@@ -107,11 +107,11 @@ interface ContainerRuleInterface extends MixedRuleInterface
     public function stdObject(): self;
 
     /**
-     * Checks if value is instance of some class.
+     * Checks if the value is instance of some class.
      *
      * @param class-string $class
      *
-     * This check stops next checks on violation by default.
+     * Subsequent checks do not run by default when any violation of this check occurs.
      *
      * Names of rules that can be violated:
      * - @see CheckName::OBJECT
@@ -143,7 +143,7 @@ interface ContainerRuleInterface extends MixedRuleInterface
     public function notEmpty(): self;
 
     /**
-     * Checks given rule for the length of container.
+     * Checks given rule for the length of the container.
      *
      * @param IntegerRuleInterface $rule
      *
@@ -156,7 +156,7 @@ interface ContainerRuleInterface extends MixedRuleInterface
     public function lengthIs(IntegerRuleInterface $rule): self;
 
     /**
-     * Checks if container has attribute with given name and checks optional rule for its value.
+     * Checks if the container has attribute with given name and checks optional rule for its value.
      *
      * @param string $name
      * @param MixedRuleInterface|null $rule
@@ -170,7 +170,7 @@ interface ContainerRuleInterface extends MixedRuleInterface
     public function hasAttribute(string $name, ?MixedRuleInterface $rule = null): self;
 
     /**
-     * Checks if container has optional attribute with given name and checks rule for its value if attribute exists.
+     * Checks if the container has optional attribute with given name and checks rule for its value if attribute exists.
      *
      * @param string $name
      * @param MixedRuleInterface $rule
@@ -183,7 +183,7 @@ interface ContainerRuleInterface extends MixedRuleInterface
     public function hasOptionalAttribute(string $name, MixedRuleInterface $rule): self;
 
     /**
-     * Checks if container has given index and checks optional rule for its value.
+     * Checks if the container has given index and checks optional rule for its value.
      *
      * @param int $index
      * @param MixedRuleInterface|null $rule
@@ -197,7 +197,7 @@ interface ContainerRuleInterface extends MixedRuleInterface
     public function hasIndex(int $index, ?MixedRuleInterface $rule = null): self;
 
     /**
-     * Checks if all keys of container are match the given rule.
+     * Checks if all keys of the container match the given rule.
      *
      * @param MixedRuleInterface $rule
      *
@@ -210,7 +210,7 @@ interface ContainerRuleInterface extends MixedRuleInterface
     public function allKeysAre(MixedRuleInterface $rule): self;
 
     /**
-     * Checks if all values of container are match the given rule.
+     * Checks if all values of the container match the given rule.
      *
      * @param MixedRuleInterface $rule
      *
