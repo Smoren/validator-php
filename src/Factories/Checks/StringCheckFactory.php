@@ -53,7 +53,7 @@ final class StringCheckFactory
     {
         return new WrappedCheck(
             CheckName::UUID,
-            static::getMatchCheck('/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i'),
+            self::getMatchCheck('/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i'),
             fn (CheckError $e, string $name) => new CheckError($name, $e->getValue(), [])
         );
     }
