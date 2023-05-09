@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Smoren\Validator\Interfaces;
 
 use Smoren\Validator\Exceptions\CheckError;
-use Smoren\Validator\Exceptions\ValidationError;
 
 interface CheckInterface
 {
