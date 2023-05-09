@@ -34,7 +34,7 @@ interface ContainerRuleInterface extends MixedRuleInterface
     public function indexedArray(): self;
 
     /**
-     * Checks if the value is ab associative array (not indexed).
+     * Checks if the value is an associative array (not indexed).
      *
      * Subsequent checks do not run by default when any violation of this check occurs.
      *
@@ -71,7 +71,7 @@ interface ContainerRuleInterface extends MixedRuleInterface
     public function countable(): self;
 
     /**
-     * Checks if the value is an array or an ArrayAccess instance.
+     * Checks if the value is an array or an instance of ArrayAccess.
      *
      * Subsequent checks do not run by default when any violation of this check occurs.
      *
