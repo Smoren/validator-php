@@ -156,7 +156,8 @@ interface ContainerRuleInterface extends MixedRuleInterface
     public function lengthIs(IntegerRuleInterface $rule): self;
 
     /**
-     * Checks if the container has attribute with given name and checks optional rule for its value.
+     * Checks if the container has an attribute with the given name
+     * and optionally can have a rule to check for its value.
      *
      * @param string $name
      * @param MixedRuleInterface|null $rule
@@ -183,7 +184,8 @@ interface ContainerRuleInterface extends MixedRuleInterface
     public function hasOptionalAttribute(string $name, MixedRuleInterface $rule): self;
 
     /**
-     * Checks if the container has given index and checks optional rule for its value.
+     * Suggest changing to: Checks if the container has the given index
+     * and optionally can have a rule to check for its value.
      *
      * @param int $index
      * @param MixedRuleInterface|null $rule
