@@ -14,7 +14,7 @@ final class AllOfCheck extends CompositeCheck implements CheckInterface
     /**
      * {@inheritDoc}
      */
-    public function execute($value, array $previousErrors, bool $preventDuplicate = false): void
+    public function __invoke($value, array $previousErrors, bool $preventDuplicate = false): void
     {
         $errors = [];
 

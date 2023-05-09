@@ -203,7 +203,7 @@ class MixedRule extends BaseRule implements MixedRuleInterface
 
         foreach ($this->checks as $check) {
             try {
-                $check->getCheck()->execute($value, $errors);
+                $check->getCheck()($value, $errors);
             } catch (CheckError $e) {
                 if (!($check->getCheck() instanceof UtilityCheckInterface)) {
                     $errors[] = $e;

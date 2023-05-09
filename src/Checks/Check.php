@@ -56,7 +56,7 @@ class Check implements CheckInterface
     /**
      * {@inheritDoc}
      */
-    public function execute($value, array $previousErrors, bool $preventDuplicate = false): void
+    public function __invoke($value, array $previousErrors, bool $preventDuplicate = false): void
     {
         if ($preventDuplicate) {
             foreach ($previousErrors as $error) {
@@ -67,7 +67,7 @@ class Check implements CheckInterface
         }
 
         foreach ($this->dependencies as $check) {
-            $check->execute(
+            $check(
                 $value,
                 $previousErrors,
                 true

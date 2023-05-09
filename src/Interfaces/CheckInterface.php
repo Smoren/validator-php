@@ -17,5 +17,5 @@ interface CheckInterface
      *
      * @throws CheckError if check fails
      */
-    public function execute($value, array $previousErrors, bool $preventDuplicate = false): void;
+    public function __invoke($value, array $previousErrors, bool $preventDuplicate = false): void;
 }

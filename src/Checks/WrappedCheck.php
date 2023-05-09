@@ -37,10 +37,10 @@ final class WrappedCheck implements CheckInterface
     /**
      * {@inheritDoc}
      */
-    public function execute($value, array $previousErrors, bool $preventDuplicate = false): void
+    public function __invoke($value, array $previousErrors, bool $preventDuplicate = false): void
     {
         try {
-            $this->check->execute($value, $previousErrors, $preventDuplicate);
+            ($this->check)($value, $previousErrors, $preventDuplicate);
         } catch (CheckError $e) {
             throw ($this->errorHandler)($e, $this->name);
         }
