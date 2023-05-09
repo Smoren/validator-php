@@ -29,4 +29,29 @@ final class CompositeCheckError extends CheckError
     {
         return $this->nestedErrors;
     }
+
+    /**
+     * @param CheckError $error
+     *
+     * @return bool
+     */
+    public function equalTo(CheckError $error): bool
+    {
+        return $error instanceof CompositeCheckError
+            && parent::equalTo($error)
+            && $this->hasSameNestedErrorsWith($error);
+    }
+
+    /**
+     * @param CompositeCheckError $error
+     *
+     * @return bool
+     */
+    protected function hasSameNestedErrorsWith(CompositeCheckError $error): bool
+    {
+        return (
+            array_map(fn ($e) => $e->getViolatedRestrictions(), $this->nestedErrors) ===
+            array_map(fn ($e) => $e->getViolatedRestrictions(), $error->nestedErrors)
+        );
+    }
 }

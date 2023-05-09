@@ -55,4 +55,16 @@ class CheckError extends \DomainException
     {
         return $this->params;
     }
+
+    /**
+     * @param CheckError $e
+     *
+     * @return bool
+     */
+    public function equalTo(CheckError $e): bool
+    {
+        return $this->name === $e->name
+            && $this->value === $e->value
+            && $this->params === $e->params;
+    }
 }

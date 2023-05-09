@@ -58,14 +58,6 @@ class Check implements CheckInterface
      */
     public function __invoke($value, array $previousErrors, bool $preventDuplicate = false): void
     {
-        if ($preventDuplicate) {
-            foreach ($previousErrors as $error) {
-                if ($error->getName() === $this->name) {
-                    return;
-                }
-            }
-        }
-
         foreach ($this->dependencies as $check) {
             $check(
                 $value,
@@ -79,14 +71,37 @@ class Check implements CheckInterface
             $params[$key] = $paramGetter($value);
         }
 
+        $error = null;
+
         try {
             if (($this->predicate)($value, ...array_values($params)) === false) {
-                throw new CheckError($this->name, $value, $params);
+                $error = new CheckError($this->name, $value, $params);
             }
         } catch (ValidationError $e) {
             $params[Param::RULE] = $e->getName();
             $params[Param::VIOLATED_RESTRICTIONS] = $e->getViolatedRestrictions();
-            throw new CheckError($this->name, $value, $params);
+            $error = new CheckError($this->name, $value, $params);
         }
+
+        if ($error !== null && (!$preventDuplicate || !$this->isDuplicate($error, $previousErrors))) {
+            throw $error;
+        }
+    }
+
+    /**
+     * @param CheckError $error
+     * @param array<CheckError> $previousErrors
+     *
+     * @return bool
+     */
+    protected function isDuplicate(CheckError $error, array $previousErrors): bool
+    {
+        foreach ($previousErrors as $previousError) {
+            if ($error->equalTo($previousError)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
