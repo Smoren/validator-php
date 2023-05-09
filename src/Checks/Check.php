@@ -31,10 +31,6 @@ class Check implements CheckInterface
      * @var array<CheckInterface>
      */
     protected array $dependsOnChecks;
-    /**
-     * @var bool
-     */
-    protected bool $preventDuplicate;
 
     /**
      * @param string $name
@@ -42,22 +38,19 @@ class Check implements CheckInterface
      * @param array<string, mixed> $params
      * @param array<string, callable> $calculatedParams
      * @param array<CheckInterface> $dependsOnChecks
-     * @param bool $preventDuplicate
      */
     public function __construct(
         string $name,
         callable $predicate,
         array $params = [],
         array $calculatedParams = [],
-        array $dependsOnChecks = [],
-        bool $preventDuplicate = false
+        array $dependsOnChecks = []
     ) {
         $this->name = $name;
         $this->predicate = $predicate;
         $this->params = $params;
         $this->calculatedParams = $calculatedParams;
         $this->dependsOnChecks = $dependsOnChecks;
-        $this->preventDuplicate = $preventDuplicate;
     }
 
     /**
@@ -73,20 +66,20 @@ class Check implements CheckInterface
             }
         }
 
+        foreach ($this->dependsOnChecks as $check) {
+            $check->execute(
+                $value,
+                $previousErrors,
+                true
+            );
+        }
+
+        $params = $this->params;
+        foreach ($this->calculatedParams as $key => $paramGetter) {
+            $params[$key] = $paramGetter($value);
+        }
+
         try {
-            foreach ($this->dependsOnChecks as $check) {
-                $check->execute(
-                    $value,
-                    $previousErrors,
-                    true
-                );
-            }
-
-            $params = $this->params;
-            foreach ($this->calculatedParams as $key => $paramGetter) {
-                $params[$key] = $paramGetter($value);
-            }
-
             if (($this->predicate)($value, ...array_values($params)) === false) {
                 throw new CheckError($this->name, $value, $params);
             }

@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Smoren\Validator\Checks;
 
+use Smoren\Validator\Exceptions\CompositeCheckError;
 use Smoren\Validator\Exceptions\ValidationError;
 use Smoren\Validator\Interfaces\CheckInterface;
-use Smoren\Validator\Structs\RuleName;
+use Smoren\Validator\Structs\CheckName;
 
 class AllOfCheck extends CompositeCheck implements CheckInterface
 {
@@ -30,6 +31,6 @@ class AllOfCheck extends CompositeCheck implements CheckInterface
             return;
         }
 
-        throw ValidationError::fromValidationErrors(RuleName::ALL_OF, $value, $errors);
+        throw new CompositeCheckError(CheckName::ALL_OF, $value, $errors);
     }
 }

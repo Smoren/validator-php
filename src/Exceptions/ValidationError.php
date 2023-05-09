@@ -28,30 +28,19 @@ class ValidationError extends \DomainException
      */
     public static function fromCheckErrors(string $name, $value, array $checkErrors): self
     {
-        return new self($name, $value, array_map(
-            fn (CheckError $error) => [$error->getName(), $error->getParams()],
-            $checkErrors
-        ));
-    }
-
-    /**
-     * @param string $name
-     * @param mixed $value
-     * @param array<ValidationError> $validationErrors
-     *
-     * @return self
-     */
-    public static function fromValidationErrors(string $name, $value, array $validationErrors): self
-    {
-        $summary = [];
-
-        foreach ($validationErrors as $error) {
-            foreach ($error->getViolatedRestrictions() as $item) {
-                $summary[] = $item;
+        /** @var array<array{string, array<string, mixed>}> $violations */
+        $violations = [];
+        foreach ($checkErrors as $checkError) {
+            if ($checkError instanceof CompositeCheckError) {
+                foreach ($checkError->getNestedErrors() as $validationError) {
+                    $violations = [...$violations, ...$validationError->getViolatedRestrictions()];
+                }
+            } else {
+                $violations[] = [$checkError->getName(), $checkError->getParams()];
             }
         }
 
-        return new self($name, $value, $summary);
+        return new self($name, $value, $violations);
     }
 
     /**
