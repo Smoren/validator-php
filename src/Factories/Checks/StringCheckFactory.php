@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Smoren\Validator\Factories\Checks;
 
+use Smoren\Validator\Checks\WrappedCheck;
+use Smoren\Validator\Exceptions\CheckError;
 use Smoren\Validator\Factories\CheckBuilder;
 use Smoren\Validator\Interfaces\CheckInterface;
 use Smoren\Validator\Interfaces\IntegerRuleInterface;
@@ -45,6 +47,15 @@ class StringCheckFactory
             ->withPredicate(fn($value, string $regex) => \boolval(\preg_match($regex, $value)))
             ->withParams(['regex' => $regex])
             ->build();
+    }
+
+    public static function getUuidCheck(): CheckInterface
+    {
+        return new WrappedCheck(
+            CheckName::UUID,
+            static::getMatchCheck('/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i'),
+            fn (CheckError $e, string $name) => new CheckError($name, $e->getValue(), [])
+        );
     }
 
     public static function getHasSubstringCheck(string $substr): CheckInterface

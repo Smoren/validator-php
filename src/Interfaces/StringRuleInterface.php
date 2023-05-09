@@ -29,6 +29,11 @@ interface StringRuleInterface extends MixedRuleInterface
     public function match(string $regex): self;
 
     /**
+     * @return static
+     */
+    public function uuid(): self;
+
+    /**
      * @param string $substr
      *
      * @return static

@@ -39,6 +39,11 @@ class StringRule extends MixedRule implements StringRuleInterface
         return $this->check(StringCheckFactory::getMatchCheck($regex));
     }
 
+    public function uuid(): StringRuleInterface
+    {
+        return $this->check(StringCheckFactory::getUuidCheck());
+    }
+
     public function hasSubstring(string $substr): StringRuleInterface
     {
         return $this->check(StringCheckFactory::getHasSubstringCheck($substr));

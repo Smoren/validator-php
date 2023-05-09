@@ -64,6 +64,7 @@ class CheckName
     public const SOME_VALUE_IS = 'some_value_is';
 
     public const MATCH = 'match';
+    public const UUID = 'uuid';
     public const HAS_SUBSTRING = 'has_substring';
     public const STARTS_WITH = 'starts_with';
     public const ENDS_WITH = 'ends_with';

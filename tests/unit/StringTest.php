@@ -62,6 +62,11 @@ class StringTest extends Unit
                     ->match('/^[a-z0-9_]+@[a-z0-9_]+\.[a-z]+$/'),
             ],
             [
+                ['86489164-8624-44d4-bdb4-432036c354a3', '576c7171-ba19-4b9c-a30c-97a4205d0825', '576C7171-BA19-4B9C-A30C-97A4205D0825'],
+                fn () => Value::string()
+                    ->uuid(),
+            ],
+            [
                 ['abcdefg', 'cde', 'abcde', 'cdefg', 'cdecde'],
                 fn () => Value::string()
                     ->hasSubstring('cde'),
@@ -153,6 +158,14 @@ class StringTest extends Unit
                     ->match('/^[a-z0-9_]+@[a-z0-9_]+\.[a-z]+$/'),
                 [
                     [CheckName::MATCH, ['regex' => '/^[a-z0-9_]+@[a-z0-9_]+\.[a-z]+$/']],
+                ],
+            ],
+            [
+                ['186489164-8624-44d4-bdb4-432036c354a3', '', '123'],
+                fn () => Value::string()
+                    ->uuid(),
+                [
+                    [CheckName::UUID, []],
                 ],
             ],
             [
