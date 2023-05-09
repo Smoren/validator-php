@@ -73,20 +73,20 @@ class Check implements CheckInterface
             }
         }
 
-        foreach ($this->dependsOnChecks as $check) {
-            $check->execute(
-                $value,
-                $previousErrors,
-                true
-            );
-        }
-
-        $params = $this->params;
-        foreach ($this->calculatedParams as $key => $paramGetter) {
-            $params[$key] = $paramGetter($value);
-        }
-
         try {
+            foreach ($this->dependsOnChecks as $check) {
+                $check->execute(
+                    $value,
+                    $previousErrors,
+                    true
+                );
+            }
+
+            $params = $this->params;
+            foreach ($this->calculatedParams as $key => $paramGetter) {
+                $params[$key] = $paramGetter($value);
+            }
+
             if (($this->predicate)($value, ...array_values($params)) === false) {
                 throw new CheckError($this->name, $value, $params);
             }

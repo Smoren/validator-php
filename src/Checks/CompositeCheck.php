@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Smoren\Validator\Checks;
 
+use Smoren\Validator\Exceptions\ValidationError;
 use Smoren\Validator\Interfaces\CheckInterface;
 use Smoren\Validator\Interfaces\MixedRuleInterface;
 
@@ -21,4 +22,11 @@ abstract class CompositeCheck implements CheckInterface
     {
         $this->rules = $rules;
     }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @throws ValidationError if nested rules fail
+     */
+    abstract public function execute($value, array $previousErrors, bool $preventDuplicate = false): void;
 }
