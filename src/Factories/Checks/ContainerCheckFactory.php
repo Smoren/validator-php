@@ -34,7 +34,7 @@ final class ContainerCheckFactory
     {
         return CheckBuilder::create(CheckName::INDEXED_ARRAY)
             ->withPredicate(fn ($value) => \array_values($value) === $value)
-            ->withDependOnChecks([ContainerCheckFactory::getArrayCheck()])
+            ->withDependencies([ContainerCheckFactory::getArrayCheck()])
             ->build();
     }
 
@@ -42,7 +42,7 @@ final class ContainerCheckFactory
     {
         return CheckBuilder::create(CheckName::ASSOCIATIVE_ARRAY)
             ->withPredicate(fn ($value) => \array_values($value) !== $value)
-            ->withDependOnChecks([ContainerCheckFactory::getArrayCheck()])
+            ->withDependencies([ContainerCheckFactory::getArrayCheck()])
             ->build();
     }
 
@@ -93,7 +93,7 @@ final class ContainerCheckFactory
     {
         return CheckBuilder::create(CheckName::EMPTY)
             ->withPredicate(fn ($value) => \count($value) === 0)
-            ->withDependOnChecks([ContainerCheckFactory::getCountableCheck()])
+            ->withDependencies([ContainerCheckFactory::getCountableCheck()])
             ->build();
     }
 
@@ -101,7 +101,7 @@ final class ContainerCheckFactory
     {
         return CheckBuilder::create(CheckName::NOT_EMPTY)
             ->withPredicate(fn ($value) => \count($value) > 0)
-            ->withDependOnChecks([ContainerCheckFactory::getCountableCheck()])
+            ->withDependencies([ContainerCheckFactory::getCountableCheck()])
             ->build();
     }
 
@@ -113,7 +113,7 @@ final class ContainerCheckFactory
                 $rule->validate(\count($value));
                 return true;
             })
-            ->withDependOnChecks([ContainerCheckFactory::getCountableCheck()])
+            ->withDependencies([ContainerCheckFactory::getCountableCheck()])
             ->build();
     }
 
@@ -147,7 +147,7 @@ final class ContainerCheckFactory
                 return true;
             })
             ->withParams([Param::ATTRIBUTE => $name])
-            ->withDependOnChecks([ContainerCheckFactory::getHasAttributeCheck($name)])
+            ->withDependencies([ContainerCheckFactory::getHasAttributeCheck($name)])
             ->build();
     }
 
@@ -156,7 +156,7 @@ final class ContainerCheckFactory
         return CheckBuilder::create(CheckName::HAS_INDEX)
             ->withPredicate(fn ($value, $index) => isset($value[$index]))
             ->withParams([Param::INDEX => $index])
-            ->withDependOnChecks([ContainerCheckFactory::getArrayAccessibleCheck()])
+            ->withDependencies([ContainerCheckFactory::getArrayAccessibleCheck()])
             ->build();
     }
 
@@ -168,7 +168,7 @@ final class ContainerCheckFactory
                 return true;
             })
             ->withParams([Param::INDEX => $index])
-            ->withDependOnChecks([ContainerCheckFactory::getHasIndexCheck($index)])
+            ->withDependencies([ContainerCheckFactory::getHasIndexCheck($index)])
             ->build();
     }
 
@@ -181,7 +181,7 @@ final class ContainerCheckFactory
                 }
                 return true;
             })
-            ->withDependOnChecks([ContainerCheckFactory::getIterableCheck()])
+            ->withDependencies([ContainerCheckFactory::getIterableCheck()])
             ->build();
     }
 
@@ -207,7 +207,7 @@ final class ContainerCheckFactory
 
                 throw new ValidationError($rule->getName(), $value, \array_values($errorMap));
             })
-            ->withDependOnChecks([ContainerCheckFactory::getIterableCheck()])
+            ->withDependencies([ContainerCheckFactory::getIterableCheck()])
             ->build();
     }
 
@@ -220,7 +220,7 @@ final class ContainerCheckFactory
                 }
                 return true;
             })
-            ->withDependOnChecks([ContainerCheckFactory::getIterableCheck()])
+            ->withDependencies([ContainerCheckFactory::getIterableCheck()])
             ->build();
     }
 
@@ -246,7 +246,7 @@ final class ContainerCheckFactory
 
                 throw new ValidationError($rule->getName(), $value, \array_values($errorMap));
             })
-            ->withDependOnChecks([ContainerCheckFactory::getIterableCheck()])
+            ->withDependencies([ContainerCheckFactory::getIterableCheck()])
             ->build();
     }
 }

@@ -234,7 +234,7 @@ final class NumericCheckFactory
     {
         return CheckBuilder::create(CheckName::NAN)
             ->withPredicate(fn($value) => \is_nan(\floatval($value)))
-            ->withDependOnChecks([NumericCheckFactory::getNumericCheck()])
+            ->withDependencies([NumericCheckFactory::getNumericCheck()])
             ->build();
     }
 
@@ -242,7 +242,7 @@ final class NumericCheckFactory
     {
         return CheckBuilder::create(CheckName::NOT_NAN)
             ->withPredicate(fn($value) => !\is_nan(\floatval($value)))
-            ->withDependOnChecks([NumericCheckFactory::getNumericCheck()])
+            ->withDependencies([NumericCheckFactory::getNumericCheck()])
             ->build();
     }
 }

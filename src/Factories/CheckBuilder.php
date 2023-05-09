@@ -28,7 +28,7 @@ class CheckBuilder
     /**
      * @var array<CheckInterface>
      */
-    protected array $dependsOnChecks = [];
+    protected array $dependencies = [];
 
     /**
      * @param string $name
@@ -49,7 +49,7 @@ class CheckBuilder
             $this->predicate,
             $this->params,
             $this->calculatedParams,
-            $this->dependsOnChecks
+            $this->dependencies
         );
     }
 
@@ -84,12 +84,12 @@ class CheckBuilder
     }
 
     /**
-     * @param array<CheckInterface> $dependsOnChecks
+     * @param array<CheckInterface> $dependencies
      * @return $this
      */
-    public function withDependOnChecks(array $dependsOnChecks): self
+    public function withDependencies(array $dependencies): self
     {
-        $this->dependsOnChecks = $dependsOnChecks;
+        $this->dependencies = $dependencies;
         return $this;
     }
 

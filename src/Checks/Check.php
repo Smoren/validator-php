@@ -30,27 +30,27 @@ class Check implements CheckInterface
     /**
      * @var array<CheckInterface>
      */
-    protected array $dependsOnChecks;
+    protected array $dependencies;
 
     /**
      * @param string $name
      * @param callable $predicate
      * @param array<string, mixed> $params
      * @param array<string, callable> $calculatedParams
-     * @param array<CheckInterface> $dependsOnChecks
+     * @param array<CheckInterface> $dependencies
      */
     public function __construct(
         string $name,
         callable $predicate,
         array $params = [],
         array $calculatedParams = [],
-        array $dependsOnChecks = []
+        array $dependencies = []
     ) {
         $this->name = $name;
         $this->predicate = $predicate;
         $this->params = $params;
         $this->calculatedParams = $calculatedParams;
-        $this->dependsOnChecks = $dependsOnChecks;
+        $this->dependencies = $dependencies;
     }
 
     /**
@@ -66,7 +66,7 @@ class Check implements CheckInterface
             }
         }
 
-        foreach ($this->dependsOnChecks as $check) {
+        foreach ($this->dependencies as $check) {
             $check->execute(
                 $value,
                 $previousErrors,
