@@ -23,28 +23,28 @@ final class StringCheckFactory
     public static function getNumericCheck(): CheckInterface
     {
         return CheckBuilder::create(CheckName::NUMERIC)
-            ->withPredicate(fn($value) => \is_numeric($value))
+            ->withPredicate(fn ($value) => \is_numeric($value))
             ->build();
     }
 
     public static function getEmptyCheck(): CheckInterface
     {
         return CheckBuilder::create(CheckName::EMPTY)
-            ->withPredicate(fn($value) => $value === '')
+            ->withPredicate(fn ($value) => $value === '')
             ->build();
     }
 
     public static function getNotEmptyCheck(): CheckInterface
     {
         return CheckBuilder::create(CheckName::NOT_EMPTY)
-            ->withPredicate(fn($value) => $value !== '')
+            ->withPredicate(fn ($value) => $value !== '')
             ->build();
     }
 
     public static function getMatchCheck(string $regex): CheckInterface
     {
         return CheckBuilder::create(CheckName::MATCH)
-            ->withPredicate(fn($value, string $regex) => \boolval(\preg_match($regex, $value)))
+            ->withPredicate(fn ($value, string $regex) => \boolval(\preg_match($regex, $value)))
             ->withParams(['regex' => $regex])
             ->build();
     }
@@ -61,7 +61,7 @@ final class StringCheckFactory
     public static function getHasSubstringCheck(string $substr): CheckInterface
     {
         return CheckBuilder::create(CheckName::HAS_SUBSTRING)
-            ->withPredicate(fn($value, string $substr) => \mb_strpos($value, $substr) !== false)
+            ->withPredicate(fn ($value, string $substr) => \mb_strpos($value, $substr) !== false)
             ->withParams(['substring' => $substr])
             ->build();
     }
@@ -69,7 +69,7 @@ final class StringCheckFactory
     public static function getStartsWithCheck(string $substr): CheckInterface
     {
         return CheckBuilder::create(CheckName::STARTS_WITH)
-            ->withPredicate(fn($value, string $substr) => \mb_strpos($value, $substr) === 0)
+            ->withPredicate(fn ($value, string $substr) => \mb_strpos($value, $substr) === 0)
             ->withParams(['substring' => $substr])
             ->build();
     }
