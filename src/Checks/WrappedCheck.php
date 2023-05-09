@@ -7,7 +7,7 @@ namespace Smoren\Validator\Checks;
 use Smoren\Validator\Exceptions\CheckError;
 use Smoren\Validator\Interfaces\CheckInterface;
 
-class WrappedCheck implements CheckInterface
+final class WrappedCheck implements CheckInterface
 {
     /**
      * @var string

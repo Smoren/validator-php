@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Smoren\Validator\Helpers;
 
-class TypeHelper
+final class TypeHelper
 {
     /**
      * @param mixed $value

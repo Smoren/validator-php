@@ -9,7 +9,7 @@ use Smoren\Validator\Interfaces\MixedRuleInterface;
 use Smoren\Validator\Interfaces\ContainerRuleInterface;
 use Smoren\Validator\Interfaces\IntegerRuleInterface;
 
-class ContainerRule extends MixedRule implements ContainerRuleInterface
+final class ContainerRule extends MixedRule implements ContainerRuleInterface
 {
     /**
      * ContainerRule constructor.

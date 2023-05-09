@@ -11,7 +11,7 @@ use Smoren\Validator\Interfaces\CheckInterface;
 use Smoren\Validator\Interfaces\IntegerRuleInterface;
 use Smoren\Validator\Structs\CheckName;
 
-class StringCheckFactory
+final class StringCheckFactory
 {
     public static function getStringCheck(): CheckInterface
     {

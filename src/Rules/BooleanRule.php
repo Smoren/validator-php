@@ -7,7 +7,7 @@ namespace Smoren\Validator\Rules;
 use Smoren\Validator\Factories\Checks\BooleanCheckFactory;
 use Smoren\Validator\Interfaces\BooleanRuleInterface;
 
-class BooleanRule extends MixedRule implements BooleanRuleInterface
+final class BooleanRule extends MixedRule implements BooleanRuleInterface
 {
     /**
      * @param string $name

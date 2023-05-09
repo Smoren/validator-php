@@ -9,7 +9,7 @@ use Smoren\Validator\Exceptions\ValidationError;
 use Smoren\Validator\Interfaces\CheckInterface;
 use Smoren\Validator\Structs\CheckName;
 
-class AnyOfCheck extends CompositeCheck implements CheckInterface
+final class AnyOfCheck extends CompositeCheck implements CheckInterface
 {
     /**
      * {@inheritDoc}

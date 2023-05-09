@@ -7,7 +7,7 @@ namespace Smoren\Validator\Structs;
 use Smoren\Validator\Interfaces\CheckInterface;
 use Smoren\Validator\Interfaces\CheckWrapperInterface;
 
-class CheckWrapper implements CheckWrapperInterface
+final class CheckWrapper implements CheckWrapperInterface
 {
     /**
      * @var CheckInterface

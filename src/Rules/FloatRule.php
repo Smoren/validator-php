@@ -6,7 +6,7 @@ namespace Smoren\Validator\Rules;
 
 use Smoren\Validator\Interfaces\FloatRuleInterface;
 
-class FloatRule extends NumericRule implements FloatRuleInterface
+final class FloatRule extends NumericRule implements FloatRuleInterface
 {
     /**
      * @param string $name

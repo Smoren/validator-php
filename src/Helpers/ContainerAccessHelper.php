@@ -7,7 +7,7 @@ namespace Smoren\Validator\Helpers;
 /**
  * @internal
  */
-class ContainerAccessHelper
+final class ContainerAccessHelper
 {
     /**
      * @param mixed $container

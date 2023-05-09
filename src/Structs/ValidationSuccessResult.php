@@ -6,7 +6,7 @@ namespace Smoren\Validator\Structs;
 
 use Smoren\Validator\Interfaces\ValidationResultInterface;
 
-class ValidationSuccessResult implements ValidationResultInterface
+final class ValidationSuccessResult implements ValidationResultInterface
 {
     protected bool $preventNextChecks;
 

@@ -8,7 +8,7 @@ use Smoren\Validator\Checks\AnyOfCheck;
 use Smoren\Validator\Interfaces\CompositeRuleInterface;
 use Smoren\Validator\Interfaces\MixedRuleInterface;
 
-class AnyOfRule extends MixedRule implements CompositeRuleInterface
+final class AnyOfRule extends MixedRule implements CompositeRuleInterface
 {
     /**
      * @param string $name

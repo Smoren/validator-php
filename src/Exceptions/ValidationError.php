@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Smoren\Validator\Exceptions;
 
-class ValidationError extends \DomainException
+final class ValidationError extends \DomainException
 {
     /**
      * @var string

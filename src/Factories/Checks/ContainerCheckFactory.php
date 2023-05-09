@@ -14,7 +14,7 @@ use Smoren\Validator\Interfaces\MixedRuleInterface;
 use Smoren\Validator\Structs\CheckName;
 use Smoren\Validator\Structs\Param;
 
-class ContainerCheckFactory
+final class ContainerCheckFactory
 {
     public static function getNumericCheck(): CheckInterface
     {

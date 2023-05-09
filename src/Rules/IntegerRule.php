@@ -6,7 +6,7 @@ namespace Smoren\Validator\Rules;
 
 use Smoren\Validator\Interfaces\IntegerRuleInterface;
 
-class IntegerRule extends NumericRule implements IntegerRuleInterface
+final class IntegerRule extends NumericRule implements IntegerRuleInterface
 {
     /**
      * @param string $name

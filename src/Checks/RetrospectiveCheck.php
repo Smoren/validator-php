@@ -10,7 +10,7 @@ use Smoren\Validator\Interfaces\UtilityCheckInterface;
 /**
  * @internal
  */
-class RetrospectiveCheck implements UtilityCheckInterface
+final class RetrospectiveCheck implements UtilityCheckInterface
 {
     /**
      * {@inheritDoc}

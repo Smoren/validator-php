@@ -8,7 +8,7 @@ use Smoren\Validator\Factories\CheckBuilder;
 use Smoren\Validator\Interfaces\CheckInterface;
 use Smoren\Validator\Structs\CheckName;
 
-class BooleanCheckFactory
+final class BooleanCheckFactory
 {
     public static function getBooleanCheck(): CheckInterface
     {

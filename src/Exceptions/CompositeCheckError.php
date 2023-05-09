@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Smoren\Validator\Exceptions;
 
-class CompositeCheckError extends CheckError
+final class CompositeCheckError extends CheckError
 {
     /**
      * @var array<ValidationError>

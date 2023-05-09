@@ -8,7 +8,7 @@ use Smoren\Validator\Factories\Checks\StringCheckFactory;
 use Smoren\Validator\Interfaces\IntegerRuleInterface;
 use Smoren\Validator\Interfaces\StringRuleInterface;
 
-class StringRule extends MixedRule implements StringRuleInterface
+final class StringRule extends MixedRule implements StringRuleInterface
 {
     /**
      * @param string $name

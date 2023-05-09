@@ -9,7 +9,7 @@ use Smoren\Validator\Interfaces\CheckInterface;
 use Smoren\Validator\Structs\CheckName;
 use Smoren\Validator\Structs\Param;
 
-class MixedCheckFactory
+final class MixedCheckFactory
 {
     public static function getTruthyCheck(): CheckInterface
     {
