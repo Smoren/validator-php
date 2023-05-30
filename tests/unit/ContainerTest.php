@@ -726,6 +726,39 @@ class ContainerTest extends Unit
                 ],
             ],
             [
+                [
+                    (object)[
+                        'id' => 13,
+                        'probability' => '1.92',
+                        'vectors' => [[1, 2], [3, 4], [5, 6]],
+                    ],
+                ],
+                fn () => Value::container()
+                    ->array()
+                    ->dontStopOnAllPriorViolations()
+                    ->hasAttribute('id', Value::integer()->positive())
+                    ->hasAttribute('probability', Value::float()->between(0, 1))
+                    ->hasAttribute('vectors', Value::container()->array()->allValuesAre(
+                        Value::container()
+                            ->array()
+                            ->lengthIs(Value::integer()->equal(2))
+                            ->allValuesAre(Value::integer())
+                    )),
+                [
+                    [CheckName::ARRAY, []],
+                    [
+                        CheckName::ATTRIBUTE_IS,
+                        [
+                            Param::ATTRIBUTE => 'probability',
+                            Param::RULE => RuleName::FLOAT,
+                            Param::VIOLATED_RESTRICTIONS => [
+                                [CheckName::FLOAT, []],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            [
                 [(object)[1, 2, 3]],
                 fn () => Value::container()
                     ->allKeysAre(Value::numeric())

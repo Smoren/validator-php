@@ -19,6 +19,20 @@ class AllOfRuleTest extends Unit
      * @param callable(): MixedRuleInterface $ruleFactory
      * @return void
      */
+    public function testIsValidOnSuccess(array $input, callable $ruleFactory): void
+    {
+        $rule = $ruleFactory();
+        foreach ($input as $value) {
+            $this->assertTrue($rule->isValid($value));
+        }
+    }
+
+    /**
+     * @dataProvider dataProviderForSuccess
+     * @param array $input
+     * @param callable(): MixedRuleInterface $ruleFactory
+     * @return void
+     */
     public function testSuccess(array $input, callable $ruleFactory): void
     {
         $rule = $ruleFactory();
@@ -50,6 +64,20 @@ class AllOfRuleTest extends Unit
                 ])->nullable(),
             ],
         ];
+    }
+
+    /**
+     * @dataProvider dataProviderForFail
+     * @param array $input
+     * @param callable(): MixedRuleInterface $ruleFactory
+     * @return void
+     */
+    public function testIsValidOnFail(array $input, callable $ruleFactory): void
+    {
+        $rule = $ruleFactory();
+        foreach ($input as $value) {
+            $this->assertFalse($rule->isValid($value));
+        }
     }
 
     /**
